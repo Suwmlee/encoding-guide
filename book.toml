@@ -11,3 +11,6 @@ build-dir = "public"
 [preprocesssor.toc]
 command = "./mdbook-toc"
 renderer = ["html"]
+
+[output.html]
+mathjax-support = true
