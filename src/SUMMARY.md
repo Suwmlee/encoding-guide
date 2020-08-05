@@ -4,7 +4,7 @@
 - [Filtering]()
     - [Loading the Video]()
     - [Cropping]()
-    - [Resizing]()
+    - [Resizing](filtering/resizing.md)
         - [Descaling]()
     - [Bit Depths and Dither Algorithms]()
     - [Debanding]()
