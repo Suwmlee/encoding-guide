@@ -7,9 +7,7 @@ to the tool, export the LUT, save it, and add it via something like:
     detint = core.timecube.Cube(clip, "LUT.cube")
     out = core.resize.Point(detint, matrix=1, format=vs.YUV420P16, dither_type="error_diffusion")
 
-![Source with tint on left, tint removed on right. This example is from
-the D-Z0N3 encode of Your Name (2016). Some anti-aliasing was also
-performed on this frame.](Pictures/detint.png){#fig:8}
+<img src='Pictures/detint_before2.png' onmouseover="this.src='Pictures/detint_after2.png';" onmouseout="this.src='Pictures/detint_before2.png';" />
 
 Similarly, if you have what's known as a gamma bug, or more precisely,
 double range compression (applying full to limited range compression to
