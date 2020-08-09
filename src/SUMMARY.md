@@ -6,7 +6,7 @@
     - [Cropping]()
     - [Resizing](filtering/resizing.md)
         - [Descaling](filtering/descaling.md)
-    - [Bit Depths and Dither Algorithms]()
+    - [Bit Depths and Dither Algorithms](filtering/bit_depths.md)
     - [Debanding](filtering/debanding.md)
     - [Dirty Lines and Border Issues](filtering/dirty_lines.md)
     - [Anti-Aliasing](filtering/anti-aliasing.md)
