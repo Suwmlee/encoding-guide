@@ -133,13 +133,7 @@ footage as well. An example would be the Game of Thrones season 1 UHD
 Blu-rays, which are bilinear upscales. While not as noticeable in
 screenshots, the difference is stunning during playback.
 
-![Source UHD Blu-ray with 1080p footage upscaled to 2160p via a bilinear
-filter on the left, rescale with `Debilinear` and `nnedi3` on the
-right.](Pictures/bilinear_before2.png){#fig:7}
-
-![Source UHD Blu-ray with 1080p footage upscaled to 2160p via a bilinear
-filter on the left, rescale with `Debilinear` and `nnedi3` on the
-right.](Pictures/bilinear_after2.png){#fig:7}
+<img src='Pictures/bilinear_before2.png' onmouseover="this.src='Pictures/bilinear_after2.png';" onmouseout="this.src='Pictures/bilinear_before2.png';" />
 
 If your video seems to have multiple source resolutions in every frame
 (i.. different layers are in different resolutions), which you can
