@@ -149,7 +149,7 @@ There are six commonly used filters for fixing dirty lines:
     meaning pixel values can change significantly:
 
     ```py
-    fix = awf.bbmod(src, top=3, thresh=90, blur=20)
+    fix = awf.bbmod(src, top=6, thresh=90, blur=20)
     ```
     <p align="center">
     <img src='Pictures/dirtfixes1.png' onmouseover="this.src='Pictures/dirtfixes0.png';" onmouseout="this.src='Pictures/dirtfixes1.png';"/>
