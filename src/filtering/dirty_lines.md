@@ -19,6 +19,10 @@ present on black bars. Usually, these should be cropped out. The
 opposite can also occur, however, where the planes with legitimate luma
 information lack chroma information.\
 
+It's important to remember that sometimes your source will have fake lines, meaning ones without legitimate information.  These will usually just mirror the next row/column.  Do not bother fixing these, just crop them instead.
+
+Similarly, if you cannot figure out a proper fix, it's completely reasonable to simply crop off dirty lines or leave them unfixed.  These are usually just single rows, after all, nobody will notice!
+
 There are six commonly used filters for fixing dirty lines:
 
 -   [`rekt`](https://gitlab.com/Ututu/rekt)'s `rektlvls`\
@@ -160,6 +164,11 @@ There are six commonly used filters for fixing dirty lines:
     use, so lazy people (i.e. everyone) can use this to fix dirty lines
     before resizing, as the difference won't be noticeable after
     resizing.
+    
+    While you can use `rektlvls` on as many rows/columns as necessary, the same doesn't hold true for `bbmod`.  Unless you are resizing after, you should only use `bbmod` on two rows/pixels for low `blur` values (\\(\approx 20\\)) or three for higher `blur` values.  If you are resizing after, you can change the maximum value according to:
+    \\[
+    max_\mathrm{resize} = max \times \frac{resolution_\mathrm{source}}{resolution_\mathrm{resized}}
+    \\]
     <details>
     <summary>In-depth function explanation</summary>
     <code>bbmod</code> works by blurring the desired rows, input rows, and
@@ -306,6 +315,8 @@ There are six commonly used filters for fixing dirty lines:
     allows you to specify per-plane values for `fb` is `FillBorders` in
     `awsmfunc`.\
 
+    Note that you should only ever fill single columns/rows with `FillBorders`.  If you have more black lines, crop them!  If there are frames requiring different crops in the video, don't fill these up.  More on this at the end of this chapter.
+
     To illustrate what a source requiring `FillBorders` might look like,
     let's look at Parasite (2019)'s SDR UHD once again, which requires
     an uneven crop of 277. However, we can't crop this due to chroma
@@ -405,6 +416,11 @@ There are six commonly used filters for fixing dirty lines:
     <img src='Pictures/dirtfixes2.png' onmouseover="this.src='Pictures/dirtfixes1.png';" onmouseout="this.src='Pictures/dirtfixes2.png';"/>
     </p>
     The result is ever so slightly in favor of <code>ContinuityFixer</code> here.
+ 
+    Just like `bbmod`, `ContinuityFixer` shouldn't be used on more than two rows/columns.  Again, if you're resizing, you can change this maximum accordingly:
+    \\[
+    max_\mathrm{resize} = max \times \frac{resolution_\mathrm{source}}{resolution_\mathrm{resized}}
+    \\]   
     <details>
     <summary>In-depth function explanation</summary>
     <code>ContinuityFixer</code> works by calculating the <a href=https://en.wikipedia.org/wiki/Least_squares>least squares
