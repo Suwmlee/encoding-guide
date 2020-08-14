@@ -333,7 +333,7 @@ There are six commonly used filters for fixing dirty lines:
     fil = awf.fb(crp, top=1)
     ```
     <p align="center">
-    <img src='Pictures/fb_lumachroma.png' onmouseover="this.src='Pictures/fb_src.png';" onmouseout="this.src='Pictures/fb_lumachroma.png';"/>
+    <img src='Pictures/fb_lumachroma.png' onmouseover="this.src='Pictures/fb_luma.png';" onmouseout="this.src='Pictures/fb_lumachroma.png';"/>
     </p>
 
     Our source is now fixed. Some people may want to resize the chroma
@@ -375,10 +375,10 @@ There are six commonly used filters for fixing dirty lines:
     will be processed.\
     <details>
     <summary>In-depth function explanation</summary>
-    `ContinuityFixer` works by calculating the least squares
-    regression[^29] of the pixels within the radius. As such, it creates
-    entirely fake data based on the image's likely edges.\
-    One thing `ContinuityFixer` is quite good at is getting rid of
+    <code>ContinuityFixer</code> works by calculating the <a href=https://en.wikipedia.org/wiki/Least_squares>least squares
+    regression</a> of the pixels within the radius. As such, it creates
+    entirely fake data based on the image's likely edges.
+    One thing <code>ContinuityFixer</code> is quite good at is getting rid of
     irregularities such as dots. It's also faster than `bbmod`, but it
     should be considered a backup option.
     </details>
@@ -391,16 +391,16 @@ There are six commonly used filters for fixing dirty lines:
 
     ![Parasite SDR UHD source with `ContinuityFixer` applied, zoomed via
     point
-    resizing.](Pictures/continuityfixer.png){width=".9\\textwidth"}
+    resizing.](Pictures/continuityfixer.png)
 
     Let's compare the second, third, and fourth row for each of these:
 
     ![Comparison of Parasite SDR UHD source, `bbmod`, and
-    `ContinuityFixer`](Pictures/cfx_bbm.png){width=".9\\textwidth"}
+    `ContinuityFixer`](Pictures/cfx_bbm.png)
 
     The result is ever so slightly in favor of `ContinuityFixer` here.
 
--   `edgefixer`'s[^30] `ReferenceFixer`\
+-   [`edgefixer`'s](https://github.com/sekrit-twc/EdgeFixer) `ReferenceFixer`\
     This requires the original version of `edgefixer` (`cf` is just an
     old port of it, but it's nicer to use and processing hasn't
     changed). I've never found a good use for it, but in theory, it's
@@ -446,7 +446,7 @@ example of this (from the D-Z0N3 encode of Your Name (2016)):
 D-Z0N3 is masked, Geek is unmasked. As such, Geek lacks any resemblance
 of grain, while D-Z0N3 keeps it in tact whenever possible. It may have
 been smarter to use the `mirror` mode in `FillBorders`, but hindsight is
-20/20.](Pictures/improper_borders.png){#fig:25 width="100%"}
+20/20.](Pictures/improper_borders.png)
 
 Code used by D-Z0N3 (in 16-bit):
 
@@ -462,7 +462,7 @@ reference="fig:26"}.
 Dirty lines can be quite difficult to spot. If you don't immediately
 spot any upon examining borders on random frames, chances are you'll be
 fine. If you know there are frames with small black borders on each
-side, you can use something like the following script[^31]:
+side, you can use something like the [following script](https://gitlab.com/snippets/1834089):
 
 ```py
 def black_detect(clip, thresh=None):
@@ -477,18 +477,18 @@ def black_detect(clip, thresh=None):
     return core.std.StackVertical([t, b])
 ```
 
-This script will make values under the threshold value (i.. the black
+This script will make values under the threshold value (i.e. the black
 borders) show up as vertical or horizontal white lines in the middle on
 a mostly black background. If no threshold is given, it will simply
 center the edges of the clip. You can just skim through your video with
-this active. An automated script would be `dirtdtct`[^32], which scans
+this active. An automated script would be [`dirtdtct`](https://git.concertos.live/AHD/awsmfunc/src/branch/master/awsmfunc/detect.py), which scans
 the video for you.
 
 Other kinds of variable dirty lines are a bitch to fix and require
 checking scenes manually.
 
 An issue very similar to dirty lines is bad borders. During scenes with
-different crops (e.. IMAX or 4:3), the black borders may sometimes not
+different crops (e.g. IMAX or 4:3), the black borders may sometimes not
 be entirely black, or be completely messed up. In order to fix this,
 simply crop them and add them back. You may also want to fix dirty lines
 that may have occurred along the way:
