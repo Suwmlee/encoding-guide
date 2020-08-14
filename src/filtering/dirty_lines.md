@@ -35,6 +35,28 @@ There are six commonly used filters for fixing dirty lines:
 
     If you'd like to process multiple rows at a time, you can enter a
     list (e.g. `rownum=[0, 1, 2]`).\
+
+    To illustrate this, let's look at the dirty lines in the black and
+    white Blu-ray of Parasite (2019)'s bottom rows:
+
+    ![Parasite b&w source, zoomed via point
+    resizing.](Pictures/rektlvls_src.png)
+
+    In this example, the bottom four rows have alternating brightness
+    offsets from the next two rows. So, we can use `rektlvls` to raise
+    luma in the first and third row from the bottom, and again to lower
+    it in the second and fourth:
+    ```py
+    fix = rektlvls(src, rownum=[803, 802, 801, 800], rowval=[27, -10, 3, -3])
+    ```
+
+    In this case, we are in `FixBrightnessProtect3` mode. We aren't
+    taking advantage of `prot_val` here, but people usually use this
+    mode regardless, as there's always a chance it might help. The
+    result:
+    <p align="center">
+    <img src='Pictures/rektlvls_fix.png' onmouseover="this.src='Pictures/rektlvls_src.png';" onmouseout="this.src='Pictures/rektlvls_fix.png';"/>
+    </p>
     <details>
     <summary>In-depth function explanation</summary>
     In <code>FixBrightness</code> mode, this will perform an adjustment with
@@ -91,28 +113,6 @@ There are six commonly used filters for fixing dirty lines:
     \end{aligned}$$
     </details>
 
-    To illustrate this, let's look at the dirty lines in the black and
-    white Blu-ray of Parasite (2019)'s bottom rows:
-
-    ![Parasite b&w source, zoomed via point
-    resizing.](Pictures/rektlvls_src.png)
-
-    In this example, the bottom four rows have alternating brightness
-    offsets from the next two rows. So, we can use `rektlvls` to raise
-    luma in the first and third row from the bottom, and again to lower
-    it in the second and fourth:
-    ```py
-    fix = rektlvls(src, rownum=[803, 802, 801, 800], rowval=[27, -10, 3, -3])
-    ```
-
-    In this case, we are in `FixBrightnessProtect3` mode. We aren't
-    taking advantage of `prot_val` here, but people usually use this
-    mode regardless, as there's always a chance it might help. The
-    result:
-    <p align="center">
-    <img src='Pictures/rektlvls_fix.png' onmouseover="this.src='Pictures/rektlvls_src.png';" onmouseout="this.src='Pictures/rektlvls_fix.png';"/>
-    </p>
-
 -   `awsmfunc`'s `bbmod`\
     This is a mod of the original BalanceBorders function. While it
     doesn't preserve original data nearly as well as `rektlvls`, it will
@@ -140,6 +140,26 @@ There are six commonly used filters for fixing dirty lines:
     `cpass2`, but note that this requires a very low `thresh` to be set,
     as this changes the chroma processing significantly, making it quite
     aggressive.\
+
+    For our example, I've created fake dirty lines, which we will fix:
+
+    ![Dirty lines](Pictures/dirtfixes0.png)
+
+    To fix this, we can apply `bbmod` with a low blur and a high thresh,
+    meaning pixel values can change significantly:
+
+    ```py
+    fix = awf.bbmod(src, top=3, thresh=90, blur=20)
+    ```
+    <p align="center">
+    <img src='Pictures/dirtfixes1.png' onmouseover="this.src='Pictures/dirtfixes0.png';" onmouseout="this.src='Pictures/dirtfixes1.png';"/>
+    </p>
+
+    Our output is already a lot closer to what we assume the source
+    should look like. Unlike `rektlvls`, this function is quite quick to
+    use, so lazy people (i.e. everyone) can use this to fix dirty lines
+    before resizing, as the difference won't be noticeable after
+    resizing.
     <details>
     <summary>In-depth function explanation</summary>
     <code>bbmod</code> works by blurring the desired rows, input rows, and
@@ -154,50 +174,60 @@ There are six commonly used filters for fixing dirty lines:
     \\[
     clip_2 = \texttt{resize.Point}(clip, w\times 2, h\times 2)
     \\]
+    <p align="center">
+    <img src='Pictures/bbmod0_0.png' />
+    </p>
     
     Now, the reference is created by cropping off double the to-be-fixed number of rows.  We set the height to 2 and then match the size to the double res clip:
     \\[\begin{align}
     clip &= \texttt{CropAbs}(clip_2, \texttt{width}=w \times 2, \texttt{height}=2, \texttt{left}=0, \texttt{top}=top \times 2) \\\\
     clip &= \texttt{resize.Point}(clip, w \times 2, h \times 2)
     \end{align}\\]
+    <p align="center">
+    <img src='Pictures/bbmod0_1.png' />
+    </p>
     
     Before the next step, we determine the \\(blurwidth\\):
     \\[
     blurwidth = \max \left( 8, \texttt{floor}\left(\frac{w}{blur}\right)\right)
     \\]
+    In our example, we get 8.
     
     Now, we use a blurred bicubic resize to go down to \\(blurwidth \times 2\\) and back up:
     \\[\begin{align}
     referenceBlur &= \texttt{resize.Bicubic}(clip, blurwidth \times 2, top \times 2, \texttt{b}=1, \texttt{c}=0) \\\\
     referenceBlur &= \texttt{resize.Bicubic}(referenceBlur, w \times 2, top \times 2, \texttt{b}=1, \texttt{c}=0)
     \end{align}\\]
+    <p align="center">
+    <img src='Pictures/bbmod0_2.png' />
+    </p>
+    <p align="center">
+    <img src='Pictures/bbmod0_3.png' />
+    </p>
     
     Then, crop the doubled input to have height of \\(top \times 2\\):
     \\[
     original = \texttt{CropAbs}(clip_2, \texttt{width}=w \times 2, \texttt{height}=top \times 2)
     \\]
+    <p align="center">
+    <img src='Pictures/bbmod0_4.png' />
+    </p>
     
     Prepare the original clip using the same bicubic resize downwards:
     \\[
     clip = \texttt{resize.Bicubic}(original, blurwidth \times 2, top \times 2, \texttt{b}=1, \texttt{c}=0)
     \\]
-    
-    Now, we perform our operation on the chroma.  For this, the chroma needs to be prepared by performing the following:
-    \\[
-    chroma_\texttt{new} = 2 \times \texttt{abs}(chroma - 128)
-    \\]
-    
-    This makes our chroma double its offset from its neutral value.  Now, the same blurring as before is done:
-    \\[\begin{align}
-    referenceBlurChroma &= \texttt{Expr}(clip, \texttt{["", "x 128 - abs 2 *"]}) \\\\
-    referenceBlurChroma &= \texttt{resize.Bicubic}(referenceBlurChroma, blurwidth \times 2, top \times 2, \texttt{b}=1, \texttt{c}=0) \\\\
-    referenceBlurChroma &= \texttt{resize.Bicubic}(referenceBlurChroma, w \times 2, top \times 2, \texttt{b}=1, \texttt{c}=0)
-    \end{align}\\]
+    <p align="center">
+    <img src='Pictures/bbmod0_5.png' />
+    </p>
     
     Our prepared original clip is now also scaled back down:
     \\[
     originalBlur = \texttt{resize.Bicubic}(clip, w \times 2, top \times 2, \texttt{b}=1, \texttt{c}=0)
     \\]
+    <p align="center">
+    <img src='Pictures/bbmod0_6.png' />
+    </p>
     
     Now that all our clips have been downscaled and scaled back up, which is the blurring process that approximates what the actual value of the rows should be, we can compare them and choose how much of what we want to use.  First, we perform the following expression (\\(x\\) is \\(original\\), \\(y\\) is \\(originalBlur\\), and \\(z\\) is \\(referenceBlur\\)):
     \\[
@@ -207,6 +237,9 @@ There are six commonly used filters for fixing dirty lines:
     \\[
     balancedLuma = \texttt{Expr}(\texttt{clips}=[original, originalBlur, referenceBlur], \texttt{"z 16 - y 16 - / 8 min 0.4 max x 16 - * 16 +"})
     \\]
+    <p align="center">
+    <img src='Pictures/bbmod0_7.png' />
+    </p>
     
     What did we do here?  In cases where the original blur is low and supersampled reference's blur is high, we did:
     \\[
@@ -239,32 +272,13 @@ There are six commonly used filters for fixing dirty lines:
     &\texttt{else}:\\\\
     &\qquad    difference
     \end{align}\\]
-    
-    This is then merged using <code>MergeDiff</code> back into the original and the rows are stacked onto the input,
 
+    This is then resized back to the input size and merged using <code>MergeDiff</code> back into the original and the rows are stacked onto the input.  The output resized to the same res as the other images:
+
+    <p align="center">
+    <img src='Pictures/bbmod0_9.png' />
+    </p>
     </details>
-
-    For our example, let's again use Parasite (2019), but the SDR UHD
-    this time. It has irregular dirty lines on the top three rows:
-
-    ![Parasite SDR UHD source, zoomed via point
-    resizing.](Pictures/bbmod_src.png){width=".9\\textwidth"}
-
-    To fix this, we can apply `bbmod` with a low blur and a low thresh,
-    meaning we won't change pixels' values by much:
-
-    ```py
-    fix = awf.bbmod(src, top=3, thresh=20, blur=20)
-    ```
-
-    ![Parasite SDR UHD source with `bbmod` applied, zoomed via point
-    resizing.](Pictures/bbmod_fix.png){width=".9\\textwidth"}
-
-    Our output is already a lot closer to what we assume the source
-    should look like. Unlike `rektlvls`, this function is quite quick to
-    use, so lazy people (i.e. everyone) can use this to fix dirty lines
-    before resizing, as the difference won't be noticeable after
-    resizing.
 
 -   [`fb`'s](https://github.com/Moiman/vapoursynth-fillborders) `FillBorders`\
     This function pretty much just copies the next column/row in line.
@@ -291,13 +305,6 @@ There are six commonly used filters for fixing dirty lines:
     individually, although this is only slightly faster. A wrapper that
     allows you to specify per-plane values for `fb` is `FillBorders` in
     `awsmfunc`.\
-    <details>
-    <summary>In-depth function explanation</summary>
-    <code>FillBorders</code> has three modes, although we only really care about mirror and fillmargins.
-    The mirror mode literally just mirrors the previous pixels.  Contrary to the third mode, repeat, it doesn't just mirror the final row, but the rows after that for fills greater than 1.  This means that, if you only fill one row, these modes are equivalent.  Afterwards, the difference becomes obvious.
-    
-    In fillmargins mode, it works a bit like a convolution, whereby it does a [2, 3, 2] of the next row's pixels, meaning it takes 2 of the left pixel, 3 of the middle, and 2 of the right, then averages.  For borders, it works slightly differently: the leftmost pixel is just a mirror of the next pixel, while the eight rightmost pixels are also mirrors of the next pixel.  Nothing else happens here.
-    </details>
 
     To illustrate what a source requiring `FillBorders` might look like,
     let's look at Parasite (2019)'s SDR UHD once again, which requires
@@ -348,6 +355,13 @@ There are six commonly used filters for fixing dirty lines:
     fil = awf.fb(crp, top=top, bottom=bot)
     out = fil.resize.Spline36(crp.width, new_height, src_height=new_height, src_top=top) 
     ```
+    <details>
+    <summary>In-depth function explanation</summary>
+    <code>FillBorders</code> has three modes, although we only really care about mirror and fillmargins.
+    The mirror mode literally just mirrors the previous pixels.  Contrary to the third mode, repeat, it doesn't just mirror the final row, but the rows after that for fills greater than 1.  This means that, if you only fill one row, these modes are equivalent.  Afterwards, the difference becomes obvious.
+    
+    In fillmargins mode, it works a bit like a convolution, whereby it does a [2, 3, 2] of the next row's pixels, meaning it takes 2 of the left pixel, 3 of the middle, and 2 of the right, then averages.  For borders, it works slightly differently: the leftmost pixel is just a mirror of the next pixel, while the eight rightmost pixels are also mirrors of the next pixel.  Nothing else happens here.
+    </details>
 
 -   [`cf`'s](https://gitlab.com/Ututu/VS-ContinuityFixer) `ContinuityFixer`\
     `ContinuityFixer` works by comparing the rows/columns specified to
@@ -364,7 +378,7 @@ There are six commonly used filters for fixing dirty lines:
     This is assuming you're working with 1080p footage, as `radius`'s
     value is set to the longest set possible as defined by the source's
     resolution. I'd recommend a lower value, although not going much
-    lower than $3$, as at that point, you may as well be copying pixels
+    lower than 3, as at that point, you may as well be copying pixels
     (see `FillBorders` below for that). What will probably throw off
     most newcomers is the array I've entered as the values for
     rows/columns to be fixed. These denote the values to be applied to
@@ -373,32 +387,30 @@ There are six commonly used filters for fixing dirty lines:
     an array is not necessary, so you can also just enter the amount of
     rows/columns you'd like the fix to be applied to, and all planes
     will be processed.\
-    <details>
-    <summary>In-depth function explanation</summary>
-    <code>ContinuityFixer</code> works by calculating the <a href=https://en.wikipedia.org/wiki/Least_squares>least squares
-    regression</a> of the pixels within the radius. As such, it creates
-    entirely fake data based on the image's likely edges.
-    One thing <code>ContinuityFixer</code> is quite good at is getting rid of
-    irregularities such as dots. It's also faster than `bbmod`, but it
-    should be considered a backup option.
-    </details>
+    
+    As `ContinuityFixer` is less likely to keep original data in tact, it's recommended to prioritize `bbmod` over it.
 
     Let's look at the `bbmod` example again and apply `ContinuityFixer`:
 
     ```py
-    fix = src.cf.ContinuityFixer(top=[3, 0, 0], radius=6)
+    fix = src.cf.ContinuityFixer(top=[6, 6, 6], radius=10)
     ```
+    <p align="center">
+    <img src='Pictures/dirtfixes2.png' onmouseover="this.src='Pictures/dirtfixes0.png';" onmouseout="this.src='Pictures/dirtfixes2.png';"/>
+    </p>
 
-    ![Parasite SDR UHD source with `ContinuityFixer` applied, zoomed via
-    point
-    resizing.](Pictures/continuityfixer.png)
+    Let's compare this with the bbmod fix (remember to mouse-over to compare):
 
-    Let's compare the second, third, and fourth row for each of these:
-
-    ![Comparison of Parasite SDR UHD source, `bbmod`, and
-    `ContinuityFixer`](Pictures/cfx_bbm.png)
-
-    The result is ever so slightly in favor of `ContinuityFixer` here.
+    <p align="center">
+    <img src='Pictures/dirtfixes2.png' onmouseover="this.src='Pictures/dirtfixes1.png';" onmouseout="this.src='Pictures/dirtfixes2.png';"/>
+    </p>
+    The result is ever so slightly in favor of <code>ContinuityFixer</code> here.
+    <details>
+    <summary>In-depth function explanation</summary>
+    <code>ContinuityFixer</code> works by calculating the <a href=https://en.wikipedia.org/wiki/Least_squares>least squares
+    regression</a> of the pixels within the radius. As such, it creates
+    entirely fake data based on the image's likely edges.  No special explanation here.
+    </details>
 
 -   [`edgefixer`'s](https://github.com/sekrit-twc/EdgeFixer) `ReferenceFixer`\
     This requires the original version of `edgefixer` (`cf` is just an
@@ -425,7 +437,7 @@ that you would use `FillBorders` on, you should remove that using your
 resizer.\
 
 For example, to resize a clip with a single filled line at the top to
-$1280\times536$ from $1920\times1080$:
+\\(1280\times536\\) from \\(1920\times1080\\):
 
 ```py
 top_crop = 138
@@ -440,24 +452,22 @@ resize = core.resize.Spline36(1280, 536, src_top=top_fill, src_height=src_height
 
 If you're dealing with diagonal borders, the proper approach here is to
 mask the border area and merge the source with a `FillBorders` call. An
-example of this (from the D-Z0N3 encode of Your Name (2016)):
+example of this (from the Your Name (2016)):
 
-![Example of improper borders from Your Name with brightness lowered.
-D-Z0N3 is masked, Geek is unmasked. As such, Geek lacks any resemblance
-of grain, while D-Z0N3 keeps it in tact whenever possible. It may have
-been smarter to use the `mirror` mode in `FillBorders`, but hindsight is
-20/20.](Pictures/improper_borders.png)
+<p align="center">
+<img src='Pictures/improper_borders0.png' onmouseover="this.src='Pictures/improper_borders1.png';" onmouseout="this.src='Pictures/improper_borders0.png';"/>
+</p>
 
-Code used by D-Z0N3 (in 16-bit):
+Fix compared with unmasked and contrast adjusted for clarity:
+<p align="center">
+<img src='Pictures/improper_borders_adjusted1.png' onmouseover="this.src='Pictures/improper_borders_adjusted2.png';" onmouseout="this.src='Pictures/improper_borders_adjusted1.png';"/>
+</p>
 
+Code used (note that this was detinted after):
 ```py
 mask = core.std.ShufflePlanes(src, 0, vs.GRAY).std.Binarize(43500)
-cf = core.fb.FillBorders(src, top=6).std.MaskedMerge(src, mask)
+cf = core.fb.FillBorders(src, top=6, mode="mirror").std.MaskedMerge(src, mask)
 ```
-
-Another example of why you should be masking this is in the appendix
-under figure [\[fig:26\]](#fig:26){reference-type="ref"
-reference="fig:26"}.
 
 Dirty lines can be quite difficult to spot. If you don't immediately
 spot any upon examining borders on random frames, chances are you'll be
@@ -481,13 +491,13 @@ This script will make values under the threshold value (i.e. the black
 borders) show up as vertical or horizontal white lines in the middle on
 a mostly black background. If no threshold is given, it will simply
 center the edges of the clip. You can just skim through your video with
-this active. An automated script would be [`dirtdtct`](https://git.concertos.live/AHD/awsmfunc/src/branch/master/awsmfunc/detect.py), which scans
+this active. An automated alternative would be [`dirtdtct`](https://git.concertos.live/AHD/awsmfunc/src/branch/master/awsmfunc/detect.py), which scans
 the video for you.
 
 Other kinds of variable dirty lines are a bitch to fix and require
 checking scenes manually.
 
-An issue very similar to dirty lines is bad borders. During scenes with
+An issue very similar to dirty lines is unwanted borders. During scenes with
 different crops (e.g. IMAX or 4:3), the black borders may sometimes not
 be entirely black, or be completely messed up. In order to fix this,
 simply crop them and add them back. You may also want to fix dirty lines
