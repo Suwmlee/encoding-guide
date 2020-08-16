@@ -30,8 +30,7 @@ Similarly, if you cannot figure out a proper fix it is completely reasonable to 
 There are six commonly used filters for fixing dirty lines:
 
 ## `rektlvls`\
-From [`rekt`](https://gitlab.com/Ututu/rekt).  This is basically `FixBrightnessProtect3` and `FixBrightness` from AviSynth in one,
-with the addition that not the entire frame is processed. Its
+From [`rekt`](https://gitlab.com/Ututu/rekt).  This is basically `FixBrightnessProtect3` and `FixBrightness` from AviSynth in one, although unlike `FixBrightness`, not the entire frame is processed. Its
 values are quite straightforward. Raise the adjustment values to
 brighten, lower to darken. Set `prot_val` to `None` and it will
 function like `FixBrightness`, meaning the adjustment values will
