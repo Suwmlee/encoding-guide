@@ -19,11 +19,11 @@ present on black bars. Usually, these should be cropped out. The
 opposite can also occur, however, where the planes with legitimate luma
 information lack chroma information.\
 
-<!---
-This section should be revisited and perhaps provide a dead line example
--->
+It's important to remember that sometimes your source will have fake lines (often referred to as 'dead' lines), meaning ones without legitimate information.  These will usually just mirror the next row/column.  Do not bother fixing these, just crop them instead.  An example:
 
-It's important to remember that sometimes your source will have fake lines (often referred to as 'dead' lines), meaning ones without legitimate information.  These will usually just mirror the next row/column.  Do not bother fixing these, just crop them instead.
+<p align="center">
+<img src='Pictures/dead_lines.png'/>
+</p>
 
 Similarly, if you cannot figure out a proper fix it is completely reasonable to either crop off the dirty line(s) or leave them unfixed.  It is important to verify that your fix has not caused unwanted affects, such as smearing (common with overzealous ContinuityFixer values) or flickering (especially on credits).
 
@@ -533,3 +533,14 @@ crop = core.std.Crop(src, left=100, right=100)
 clean = core.cf.ContinuityFixer(crop, left=2, right=2, top=0, bottom=0, radius=25)
 out = core.std.AddBorders(clean, left=100, right=100)
 ```
+
+If you're resizing, you should crop these off before resizing, then add the borders back, as leaving the black bars in during the resize will create dirty lines:
+```py
+crop = src.std.Crop(left=100, right=100)
+clean = crop.cf.ContinuityFixer(left=2, right=2, top=2, radius=25)
+resize = awf.zresize(clean, preset=720)
+border_size = (1280 - resize.width) / 2
+bsize_mod2 = border_size % 2
+out = resize.std.AddBorders(left=border_size - bsize_mod2, right=border_size + bsize_mod2)
+```
+In the above example, we have to add more to one side than the other to reach our desired width.  Ideally, your `border_size` will be mod2 and you won't have to do this.
