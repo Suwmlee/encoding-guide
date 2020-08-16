@@ -5,23 +5,27 @@
 <i>Dirty lines from A Silent Voice (2016)'s intro.  On mouseover: fixed with ContinuityFixer and FillBorders.</i>
 </p>
 
-Another very common issue is dirty
-lines. These are usually found on the borders of video, where a row or
-column of pixels exhibits too low or too high luma compared to its
+One of the more common issues you may encounter are dirty
+lines, these are usually found on the borders of video where a row or
+column of pixels exhibits luma values that not consistent compared to its
 surroundings. Oftentimes, this is the due to improper downscaling,
 for example when downscaling after applying borders. Dirty lines can also
-occur because the compressionist doesn't know that, while they're working
-in 4:2:2, meaning their height doesn't have to be mod2, consumer
-products will be 4:2:0, meaning the height has to be mod2, leading to
-extra black rows that you can't get rid of during cropping if the main clip isn't placed properly.\
+occur because the compressionist doesn't consider that whilst they're working
+in 4:2:2 (meaning their height doesn't have to be mod2), consumer
+products will be 4:2:0, leading to extra black rows 
+that you can't get rid of during cropping if the main clip isn't placed properly.\
 Another form of dirty lines is exhibited when the chroma planes are
 present on black bars. Usually, these should be cropped out. The
 opposite can also occur, however, where the planes with legitimate luma
 information lack chroma information.\
 
-It's important to remember that sometimes your source will have fake lines, meaning ones without legitimate information.  These will usually just mirror the next row/column.  Do not bother fixing these, just crop them instead.
+<!---
+This section should be revisited and perhaps provide a dead line example
+-->
 
-Similarly, if you cannot figure out a proper fix, it's completely reasonable to simply crop off dirty lines or leave them unfixed.  These are usually just single rows, after all, nobody will notice!
+It's important to remember that sometimes your source will have fake lines (often referred to as 'dead' lines), meaning ones without legitimate information.  These will usually just mirror the next row/column.  Do not bother fixing these, just crop them instead.
+
+Similarly, if you cannot figure out a proper fix it is completely reasonable to either crop off the dirty line(s) or leave them unfixed.  It is important to verify that your fix has not caused unwanted affects, such as smearing (common with overzealous ContinuityFixer values) or flickering (especially on credits).
 
 There are six commonly used filters for fixing dirty lines:
 
@@ -43,8 +47,9 @@ list (e.g. `rownum=[0, 1, 2]`).\
 To illustrate this, let's look at the dirty lines in the black and
 white Blu-ray of Parasite (2019)'s bottom rows:
 
-![Parasite b&w source, zoomed via point
-resizing.](Pictures/rektlvls_src.png)
+<p align="center">
+<img src='Pictures/rektlvls_src.png';"/>
+</p>
 
 In this example, the bottom four rows have alternating brightness
 offsets from the next two rows. So, we can use `rektlvls` to raise
@@ -147,7 +152,9 @@ aggressive.\
 
 For our example, I've created fake dirty lines, which we will fix:
 
-![Dirty lines](Pictures/dirtfixes0.png)
+<p align="center">
+<img src='Pictures/dirtfixes0.png';"/>
+</p>
 
 To fix this, we can apply `bbmod` with a low blur and a high thresh,
 meaning pixel values can change significantly:
@@ -328,9 +335,9 @@ subsampling nets us:
 crp = src.std.Crop(top=276)
 ```
 
-![Parasite source cropped while respecting chroma subsampling,
-zoomed via point
-resizing.](Pictures/fb_src.png)
+<p align="center">
+<img src='Pictures/fb_src.png';"/>
+</p>
 
 Obviously, we want to get rid of the black line at the top, so let's
 use `FillBorders` on it:
