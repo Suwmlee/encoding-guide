@@ -544,3 +544,5 @@ bsize_mod2 = border_size % 2
 out = resize.std.AddBorders(left=border_size - bsize_mod2, right=border_size + bsize_mod2)
 ```
 In the above example, we have to add more to one side than the other to reach our desired width.  Ideally, your `border_size` will be mod2 and you won't have to do this.
+
+If you know you have borders like these, you can use `brdrdtct` from `awsmfunc` similarly to `dirtdtct` to scan the file for them.
