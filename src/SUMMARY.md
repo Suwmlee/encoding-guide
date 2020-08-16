@@ -28,3 +28,5 @@
     - [SoX: Dithering and Down-Mixing]()
     - [Mono and Stereo]()
     - [Surround Sound]()
+- [Appendix]()
+    - [Grain Matching](appendix/grain_matching.md)
