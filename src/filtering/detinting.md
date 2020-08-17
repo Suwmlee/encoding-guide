@@ -52,7 +52,7 @@ You can also use the `fixlvls` wrapper in `awsmfunc` to easily do this in 32-bit
 A similar issue is double range compression.  When this occurs, luma values will range between 30 and 218.  This can easily be fixed with the following:
 
 ```py
-out = src.resize.Point(range_in=1, range=0, dither_type="error_diffusion")
+out = src.resize.Point(range_in=0, range=1, dither_type="error_diffusion")
 out = out.std.SetFrameProp(prop="_ColorRange", intval=1)
 ```
 
