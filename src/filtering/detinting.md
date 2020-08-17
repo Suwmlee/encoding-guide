@@ -2,7 +2,7 @@
 
 If you've got a better source with a tint and a worse source without a
 tint, and you'd like to remove it, you can do so via [`timecube`](https://github.com/sekrit-twc/timecube) and
-[DrDre's Color Matching Tool](https://valeyard.net/2017/03/drdres-color-matching-tool-v1-2.php). First, add two reference screenshots
+[DrDre's Color Matching Tool](https://valeyard.net/2017/03/drdres-color-matching-tool-v1-2.php)[^1]. First, add two reference screenshots
 to the tool, export the LUT, save it, and add it via something like:
 
 ```py
@@ -101,7 +101,7 @@ To illustrate this, let's use the German and American Blu-rays of Burning (2018)
 <img src='Pictures/burning_usa0.png' onmouseover="this.src='Pictures/burning_ger0.png';" onmouseout="this.src='Pictures/burning_usa0.png';" />
 </p>
 
-A high value in GER here would be 208, while the same pixel is 216 in USA.  For lows, one can find 25 and 28.  With these, we get 19.5 and 225.9.  Doing these for a couple more pixels and different frames, then averaging the values we get 19 and 224.  We adjust using these and a significantly closer image[^1]:
+A high value in GER here would be 208, while the same pixel is 216 in USA.  For lows, one can find 25 and 28.  With these, we get 19.5 and 225.9.  Doing these for a couple more pixels and different frames, then averaging the values we get 19 and 224.  We adjust using these and a significantly closer image[^2]:
 
 <p align="center">
 <img src='Pictures/burning_ger_fixed0.png' onmouseover="this.src='Pictures/burning_usa0.png';" onmouseout="this.src='Pictures/burning_ger_fixed0.png';" />
@@ -109,7 +109,7 @@ A high value in GER here would be 208, while the same pixel is 216 in USA.  For 
 
 <details>
 <summary>In-depth explanation</summary>
-Those who have read the previous explanations should recognize this function, as it is the inverse of the function used for level adjustment.  We simply reverse it, set our desired values as \\(v_\mathrm{new}\\) and calculate.
+Those who have read the previous explanations should recognize this function, as it is the inverse of the function used for level adjustment.  We simply reverse it, set our desired values as \(v_\mathrm{new}\) and calculate.
 </details>
 
 ## Improper color matrix
@@ -130,4 +130,18 @@ necessary to change the matrix, but one should be extremely certain in such case
 <img src='Pictures/burning_matrix_before.png' onmouseover="this.src='Pictures/burning_matrix_after.png';" onmouseout="this.src='Pictures/burning_matrix_before.png';" />
 </p>
 
-[^1]: For simplicity's sake, chroma planes weren't touched here.  These require far more work than luma planes, as it's harder to find very vibrant colors, especially with screenshots like this.
+<details>
+<summary>In-depth explanation</summary>
+Color matrices define how conversion between YCbCr and RGB takes place.  As RGB naturally doesn't have any subsampling, the clip is first converted from 4:2:0 to 4:4:4, then from YCbCr to RGB, then the process is reverted.  During the YCbCr to RGB conversion, we assume Rec.601 matrix coefficients, while during the conversion back, we specify Rec.709.
+
+The reason why it's difficult to know whether the incorrect standard was assumed is because the two cover a similar range of CIE 1931.  The chromaticity diagrams should make this obvious (Rec.2020 included as a reference):
+
+<p align="center">
+<img src='Pictures/colorspaces.svg'/>
+</p>
+
+</details>
+
+[^1]: This program is sadly closed source.  I don't know of any alternatives for this.
+
+[^2]: For simplicity's sake, chroma planes weren't touched here.  These require far more work than luma planes, as it's harder to find very vibrant colors, especially with screenshots like this.
