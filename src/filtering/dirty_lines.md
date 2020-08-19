@@ -482,7 +482,7 @@ example of this (from the Your Name (2016)):
 <img src='Pictures/improper_borders0.png' onmouseover="this.src='Pictures/improper_borders1.png';" onmouseout="this.src='Pictures/improper_borders0.png';"/>
 </p>
 
-Fix compared with unmasked and contrast adjusted for clarity:
+Fix compared with unmasked in fillmargins mode and contrast adjusted for clarity:
 <p align="center">
 <img src='Pictures/improper_borders_adjusted1.png' onmouseover="this.src='Pictures/improper_borders_adjusted2.png';" onmouseout="this.src='Pictures/improper_borders_adjusted1.png';"/>
 </p>
