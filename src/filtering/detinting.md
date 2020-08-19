@@ -1,23 +1,7 @@
-## Detinting
-
-If you've got a better source with a tint and a worse source without a
-tint, and you'd like to remove it, you can do so via [`timecube`](https://github.com/sekrit-twc/timecube) and
-[DrDre's Color Matching Tool](https://valeyard.net/2017/03/drdres-color-matching-tool-v1-2.php)[^1]. First, add two reference screenshots
-to the tool, export the LUT, save it, and add it via something like:
-
-```py
-clip = core.resize.Point(src, matrix_in_s="709", format=vs.RGBS)
-detint = core.timecube.Cube(clip, "LUT.cube")
-out = core.resize.Point(detint, matrix=1, format=vs.YUV420P16, dither_type="error_diffusion")
-```
-
-<p align="center">
-<img src='Pictures/detint_before2.png' onmouseover="this.src='Pictures/detint_after2.png';" onmouseout="this.src='Pictures/detint_before2.png';" />
-</p>
-
 ## The 0.88 gamma bug
 
-Similarly, if you have what's known as a gamma bug, where the video's gamma is raised by a factor of 1.136, just do the following (for 16-bit):
+If you have two sources of which one is noticeably brighter than the other, chances are your brighter source is suffering from what's known as the gamma bug.
+If this is the case, do the following (for 16-bit) and see if it fixes the issue:
 
 ```py
 out = core.std.Levels(src, gamma=0.88, min_in=4096, max_in=60160, min_out=4096, max_out=60160, planes=0)
@@ -38,11 +22,16 @@ This error seems to stem from Apple software.  <a href="https://vitrolite.wordpr
 
 The reason for this is likely that the software unnecessarily tries to convert between NTSC gamma (2.2) and PC gamma (2.5), as \\(\frac{2.2}{2.5}=0.88\\).
 
-To undo this, we every value just has to be raised to the power of 0.88, although TV range normalization has to be done:
+To undo this, every value just has to be raised to the power of 0.88, although TV range normalization has to be done:
 
 \\[
 v_\mathrm{new} = \left( \frac{v - min_\mathrm{in}}{max_\mathrm{in} - min_\mathrm{in}} \right) ^ {0.88} \times (max_\mathrm{out} - min_\mathrm{out}) + min_\mathrm{out}
 \\]
+
+For those curious on how the gamma bug source and source will differ: all values other than 16, 232, 233, 234, and 235 are different, with the largest and most common difference being 10, lasting from 63 until 125.
+As an equal number of values can be hit and the operation is usually performed in high bit depth, significant detail loss is unlikely.
+However, do note that, no matter the bit depth, this is a lossy process.
+
 </details>
 
 You can also use the `fixlvls` wrapper in `awsmfunc` to easily do this in 32-bit precision.
@@ -101,7 +90,7 @@ To illustrate this, let's use the German and American Blu-rays of Burning (2018)
 <img src='Pictures/burning_usa0.png' onmouseover="this.src='Pictures/burning_ger0.png';" onmouseout="this.src='Pictures/burning_usa0.png';" />
 </p>
 
-A high value in GER here would be 208, while the same pixel is 216 in USA.  For lows, one can find 25 and 28.  With these, we get 19.5 and 225.9.  Doing these for a couple more pixels and different frames, then averaging the values we get 19 and 224.  We adjust using these and a significantly closer image[^2]:
+A high value in GER here would be 208, while the same pixel is 216 in USA.  For lows, one can find 25 and 28.  With these, we get 19.5 and 225.9.  Doing these for a couple more pixels and different frames, then averaging the values we get 19 and 224.  We adjust using these and a significantly closer image[^1]:
 
 <p align="center">
 <img src='Pictures/burning_ger_fixed0.png' onmouseover="this.src='Pictures/burning_usa0.png';" onmouseout="this.src='Pictures/burning_ger_fixed0.png';" />
@@ -142,6 +131,25 @@ The reason why it's difficult to know whether the incorrect standard was assumed
 
 </details>
 
-[^1]: This program is sadly closed source.  I don't know of any alternatives for this.
+## Detinting
 
-[^2]: For simplicity's sake, chroma planes weren't touched here.  These require far more work than luma planes, as it's harder to find very vibrant colors, especially with screenshots like this.
+Please note that you should only resort to this method if all others fail.
+
+If you've got a better source with a tint and a worse source without a
+tint, and you'd like to remove it, you can do so via [`timecube`](https://github.com/sekrit-twc/timecube) and
+[DrDre's Color Matching Tool](https://valeyard.net/2017/03/drdres-color-matching-tool-v1-2.php)[^2]. First, add two reference screenshots
+to the tool, export the LUT, save it, and add it via something like:
+
+```py
+clip = core.resize.Point(src, matrix_in_s="709", format=vs.RGBS)
+detint = core.timecube.Cube(clip, "LUT.cube")
+out = core.resize.Point(detint, matrix=1, format=vs.YUV420P16, dither_type="error_diffusion")
+```
+
+<p align="center">
+<img src='Pictures/detint_before2.png' onmouseover="this.src='Pictures/detint_after2.png';" onmouseout="this.src='Pictures/detint_before2.png';" />
+</p>
+
+[^1]: For simplicity's sake, chroma planes weren't touched here.  These require far more work than luma planes, as it's harder to find very vibrant colors, especially with screenshots like this.
+
+[^2]: This program is sadly closed source.  I don't know of any alternatives for this.
