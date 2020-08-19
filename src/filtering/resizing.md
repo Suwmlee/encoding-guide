@@ -1,106 +1,127 @@
-Firstly, note that there'll be a separate section later on for
-descaling. Here, I'll explain resizing and what resizers are good for
-what.
+Resizing is a very complex topic.
+However, for simple downscaled encodes, one doesn't need to know very much information.
+As such, this page will only cover the necessities for downscaling.
+Those interested in knowing more about resampling should refer to the [Irrational Encoding Wizardry's guide's resampling page](https://guide.encode.moe/encoding/resampling.html) for more information.
 
-If you want to resize, it's important to not alter the aspect ratio more
-than necessary. If you're downscaling, first figure out what the width
-and height should be. If you want to downscale to 720p, first crop, then
-figure out whether you're scaling to 720 height or 1280 width. If the
-former is the case, your width should be:
+You can, however, check the later subchapters for some slightly more advanced topics such as [descaling and rescaling](descaling.md) or [chroma resampling and shifting](chroma_res.md), both of which are absolute necessities to know about when encoding anime.
+
+# Downscaling
+
+For downscaling, the go-to resizer is a spline36 resizer:
+
+```py
+resize = src.resize.Spline36(1280, 720, dither_type="error_diffusion")
+```
+
+The parameters here should be straightforward: simply adjust width and height as necessary.
+Don't worry about `dither_type="error_diffusion"` yet, simply leave this as-is; all it does is make for a nicer looking output.
+
+## Finding target dimensions
+
+The desired dimensions for standard resolutions should be fairly known for 16:9 content: \\(3840\times2160\\) for 2160p, \\(1920\times1080\\) for 1080p, \\(1280\times720\\) for 720p.
+
+However, most films aren't made in this aspect ratio.
+A more common aspect ratio would be 2.39:1, where the video is in \\(2048\times858\\).
+Consumer products are usually in the aforementioned resolutions, so it's more likely to see something like \\(1920\times804\\) after black bars are cropped.
+
+Going from this to 720p gets us exactly \\(1280\times536\\):
+
+\\[\begin{align}
+w &= \frac{720}{1080}\times1920=1280 \\\\
+h &= \frac{720}{1080}\times804 =536
+\end{align}
+\\]
+
+However, this won't always be the case.
+Let's say your source is in \\(1920\times806\\):
+
+\\[\begin{align}
+w &= \frac{720}{1080}\times1920=1280 \\\\
+h &= \frac{720}{1080}\times806 =537.\overline{3}
+\end{align}
+\\]
+
+Obviously, we can't resize to \\(537.\overline{3}\\), so we need to find the closest height with the lowest aspect ratio error.
+The solution here is to divide by two, round, then multiply by two again:
+
+\\[
+h = \mathrm{round}\left( \frac{720}{1080} \times 806 \times \frac{1}{2} \right) \times 2 = 538
+\\]
+
+In Python:
+
+```py
+height = round(1280 / src.width / 2 * src.height) * 2
+```
+
+Now, we feed this to our resize:
+
+```py
+resize = src.resize.Spline36(1280, height, dither_type="error_diffusion")
+```
+
+Alternatively, if our source was cropped on the left and right instead of top and bottom, we do:
 
 ```py
 width = round(720 / src.height / 2 * src.width) * 2
 ```
 
-For the latter, the code to find your height is quite similar:
+If you (understandably) don't want to bother with this, you can use the `zresize` wrapper in [`awsmfunc`](https://git.concertos.live/AHD/awsmfunc/):
 
 ```py
-height = round(1280 / src.width / 2 * src.height) * 2
+resize = awf.zresize(src, preset=720)
 ```
-You can also use the `cropresize` wrapper in [`awsmfunc`](https://git.concertos.live/AHD/awsmfunc/) to do these
-calculations and resize. Using the `preset` parameter, this function
-will automatically determine whether a width of 1280 or a height of 720
-should be used based on the aspect ratio, and then perform the above
-calculation on the reset.
+
+With the `preset` option, you don't have to bother calculating anything, just state the target resolution (in height) and it'll determine the correct dimensions for you.
+
+## Notes
+
+For resizing uneven crops, please refer to the [dirty lines](dirty_lines.md) chapter, specifically the [FillBorders](dirty_lines.md#fillborders) section and the [notes](dirty_lines.md#notes).
+
+Additionally, it is worth noting that resizing should not be done at the beginning of your script, as doing so can damage some of the filtering performed and even reintroduce issues.
+
+# Ideal resolutions
+
+For digital anime, please refer to the [descaling subchapter](descaling.md) for this.
+It is extremely rare for descaling to be relevant for live action, too, but if your source is especially blurry and clearly a cheap production, it's also worth looking into.
+
+It's common knowledge that not every source should be encoded in the source's resolution.
+As such, one should know how to determine whether a source warrants e.g. a 1080p encode or if a 720p encode would suffice from a detail-retention standpoint.
+
+To do this, we simply compare a source downscaling and scaled back up:
 
 ```py
-import awsmfunc as awf
-resize = awf.cropresize(source, preset=720)
+downscale = src.resize.Spline36(1280, 720, dither_type="error_diffusion")
+rescale = downscale.resize.Spline36(src.width, src.height, dither_type="error_diffusion")
 ```
 
-There are many resizers available. The most important ones are:
-
--   **Point** also known as nearest neighbor resizing, is the simplest
-    resizer, as it doesn't really do anything other than enlargen each
-    pixel or create the average of surrounding each pixel when
-    downscaling. It produces awful results, but doesn't do any blurring
-    when upscaling, hence it's very good for zooming in to check what
-    each pixel's value is. It is also self-inverse, so you can scale up
-    and then back down with it and get the same result you started with.
-
--   **Bilinear** resizing is very fast, but leads to very blurry results
-    with noticeable aliasing.
-
--   **Bicubic** resizing is similarly fast, but also leads to quite
-    blurry results with noticeable aliasing. You can modify parameters
-    here for sharper results, but this will lead to even more aliasing.
-
--   **Lanczos** resizing is slower and gets you very sharp results.
-    However, it creates very noticeable ringing artifacts.
-
--   **Blackmanminlobe** resizing, which you need to use `fmtconv`[^7]
-    for, is a modified lanczos resizer with less ringing artifacts. This
-    resizer is definitely worth considering for upscaling chroma for
-    YUV444 encodes (more on this later).
-
--   **Spline** resizing is quite slow, but gets you very nice results.
-    There are multiple spline resizers available, with `Spline16` being
-    faster than `Spline36` with slightly worse results, and `Spline36`
-    being similar enough to `Spline64` that there's no reason to use the
-    latter. `Spline36` is the recommended resizer for downscaling
-    content.
-
--   [**nnedi3**](https://gist.github.com/4re/342624c9e1a144a696c6) resizing is quite slow and can only upscale by powers
-    of 2. It can then be combined with `Spline36` to scale down to the
-    desired resolution. Results are significantly better than the
-    aforementioned kernels.
-
--   [**FSRCNNX**](https://github.com/igv/FSRCNN-TensorFlow/releases) is a shader for mpv, which can be used via the
-    [`vs-placebo`](https://github.com/Lypheo/vs-placebo) plugin. It provides far sharper results than
-    `nnedi3`, but requires a GPU. It's recommended to use this for
-    upscaling if you can. Like `nnedi3`, this is a doubler, so scale
-    back down with spline36.
-
--   [**KrigBilateral**](https://gist.github.com/igv/a015fc885d5c22e6891820ad89555637) is another shader for mpv that you can use
-    via `vs-placebo`. It's a very good chroma resizer. Again, a GPU is
-    required.
-
-While these screenshots should help you get a decent idea of the
-differences between resizers, they're only small parts of single images.
-If you want to get a better idea of how these resizers look, I recommend
-doing these upscales yourself, watching them in motion, and interleaving
-them (`std.Interleave`).
-
-The difference between resizers when downscaling is a lot less
-noticeable than when upscaling. However, it's not recommended to use
-this as an excuse to be lazy with your choice of a resize kernel when
-downscaling.
-
-If you, say, want to [descale](descaling) a bilinear upscale from 1080p to 720p and scale
-back to 1080p while maintaining source chroma, you'd do:
+Now, we interleave the two, then go through the video and see if details are blurred:
 
 ```py
-import fvsfunc as fvf
-from vsutil import get_y
-descale = fvf.Debilinear(source, 1280, 720)
-upscale = descale.placebo.Shader("FSRCNNX_x2_16-0-4-1.glsl", 1920, 1080)
-y = get_y(upscale)
-downscale = y.resize.Spline36(1920, 1080)
-out = core.std.ShufflePlanes([downscale, source], [0, 1, 2], vs.YUV)
+out = core.std.Interleave([src, rescale])
 ```
 
-For significantly more in-depth explanations of different resizers, as
-well as the topic of shifting, check
-<https://guide.encode.moe/encoding/resampling.html>.
+We can also perform all these with the `UpscaleCheck` wrapper from `awsmfunc`:
 
-TL;DR: Use `core.resize.Spline36` for downscaling.
+```py
+out = awf.UpscaleCheck(src)
+```
+
+Let's look at two examples.
+First, Shinjuku Swan II:
+
+<p align="center">
+<img src='Pictures/swan_0.png' onmouseover="this.src='Pictures/swan_1.png';" onmouseout="this.src='Pictures/swan_0.png';"/>
+</p>
+
+Here, edges get very blurry in the rescale, meaning a 1080p is warranted.
+This is especially noticeable in the plants' leaves.
+
+Now, The Way of the Dragon:
+
+<p align="center">
+<img src='Pictures/dragon_0.png' onmouseover="this.src='Pictures/dragon_1.png';" onmouseout="this.src='Pictures/dragon_0.png';"/>
+</p>
+
+Here, we see grain is blurred ever so slightly, and some compression artifacts are warped.
+However, edges and details are not affected, meaning a 720p would do just fine here.
