@@ -5,29 +5,17 @@
 <i>Dirty lines from A Silent Voice (2016)'s intro.  On mouseover: fixed with ContinuityFixer and FillBorders.</i>
 </p>
 
-One of the more common issues you may encounter are dirty
-lines, these are usually found on the borders of video where a row or
-column of pixels exhibits luma values that not consistent compared to its
-surroundings. Oftentimes, this is the due to improper downscaling,
-for example when downscaling after applying borders. Dirty lines can also
-occur because the compressionist doesn't consider that whilst they're working
-in 4:2:2 (meaning their height doesn't have to be mod2), consumer
-products will be 4:2:0, leading to extra black rows 
-that you can't get rid of during cropping if the main clip isn't placed properly.\
-Another form of dirty lines is exhibited when the chroma planes are
-present on black bars. Usually, these should be cropped out. The
-opposite can also occur, however, where the planes with legitimate luma
-information lack chroma information.\
+One of the more common issues you may encounter are 'dirty lines', these are usually found on the borders of video where a row or column of pixels exhibits inconsistent luma values comparative to its surroundings. Oftentimes, this is the due to improper downscaling, for example downscaling after applying borders. Dirty lines can also occur because the compressionist doesn't consider that whilst they're working with 4:2:2 chroma subsampling (meaning their height doesn't have to be mod2), consumer video will be 4:2:0, leading to extra black rows that you can't get rid of during cropping if the main clip isn't placed properly. Another form of dirty lines is exhibited when the chroma planes are present on black bars. Usually, these should be cropped out. The opposite can also occur, however, where the planes with legitimate luma information lack chroma information.
 
-It's important to remember that sometimes your source will have fake lines (often referred to as 'dead' lines), meaning ones without legitimate information.  These will usually just mirror the next row/column.  Do not bother fixing these, just crop them instead.  An example:
+It's important to remember that sometimes your source will have fake lines (often referred to as 'dead' lines), meaning ones without legitimate information. These will usually just mirror the next row/column. Do not bother fixing these, just crop them instead. An example:
 
 <p align="center">
 <img src='Pictures/dead_lines.png'/>
 </p>
 
-Similarly, if you cannot figure out a proper fix it is completely reasonable to either crop off the dirty line(s) or leave them unfixed.  It is important to verify that your fix has not caused unwanted affects, such as smearing (common with overzealous ContinuityFixer values) or flickering (especially on credits).
+Similarly, when attempting to fix dirty lines you should thoroughly check that your fix has not caused unwanted problems, such as smearing (common with overzealous ContinuityFixer values) or flickering (especially on credits, it is advisable to omit credit reels from your fix in most cases). If you cannot figure out a proper fix it is completely reasonable to either crop off the dirty line(s) or leave them unfixed. A bad fix is worse than no fix!
 
-There are six commonly used filters for fixing dirty lines:
+Here are six commonly used filters for fixing dirty lines:
 
 ## `rektlvls`\
 From [`rekt`](https://gitlab.com/Ututu/rekt).  This is basically `FixBrightnessProtect3` and `FixBrightness` from AviSynth in one, although unlike `FixBrightness`, not the entire frame is processed. Its
