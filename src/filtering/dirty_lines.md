@@ -15,7 +15,7 @@ It's important to remember that sometimes your source will have fake lines (ofte
 
 Similarly, when attempting to fix dirty lines you should thoroughly check that your fix has not caused unwanted problems, such as smearing (common with overzealous ContinuityFixer values) or flickering (especially on credits, it is advisable to omit credit reels from your fix in most cases). If you cannot figure out a proper fix it is completely reasonable to either crop off the dirty line(s) or leave them unfixed. A bad fix is worse than no fix!
 
-Here are six commonly used filters for fixing dirty lines:
+Here are six commonly used methods for fixing dirty lines:
 
 ## `rektlvls`\
 From [`rekt`](https://gitlab.com/Ututu/rekt).  This is basically `FixBrightnessProtect3` and `FixBrightness` from AviSynth in one, although unlike `FixBrightness`, not the entire frame is processed. Its
