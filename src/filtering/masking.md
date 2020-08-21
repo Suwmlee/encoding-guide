@@ -4,9 +4,11 @@ mask will typically be grayscale, whereby how much of the two clips in
 question are applied is determined by the mask's brightness. So, if you
 do
 
-    mask = mask_function(src)
-    filtered = filter_function(src)
-    merge = core.std.MaskedMerge(src, filtered, mask)
+```py
+mask = mask_function(src)
+filtered = filter_function(src)
+merge = core.std.MaskedMerge(src, filtered, mask)
+```
 
 The `filtered` clip will be used for every completely white pixel in
 `mask`, and the `src` clip for every black pixel, with in-between values
@@ -37,8 +39,8 @@ be constructed using one of the following three functions:
     this to do a whole lot of stuff. For example, if you want to average
     all the values surrounding a pixel, do
     `std.Convolution([1, 1, 1, 1, 0, 1, 1, 1, 1])`. To illustrate, let's
-    say you have a pixel with the value $\mathbf{1}$ with the following
-    $3\times3$ neighborhood:
+    say you have a pixel with the value \\(\mathbf{1}\\) with the following
+    \\(3\times3\\) neighborhood:
 
     \\[\begin{bmatrix}
     0 & 2 & 4 \\\\
@@ -60,9 +62,11 @@ be constructed using one of the following three functions:
 So, let's say you want to perform what is commonly referred to as a
 simple \"luma mask\":
 
-    y = core.std.ShufflePlanes(src, 0, vs.GRAY)
-    mask = core.std.Binarize(y, 5000)
-    merge = core.std.MaskedMerge(filtered, src, mask)
+```py
+y = core.std.ShufflePlanes(src, 0, vs.GRAY)
+mask = core.std.Binarize(y, 5000)
+merge = core.std.MaskedMerge(filtered, src, mask)
+```
 
 In this case, I'm assuming we're working in 16-bit. What `std.Binarize`
 is doing here is making every value under 5000 the lowest and every
@@ -73,7 +77,7 @@ Let's try this using a `filtered` clip which has every pixel's value
 multiplied by 8:\
 
 ![Binarize mask applied to luma with filtered clip being
-`std.Expr("x 8 *")`.](Pictures/luma_mask.png){width="100%"}
+`std.Expr("x 8 *")`.](Pictures/luma_mask.png)
 
 Simple binarize masks on luma are very straightforward and often do a
 good job of limiting a filter to the desired area, especially as dark
@@ -82,13 +86,13 @@ areas are more prone to banding and blocking.
 A more sophisticated version of this is `adaptive_grain` from earlier in
 this guide. It scales values from black to white based on both the
 pixel's luma value compared to the image's average luma value. A more
-in-depth explanation can be found on the creator's blog[^43]. We
+in-depth explanation can be found on [the creator's blog](https://blog.kageru.moe/legacy/adaptivegrain.html). We
 manipulate this mask using a `luma_scaling` parameter. Let's use a very
 high value of 500 here:
 
 ![`kgf.adaptive_grain(y, show_mask=True, luma_scaling=500)` mask applied
 to luma with filtered clip being
-`std.Expr("x 8 *")`.](Pictures/adg_mask.png){width="100%"}
+`std.Expr("x 8 *")`.](Pictures/adg_mask.png)
 
 Alternatively, we can use an `std.Expr` to merge the clips via the
 following logic:
@@ -104,10 +108,12 @@ This is almost the exact algorithm used in `mvsfunc.LimitFilter`, which
 `GradFun3` uses to apply its bilateral filter. In VapourSynth, this
 would be:
 
-    expr = core.std.Expr([src, filtered], "x y - abs 1000 > x y - abs 30000 > x x y - 30000 x y - abs - * 29000 / + x ? y ?")
+```py
+expr = core.std.Expr([src, filtered], "x y - abs 1000 > x y - abs 30000 > x x y - 30000 x y - abs - * 29000 / + x ? y ?")
+```
 
 ![`LimitFilter` style expression to apply filter `std.Expr("x 8 *")` to
-source.](Pictures/expr_limit.png){width="100%"}
+source.](Pictures/expr_limit.png)
 
 Now, let's move on to the third option: convolutions, or more
 interestingly for us, edge masks. Let's say you have a filter that
@@ -130,8 +136,7 @@ horizontal and vertical edges in the image:
 Combining these two is what is commonly referred to as a Sobel-type edge
 mask. It produces the following for our image of the lion:
 
-![image](Pictures/sobel.png){width="100%"}
-
+![image](Pictures/sobel.png)
 Now, this result is obviously rather boring. One can see a rough outline
 of the background and the top of the lion, but not much more can be made
 out.\
@@ -150,14 +155,16 @@ To change this, let's introduce some new functions:
 We can combine these with the `std.Binarize` function from before to get
 a nifty output:
 
-    mask = y.std.Sobel()
-    binarize = mask.std.Binarize(3000)
-    maximum = binarize.std.Maximum().std.Maximum()
-    inflate = maximum.std.Inflate().std.Inflate().std.Inflate()
+```py
+mask = y.std.Sobel()
+binarize = mask.std.Binarize(3000)
+maximum = binarize.std.Maximum().std.Maximum()
+inflate = maximum.std.Inflate().std.Inflate().std.Inflate()
+```
 
 ![Sobel mask from before manipulated with `std.Binarize`, `std.Maximum`,
 and
-`std.Inflate`.](Pictures/sobel_manipulated.png){width=".9\\textwidth"}
+`std.Inflate`.](Pictures/sobel_manipulated.png)
 
 A common example of a filter that might smudge the output is an
 anti-aliasing or a debanding filter. In the case of an anti-aliasing
@@ -165,13 +172,15 @@ filter, we apply the filter via the mask to the source, while in the
 case of the debander, we apply the source via the mask to the filtered
 source:
 
-    mask = y.std.Sobel()
+```py
+mask = y.std.Sobel()
 
-    aa = taa.TAAmbk(src, aatype=3, mtype=0)
-    merge = core.std.MaskedMerge(src, aa, mask)
+aa = taa.TAAmbk(src, aatype=3, mtype=0)
+merge = core.std.MaskedMerge(src, aa, mask)
 
-    deband = src.f3kdb.Deband()
-    merge = core.std.MaskedMerge(deband, src, mask)
+deband = src.f3kdb.Deband()
+merge = core.std.MaskedMerge(deband, src, mask)
+```
 
 We can also use a different edge mask, namely `kgf.retinex_edgemask`,
 which raises contrast in dark areas and creates a second edge mask using
@@ -179,22 +188,24 @@ the output of that, then merges it with the edge mask produced using the
 untouched image:
 
 ![`kgf.retinex_edgemask` applied to
-luma.](Pictures/retinex_edgemask.png){width=".9\\textwidth"}
+luma.](Pictures/retinex_edgemask.png)
 
 This already looks great. Let's manipulate it similarly to before and
 see how it affects a destructive deband in the twig area at the bottom:
 
-    deband = src.f3kdb.Deband(y=150, cb=150, cr=150, grainy=0, grainc=0)
-    mask = kgf.retinex_edgemask(src).std.Binarize(8000).std.Maximum()
-    merge = core.std.MaskedMerge(deband, src, mask)
+```py
+deband = src.f3kdb.Deband(y=150, cb=150, cr=150, grainy=0, grainc=0)
+mask = kgf.retinex_edgemask(src).std.Binarize(8000).std.Maximum()
+merge = core.std.MaskedMerge(deband, src, mask)
+```
 
 ![A very strong deband protected using
-`kgf.retinex_edgemask`.](Pictures/masked_deband.png){width=".9\\textwidth"}
+`kgf.retinex_edgemask`.](Pictures/masked_deband.png)
 
 While some details remain smudged, we've successfully recovered a very
 noticeable portion of the twigs. Another example of a deband suffering
 from detail loss without an edge mask can be found under figure
-[35](#fig:18){reference-type="ref" reference="fig:18"} in the appendix.
+[35](#fig:18) in the appendix.
 
 Other noteworthy edge masks easily available in VapourSynth include:
 
@@ -222,9 +233,9 @@ works as follows:
 Then, two clips are created, one which will employ `std.Maximum`, while
 the other obviously will use `std.Minimum`. These use special
 coordinates depending on the `mrad` value given. If
-$\mathtt{mrad} \mod 3 = 1$, `[0, 1, 0, 1, 1, 0, 1, 0]` will be used as
+\\(\mathtt{mrad} \mod 3 = 1\\), `[0, 1, 0, 1, 1, 0, 1, 0]` will be used as
 coordinates. Otherwise, `[1, 1, 1, 1, 1, 1, 1, 1]` is used. Then, this
-process is repeated with $\mathtt{mrad} = \mathtt{mrad} - 1$ until
+process is repeated with \\(\mathtt{mrad} = \mathtt{mrad} - 1\\) until
 $\mathtt{mrad} = 0$. This all probably sounds a bit overwhelming, but
 it's really just finding the maximum and minimum values for each pixel
 neighborhood.
@@ -234,7 +245,7 @@ maximized mask, and the mask is complete. So, let's look at the output
 compared to the modified `retinex_edgemask` from earlier:
 
 ![Comparison of `retinex_edgemask.std.Binarize(8000).std.Maximum()` and
-default `GradFun3`.](Pictures/gradfun3_mask.png){width="100%"}
+default `GradFun3`.](Pictures/gradfun3_mask.png)
 
 Here, we get some more pixels picked up by the `GradFun3` mask in the
 skies and some brighter flat textures. However, the retinex-type edge
@@ -243,7 +254,7 @@ detail mask is a lot quicker, however, and it does pick up a lot of what
 we want, so it's not a bad choice.
 
 Fortunately for us, this isn't the end of these kinds of masks. There
-are two notable masks based on this concept: `debandmask`[^44] and
+are two notable masks based on this concept: [`debandmask`](https://pastebin.com/SHQZjVJ5) and
 `lvsfunc.denoise.detail_mask`. The former takes our `GradFun3` mask and
 binarizes it according to the input luma's brightness. Four parameters
 play a role in this process: `lo`, `hi`, `lothr`, and `hithr`. Values
@@ -263,7 +274,7 @@ it in brights. Simple values might be
 
 ![Comparison of `retinex_edgemask.std.Binarize(8000).std.Maximum()`,
 default `GradFun3`, and default
-`debandmask(lo=22 << 8, lothr=250, hi=48 << 8, hithr=500)`.](Pictures/debandmask_comparison.png){width="100%"}
+`debandmask(lo=22 << 8, lothr=250, hi=48 << 8, hithr=500)`.](Pictures/debandmask_comparison.png)
 
 While not perfect, as this is a tough scene, and parameters might not be
 optimal, the difference in darks is obvious, and less banding is picked
@@ -302,7 +313,7 @@ it more:
 ![Comparison of `retinex_edgemask.std.Binarize(8000).std.Maximum()`,
 default `GradFun3`, default
 `debandmask(lo=22 << 8, lothr=250, hi=48 << 8, hithr=500)`, and
-`detail_mask(pre_denoise=.3, brz_a=300, brz_b=300)`.](Pictures/detail_mask.png){width="100%"}
+`detail_mask(pre_denoise=.3, brz_a=300, brz_b=300)`.](Pictures/detail_mask.png)
 
 Although an improvement in some areas, in this case, we aren't quite
 getting the step up we would like. Again, better optimized parameters
@@ -356,7 +367,7 @@ limiting et cetera:
     `std.ShufflePlanes(src, 0, vs.GRAY)`.
 
 If you want to apply something to only a certain area, you can use the
-wrapper `rekt`[^45] or `rekt_fast`. The latter only applies you function
+wrapper [`rekt`](https://gitlab.com/Ututu/rekt) or `rekt_fast`. The latter only applies you function
 to the given area, which speeds it up and is quite useful for
 anti-aliasing and similar slow filters. Some wrappers around this exist
 already, like `rektaa` for anti-aliasing. Functions in `rekt_fast` are
@@ -374,16 +385,18 @@ won't ever use it. However, many functions use it, including\
 many more. One example I can think of to showcase this is applying a
 different debander depending on frame type:
 
-    import functools
-    def FrameTypeDeband(n, f, clip):
-        if clip.props['_PictType'].decode() == "B":
-            return core.f3kdb.Deband(clip, y=64, cr=0, cb=0, grainy=64, grainc=0, keep_tv_range=True, dynamic_grain=False)
-        elif clip.props['_PictType'].decode() == "P":
-            return core.f3kdb.Deband(clip, y=48, cr=0, cb=0, grainy=64, grainc=0, keep_tv_range=True, dynamic_grain=False)
-        else:
-            return core.f3kdb.Deband(clip, y=32, cr=0, cb=0, grainy=64, grainc=0, keep_tv_range=True, dynamic_grain=False)
-            
-    out = core.std.FrameEval(src, functools.partial(FrameTypeDeband, clip=src), src)
+```py
+import functools
+def FrameTypeDeband(n, f, clip):
+    if clip.props['_PictType'].decode() == "B":
+        return core.f3kdb.Deband(clip, y=64, cr=0, cb=0, grainy=64, grainc=0, keep_tv_range=True, dynamic_grain=False)
+    elif clip.props['_PictType'].decode() == "P":
+        return core.f3kdb.Deband(clip, y=48, cr=0, cb=0, grainy=64, grainc=0, keep_tv_range=True, dynamic_grain=False)
+    else:
+        return core.f3kdb.Deband(clip, y=32, cr=0, cb=0, grainy=64, grainc=0, keep_tv_range=True, dynamic_grain=False)
+        
+out = core.std.FrameEval(src, functools.partial(FrameTypeDeband, clip=src), src)
+```
 
 If you'd like to learn more, I'd suggest reading through the Irrational
 Encoding Wizardry GitHub group's guide:
