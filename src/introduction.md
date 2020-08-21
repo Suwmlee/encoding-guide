@@ -34,6 +34,54 @@ In [the bit depths chapter](filtering/bit_depths.md), we will introduce working 
 
 ## VapourSynth
 
-TODO
+For loading our clips, removing unwanted black borders, resizing, and combatting unwanted artifacts in our sources, we will employ the VapourSynth framework via Python.
+While using Python might sound intimidating, those with no prior experience need not worry, as we will only be doing extremely basic things.
 
-- Make sure to remember to explain `core.namespace.plugin` and `videonode.namespace.plugin` are both possible!
+There are countless resources to setting up VapourSynth, e.g. [the Irrational Encoding Wizardry's guide](https://guide.encode.moe/encoding/preparation.html#the-frameserver) and the [VapourSynth documentation](http://www.vapoursynth.com/doc/index.html).
+As such, this guide will not be covering installation and setup.
+
+To start with writing scripts, it is important to know that every clip/filter must be given a variable name:
+
+```py
+clip_a = source(a)
+clip_b = source(b)
+
+filter_a = filter(clip_a)
+filter_b = filter(clip_b)
+
+filter_x_on_a = filter_x(clip_a)
+filter_y_on_a = filter_y(clip_b)
+```
+
+Additionally, many functions are in script collections or similar.
+These must be loaded manually and are then found under the given alias:
+
+```py
+import awsmfunc as awf
+import kagefunc as kgf
+from vsutil import *
+
+bbmod = awf.bbmod(...)
+grain = kgf.adaptive_grain(...)
+
+change_depth = depth(...)
+```
+
+So as to avoid conflicting function names, it is usually not recommended to do `from x import *`.
+
+While many filters are in such collections, there are also filters that are available as plugins.
+These plugins can be called via `core.namespace.plugin` or alternatively `clip.namespace.plugin`.
+This means the following two are equivalent:
+
+```py
+via_core = core.std.Crop(clip, ...)
+via_clip = clip.std.Crop(...)
+```
+
+This is not possible for functions under scripts, meaning the following is NOT possible:
+
+```py
+not_possible = clip.awf.bbmod(...)
+```
+
+In this guide, we will name the source clip to be worked with `src` and set variable names to reflect what their operation does.
