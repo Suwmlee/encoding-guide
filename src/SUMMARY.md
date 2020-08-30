@@ -9,7 +9,7 @@
         - [Descaling and Rescaling](filtering/descaling.md)
         - [Chroma Resampling and Shifting](filtering/chroma_res.md)
     - [Bit Depths and Dither Algorithms](filtering/bit_depths.md)
-    - [Debanding](filtering/debanding.md)
+    - [Debanding and Deblocking](filtering/debanding.md)
     - [Graining](filtering/graining.md)
     - [Dirty Lines and Border Issues](filtering/dirty_lines.md)
     - [Detinting and Level Adjustment](filtering/detinting.md)

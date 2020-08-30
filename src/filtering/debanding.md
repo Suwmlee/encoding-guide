@@ -132,6 +132,10 @@ grain covers it up fully. More on this in
 
 # Deblocking
 
+<p align="center">
+<img src='Pictures/deblock1.png' onmouseover="this.src='Pictures/deblock2.png';" onmouseout="this.src='Pictures/deblock1.png';"/>
+</p>
+
 Deblocking is mostly equivalent to smoothing the source, usually with
 another mask on top. The most popular function here is `Deblock_QED`
 from `havsfunc`. The main parameters are
