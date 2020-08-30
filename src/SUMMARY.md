@@ -23,7 +23,7 @@
     - [Test Encodes](encoding/testing.md)
     - [x264 Settings](encoding/x264.md)
     - [x265 Settings](encoding/x265.md)
-    - [Screenshots and Comparisons]()
+    - [Screenshots and Comparisons](encoding/screenshots.md)
 - [Audio]()
     - [SoX: Dithering and Down-Mixing]()
     - [Mono and Stereo]()
