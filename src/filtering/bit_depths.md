@@ -26,7 +26,7 @@ For example, raising to the power of 0.88 in 8-bit vs a higher bit depth of 32-b
 <img src='Pictures/gamma_lbd.png' onmouseover="this.src='Pictures/gamma_hbd.png';" onmouseout="this.src='Pictures/gamma_lbd.png';" />
 </p>
 
-To mitigate this, we work in higher bit depths and later use so called dither algorithms to add some fluctuation and prevent banding.
+To mitigate this, we work in higher bit depths and later use so called dither algorithms to add some fluctuation during rounding and prevent banding.
 The usual bit depths are 16-bit and 32-bit.
 While 16-bit sounds worse at first, the difference isn't noticeable and 32-bit, being in float instead of integer format, is not supported by every filter.
 
