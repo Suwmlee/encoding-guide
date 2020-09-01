@@ -131,6 +131,27 @@ The reason why it's difficult to know whether the incorrect standard was assumed
 
 </details>
 
+## Rounding error
+
+A slight green tint may be indicative of a rounding error having occured.
+To fix this, we need to add a half step in a higher bit depth than the source's:
+
+```py
+high_depth = vsutil.depth(src, 16)
+half_step = high_depth.std.Expr("x 128 +")
+out = vsutil.depth(half_step, 8)
+```
+
+<p align="center">
+<img src='Pictures/rounding_0.png' onmouseover="this.src='Pictures/rounding_1.png';" onmouseout="this.src='Pictures/rounding_0.png';" />
+</p>
+
+<details>
+<summary>In-depth explanation</summary>
+When the studio went from their 10-bit master to 8-bit, their software may have always rounded down (e.g. 1.9 would be rounded to 1).
+Our way of solving this simply adds an 8-bit half step, as \(0.5 \times 2 ^ {16 - 8} = 128\).
+</details>
+
 ## Detinting
 
 Please note that you should only resort to this method if all others fail.
