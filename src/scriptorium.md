@@ -1,5 +1,6 @@
 # A
 - [adaptivegrain](https://git.kageru.moe/kageru/adaptivegrain)
+- [AddGrain](https://github.com/HomeOfVapourSynthEvolution/VapourSynth-AddGrain)
 - [adptvgrnMod](https://gitlab.com/Ututu/adptvgrnmod)
 - [awsmfunc](https://git.concertos.live/AHD/awsmfunc)
 # B
@@ -38,6 +39,7 @@
 # T
 - [timecube](https://github.com/sekrit-twc/timecube)
 # V
+- [VapourSynth bilateral](https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Bilateral)
 - [VapourSynth Functions](www.vapoursynth.com/doc/functions.html)
 - [vs-placebo](https://github.com/Lypheo/vs-placebo)
 - [vsTAAmbk](https://github.com/HomeOfVapourSynthEvolution/vsTAAmbk)
