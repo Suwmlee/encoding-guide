@@ -146,6 +146,9 @@ out = vsutil.depth(half_step, 8)
 <img src='Pictures/rounding_0.png' onmouseover="this.src='Pictures/rounding_1.png';" onmouseout="this.src='Pictures/rounding_0.png';" />
 </p>
 
+Alternatively, one can use [`lvsfunc.misc.fix_cr_tint`](https://github.com/Irrational-Encoding-Wizardry/lvsfunc) instead.
+Its defaults are equivalent to the above.
+
 <details>
 <summary>In-depth explanation</summary>
 When the studio went from their 10-bit master to 8-bit, their software may have always rounded down (e.g. 1.9 would be rounded to 1).
