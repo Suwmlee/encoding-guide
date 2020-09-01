@@ -1,54 +1,85 @@
-Although not necessary to work in if you're exporting in the same bit
-depth as your source, working in high bit depth and dithering down at
-the end of your filter chain is recommended in order to avoid rounding
-errors, which can lead to artifacts such as banding (an example is in
-figure [20](#fig:flvls){reference-type="ref" reference="fig:flvls"}).
-Luckily, if you choose not to write your script in high bit depth, most
-plugins will work in high bit depth internally. As dithering is quite
-fast and higher depths do lead to better precision, there's usually no
-reason not to work in higher bit depths other than some functions
-written for 8-bit being slightly slower.
+# Bit Depths: An Introduction
 
-If you'd like to learn more about dithering, the Wikipedia page[^12] is
-quite informative. There are also a lot of research publications worth
-reading. What you need to understand here is that your dither method
-only matters if there's an actual difference between your source and the
-filtering you perform. As dither is an alternative of sorts to rounding
-to different bit depths, only offsets from actual integers will have
-differences. Some algorithms might be better at different things from
-others, hence it can be worth it to go with non-standard algorithms. For
-example, if you want to deband something and export it in 8-bit but are
-having issues with compressing it properly, you might want to consider
-ordered dithering, as it's known to perform slightly better in this case
-(although it doesn't look as nice). To do this, use the following code:
+When you filter a frame, the results are limited to values available in your bit depth.
+By default, most SDR content comes in 8-bit and HDR content in 10-bit.
+In 8-bit, you're limited to values between 0 and 255.
+However, as most video content is in limited range, this range becomes 16 to 235 for luma and 16 to 240 for chroma.
 
-    source_16 = fvf.Depth(src, 16)
+Let's say you want to raise every pixel whose value lies in the rang of 60 to 65 to the power of 0.88.
+Rounding to three decimal places:
 
-    deband = core.f3kdb.Deband(source_16, output_depth=16)
+| Original | Raised |
+|:--------:|:------:|
+| 60       | 36.709 |
+| 61       | 37.247 |
+| 62       | 37.784 |
+| 63       | 38.319 |
+| 64       | 38.854 |
+| 65       | 39.388 |
 
-    out = fvf.Depth(deband, 8, dither='ordered')
+As we're limited to integer values between 0 and 255, these round to 37, 37, 38, 38, 39, 39.
+So, while the filter doesn't lead to the same value, we round these all to the same ones.
+This quickly leads to unwanted [banding](debanding.md) artifacts.
+For example, raising to the power of 0.88 in 8-bit vs a higher bit depth of 32-bit:
 
-Again, this will only affect the actual debanded area. This isn't really
-recommended most of the time, as ordered dither is rather unsightly, but
-it's certainly worth considering if you're having trouble compressing a
-debanded area. You should obviously be masking and adjusting your
-debander's parameters, but more on that later.
+<p align="center"> 
+<img src='Pictures/gamma_lbd.png' onmouseover="this.src='Pictures/gamma_hbd.png';" onmouseout="this.src='Pictures/gamma_lbd.png';" />
+</p>
 
-In order to dither up or down, you can use the `Depth` function within
-either `fvsfunc`[^13] (fvf) or `mvsfunc`[^14] (mvf). The difference
-between these two is that fvf uses internal resizers, while mvf uses
-internal whenever possible, but also supports `fmtconv`, which is slower
-but has more dither (and resize) options. Both feature the standard
-Filter Lite error\_diffusion dither type, however, so if you just roll
-with the defaults, I'd recommend fvf. To illustrate the difference
-between good and bad dither, some examples are included in the appendix
-under figure [19](#fig:12){reference-type="ref" reference="fig:12"}. Do
-note you may have to zoom in quite far to spot the difference. Some PDF
-viewers may also incorrectly output the image.
+To mitigate this, we work in higher bit depths and later use so called dither algorithms to add some fluctuation and prevent banding.
+The usual bit depths are 16-bit and 32-bit.
+While 16-bit sounds worse at first, the difference isn't noticeable and 32-bit, being in float instead of integer format, is not supported by every filter.
 
-I'd recommend going with Filter Lite (fvf's default or
-`mvf.Depth(dither=3)`, also the default) most of the time. Others like
-Ostromoukhov (`mvf.Depth(dither=7)`), void and cluster
-(`fmtc.bitdepth(dither=8)`), standard Bayer ordered
-(`fvf.Depth(dither=’ordered’)` or `mvf.Depth(dither=0)`) can also be
-useful sometimes. Filter Lite will usually be fine, though.
+Luckily for those not working in higher bit depth, lots of filters force higher precisions internally and dither the results back properly.
+However, switching between bit depths multiple times is a waste of CPU cycles and, in extreme cases, can alter the image as well.
+
+## Changing bit depths
+
+To work in a higher bit depth, you can use the `depth` function from `vsutil` at the start and end of your filter chain.
+This will use a high quality dither algorithm by default and takes only a few keystrokes:
+
+```py
+from vsutil import depth
+
+src = depth(src, 16)
+
+resize = ...
+
+my_great_filter = ...
+
+out = depth(my_great_filter, 8)
+```
+
+When you're working in higher bit depths, it's important to remember that some functions might expect parameter input values in 8-bit, while others expect them in the input bit depth.
+If you mistakenly enter 255 assuming 8-bit in a function expecting 16-bit input, your results will be extremely different, as 255 is the higher value in 8-bit, while in 16-bit, this is roughly equivalent to 1 in 8-bit.
+
+To convert values, you can use `scale_value` from `vsutil`, which will help handling edge cases etc.:
+
+```py
+from vsutil import scale_value
+
+v_8bit = 128
+
+v_16bit = scale_value(128, 8, 16)
+```
+
+This would get you `v_16bit = 32768`, the middle point of 16-bit.
+
+This isn't quite as simple for 32-bit float, as you need to specify whether to scale offsets depending on range and whether you're scaling luma or chroma.
+This is because limited range luma values are between 0 and 1, while chroma values are between -0.5 and +0.5.
+Usually, you're going to be dealing with TV range, so set `scale_offsets=True`:
+
+```py
+from vsutil import scale_value
+
+v_8bit = 128
+
+v_32bit_luma = scale_value(128, 8, 32, scale_offsets=True)
+v_32bit_chroma = scale_value(128, 8, 32, scale_offsets=True, chroma=True)
+```
+
+This gets us `v_32bit_luma = 0.5, v_32bit_chroma = 0`.
+
+# Dither Algorithms
+
+TODO
