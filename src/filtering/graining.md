@@ -46,6 +46,9 @@ Alternatively, using `placebo.Deband` solely as a grainer can also lead to some 
 ```py
 grain = placebo.Deband(iterations=0, grain=6.0)
 ```
+
+The main advantage here is it runs on your GPU, so if your GPU isn't already busy with other filters, using this can get you a slight speed-up.
+
 <details>
 <summary>In-depth function explanation</summary>
 TODO
@@ -91,9 +94,16 @@ The parameters are explained [above the source code](https://github.com/HomeOfVa
 
 This function is mainly useful if you want to apply grain to specific frames only, as overall frame brightness should be taken into account if grain is applied to the whole video.
 
+For example, `GrainFactory3` to make up for missing grain on left and right borders:
+
+<p align="center"> 
+<img src='Pictures/grain0.png' onmouseover="this.src='Pictures/grain1.png';" onmouseout="this.src='Pictures/grain0.png';" />
+</p>
+
 <details>
 <summary>In-depth function explanation</summary>
 TODO
+
 In short: Create a mask for each brightness group, use bicubic resizing with sharpness controlling b and c to resize the grain, then apply that.
 Temporal averaging just averages the grain for the current frame and its direct neighbors using misc.AverageFrames.
 </details>
@@ -123,6 +133,32 @@ By default, `adptvgrnMod` will fade grain around extremes (16 or 235) and shades
 These features can be turned off by setting `fade_edges=False` and `protect_neutral=False` respectively.
 
 It's recently become common practice to remove graining entirely from one's debander and grain debanded areas entirely with this function.
+
+### sizedgrn
+
+If one wants to disable the brightness-based application, one can use `sizedgrn`, which is the internal graining function in `adptvgrnMod`.
+
+<details>
+<summary>Some examples of <code>adptvgrnMod</code> compared with <code>sizedgrn</code> for those curious</summary>
+
+A bright scene, where the brightness-based application makes a large difference:
+
+<p align="center"> 
+<img src='Pictures/graining4.png' onmouseover="this.src='Pictures/graining7.png';" onmouseout="this.src='Pictures/graining4.png';" />
+</p>
+
+An overall darker scene, where the difference is a lot smaller:
+
+<p align="center"> 
+<img src='Pictures/graining3.png' onmouseover="this.src='Pictures/graining6.png';" onmouseout="this.src='Pictures/graining3.png';" />
+</p>
+
+A dark scene, where grain is applied evenly (almost) everywhere in the frame:
+
+<p align="center"> 
+<img src='Pictures/graining5.png' onmouseover="this.src='Pictures/graining8.png';" onmouseout="this.src='Pictures/graining5.png';" />
+</p>
+</details>
 
 <details>
 <summary>In-depth function explanation</summary>
