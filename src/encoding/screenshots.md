@@ -9,7 +9,7 @@ This has two advantages:
 1. You save frame numbers and can easily reference these again, e.g. if you want to redo your screenshots.
 2. It takes care of proper conversion and compression for you, which might not be the case with some previewers (e.g. VSEdit).
 
-To use `ScreenGen`, create a new folder you want your screenshots in, e.g. "Screenshots", and a file with the frame numbers you'd like to screenshot, e.g.
+To use `ScreenGen`, create a new folder you want your screenshots in, e.g. "Screenshots", and a file called "screens.txt" with the frame numbers you'd like to screenshot, e.g.
 
 ```
 26765
@@ -98,10 +98,18 @@ Luckily, there's not a lot to remember here:
 When comparing different sources, you should proceed similarly to comparing source vs. encode.
 However, you'll likely encounter differing crops, resolutions or tints, all of which get in the way of comparing.
 
-For differing crops, simple add borders back:
+For differing crops, simply add borders back:
 
 ```py
 src_b = src_b.std.AddBorders(left=X, right=Y, top=Z, bottom=A)
+```
+
+If doing this leads to an offset of the image content, you should resize to 4:4:4 so you can add uneven borders.
+For example, if you want to add 1 pixel tall black bars to the top and bottom:
+
+```py
+src_b = src_b.resize.Spline36(format=vs.YUV444P8, dither_type="error_diffusion")
+src_b = src_b.std.AddBorders(top=1, bottom=1)
 ```
 
 For differing resolutions, it's recommended to use a simple spline resize:
