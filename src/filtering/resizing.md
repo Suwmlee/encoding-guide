@@ -15,6 +15,7 @@ resize = src.resize.Spline36(1280, 720, dither_type="error_diffusion")
 
 The parameters here should be straightforward: simply adjust width and height as necessary.
 Don't worry about `dither_type="error_diffusion"` yet, simply leave this as-is; all it does is make for a nicer looking output.
+The explanation for this parameter can be found in the [dithering](bit_depths.md) chapter.
 
 ## Finding target dimensions
 
