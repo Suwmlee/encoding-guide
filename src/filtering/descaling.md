@@ -1,144 +1,83 @@
-While most movies are produced at 2K resolution and most anime are made
-at 720p, Blu-rays are almost always 1080p and UHD Blu-rays are all 4K.
-This means the mastering house often has to upscale footage. These
-upscales are pretty much always terrible, but luckily, some are
-reversible. Since anime is usually released at a higher resolution than
-the source images, and bilinear or bicubic upscales are very common,
-most descalers are written for anime, and it's the main place where
-you'll need to descale. Live action content usually can't be descaled
-because of bad proprietary scalers (often QTEC or the likes), hence most
-live action encoders don't know or consider descaling.
+# Descaling
 
-So, if you're encoding anime, always make sure to check what the source
-images are. You can use <https://anibin.blogspot.com/> for this, run
-screenshots through `getnative`[^36], or simply try it out yourself. The
-last option is obviously the best way to go about this, but getnative is
-usually very good, too, and is a lot easier. Anibin, while also useful,
-won't always get you the correct resolution.
+If you've read a bit about anime encoding, you've probably heard the term "descaling" before; this is the process of "reversing" an upscale by finding the native resolution and resize kernel used.
+When done correctly, this is a near-lossless process and produces a sharper output than standard spline36 resizing with less haloing artifacts.
+However, when done incorrectly, this will only add to the already existing issues that come with upscaling, such as haloing, ringing etc.
 
-In order to perform a descale, you should be using `fvsfunc`:
+The most commonly used plugin to reverse upscales is [Descale](https://github.com/Irrational-Encoding-Wizardry/vapoursynth-descale), which is most easily called via [`fvsfunc`](https://github.com/Irrational-Encoding-Wizardry/fvsfunc), which has an alias for each kernel, e.g. `fvf.Debilinear`.
+This supports bicubic, bilinear, lanczos, and spline upscales.
 
-    import fvsfunc as fvf
+Most digitally produced anime content, especially TV shows, will be a bilinear or bicubic upscale from 720p, 810p, 864p, 900p, or anything in-between.
+While not something that can only be done with anime, it is far more prevalent with such content, so we will focus on anime accordingly.
+As our example, we'll look at Nichijou.
+This is a bicubic upscale from 720p.
+To check this, we compare the input frame with a descale upscaled back with the same kernel:
 
-    descaled = fvf.Debilinear(src, 1280, 720, yuv444=False)
+```py
+b, c = 1/3, 1/3
+descale = fvf.Debicubic(src, 1280, 720, b=b, c=c)
+rescale = descale.resize.Bicubic(src, src.width, src.height, filter_param_a=b, filter_param_b=c)
+merge_chroma = rescale.std.Merge(src, [0, 1])
+out = core.std.Interleave([src, merge_chroma])
+```
 
-In the above example, we're descaling a bilinear upscale to 720p and
-downscaling the chroma with `Spline36` to 360p. If you're encoding anime
-for a site/group that doesn't care about hardware compatibility, you'll
-probably want to turn on `yuv444` and change your encode settings
-accordingly.
+Here, we've merged the chroma from the source with our rescale, as chroma is a lower resolution than the source resolution, so we can't descale it.
+The result:
 
-`Descale` supports bilinear, bicubic, and spline upscale kernels. Each
-of these, apart from `Debilinear`, also has its own parameters. For
-`Debicubic`, these are:
 
--   `b`: between 0 and 1, this is equivalent to the blur applied.
+<p align="center"> 
+<img src='Pictures/resize0.png' onmouseover="this.src='Pictures/resize1.png';" onmouseout="this.src='Pictures/resize0.png';" />
+</p>
 
--   `c`: also between 0 and 1, this is the sharpening applied.
+As you can see, lineart is practically identical and no extra haloing or aliasing was introduced.
 
-The most common cases are `b=1/3` and `c=1/3`, which are the default
-values, `b=0` and `c=1`, which is oversharpened bicubic, and `b=1` and
-`c=0`, which is blurred bicubic. In between values are quite common,
-too, however.
+On the other hand, if we try an incorrect kernel and resolution, we see lots more artifacts in the rescaled image:
 
-Similarly, `Delanczos` has the `taps` option, and spline upscales can be
-reversed for `Spline36` upscales with `Despline36` and `Despline16` for
-`Spline16` upscales.
+```py
+descale = fvf.Debilinear(src, 1280, 720)
+rescale = descale.resize.Bilinear(src, src.width, src.height)
+merge_chroma = rescale.std.Merge(src, [0, 1])
+out = core.std.Interleave([src, merge_chroma])
+```
 
-Once you've descaled, you might want to upscale back to the 1080p or
-2160p. If you don't have a GPU available, you can do this via `nnedi3`
-or more specifically, `edi3_rpow2` or `nnedi3_rpow2`:
+<p align="center"> 
+<img src='Pictures/resize3.png' onmouseover="this.src='Pictures/resize4.png';" onmouseout="this.src='Pictures/resize3.png';" />
+</p>
 
-    from edi3_rpow2 import nnedi3_rpow2
+## Native resolutions and kernels
 
-    descaled = fvf.Debilinear(src, 1280, 720)
-    upscaled = nnedi3_rpow2(descaled, 2).resize.Spline36(1920, 1080)
-    out = core.std.Merge(upscaled, src, [0, 1])
+Now, the first thing you need to do when you want to descale is figure out what was used to resize the video and from which resolution the resize was done.
+The most popular tool for this is [getnative](https://github.com/Infiziert90/getnative), which allows you to feed it an image, which it will then descale, resize, and calculate the difference from the source, then plot the result so you can find the native resolution.
 
-What we're doing here is descaling a bilinear upscale to 720p, then
-using `nnedi3` to upscale it to 1440p, downscaling that back to 1080p,
-then merging it with the source's chroma. Those with a GPU available
-should refer to the `FSRCNNX` example in the resizing
-section.[3.1.1](#resize){reference-type="ref" reference="resize"}\
-There are multiple reasons you might want to do this:
+For this to work best, you'll want to find a bright frame with very little blurring, VFX, grain etc.
 
--   Most people don't have a video player set up to properly upscale the
-    footage.
+Once you've found one, you can run the script as follows:
 
--   Those who aren't very informed often think higher resolution =
-    better quality, hence 1080p is more popular.
+```sh
+python getnative.py image.png -k bicubic -b 1/3 -c 1/3
+```
 
--   Lots of private trackers only allow 720p and 1080p footage. Maybe
-    you don't want to hurt the chroma or the original resolution is in
-    between (810p and 900p are very common) and you want to upscale to
-    1080p instead of downscaling to 720p.
+This will output a graph in a `Results` directory and guess the resolution.
+It's based to take a look at the graph yourself, though.
+In our example, these are the correct parameters, so we get the following:
 
-Another important thing to note is that credits and other text is often
-added after upscaling, hence you need to use a mask to not ruin these.
-Luckily, you can simply add an `M` after the descale name
-(`DebilinearM`) and you'll get a mask applied. However, this
-significantly slows down the descale process, so you may want to
-scenefilter here.
+However, we can also test other kernels:
 
-On top of the aforementioned common descale methods, there are a few
-more filters worth considering, although they all do practically the
-same thing, which is downscaling line art (aka edges) and rescaling them
-to the source resolution. This is especially useful if lots of dither
-was added after upscaling.
+```sh
+python getnative.py image.png -k bilinear
+```
 
--   `DescaleAA`: part of `fvsfunc`, uses a `Prewitt` mask to find line
-    art and rescales that.
+The graph then looks as follows:
 
--   `InsaneAA`: Uses a strengthened `Sobel` mask and a mixture of both
-    `eedi3` and `nnedi3`.
+If you'd like to test all likely kernels, you can use `--mode "all"`.
 
-Personally, I don't like upscaling it back and would just stick with a
-YUV444 encode. If you'd like to do this, however, you can also consider
-trying to write your own mask. An example would be (going off the
-previous code):
+# Mixed Resolutions
 
-    mask = kgf.retinex_edgemask(src).std.Binarize(15000).std.Inflate()
-    new_y = core.std.MaskedMerge(src, upscaled, mask)
-    new_clip = core.std.ShufflePlanes([new_y, u, v], [0, 0, 0], vs.YUV)
+## Chroma shifting and 4:4:4
 
-Beware with descaling, however, that using incorrect resolutions or
-kernels will only intensify issues brought about by bad upscaling, such
-as ringing and aliasing. It's for this reason that you need to be sure
-you're using the correct descale, so always manually double-check your
-descale. You can do this via something like the following code:
+# Upscaling and Rescaling
 
-    import fvsfunc as fvf
-    from vsutil import join, split
-    y, u, v = split(source) # this splits the source planes into separate clips
-    descale = fvf.Debilinear(y, 1280, 720)
-    rescale = descale.resize.Bilinear(1920, 1080)
-    merge = join([y, u, v])
-    out = core.std.Interleave([source, merge])
+## Upscaling
 
-If you can't determine the correct kernel and resolution, just downscale
-with a normal `Spline36` resize. It's usually easiest to determine
-source resolution and kernels in brighter frames with lots of blur-free
-details.
+## Rescaling
 
-In order to illustrate the difference, here are examples of rescaled
-footage. Do note that YUV444 downscales scaled back up by a video player
-will look better.
-
-![Source Blu-ray with 720p footage upscaled to 1080p via a bicubic
-filter on the left, rescale with `Debicubic` and `nnedi3` on the
-right.](Pictures/bicubic.png){#fig:6}
-
-It's important to note that this is certainly possible with live action
-footage as well. An example would be the Game of Thrones season 1 UHD
-Blu-rays, which are bilinear upscales. While not as noticeable in
-screenshots, the difference is stunning during playback.
-
-<img src='Pictures/bilinear_before2.png' onmouseover="this.src='Pictures/bilinear_after2.png';" onmouseout="this.src='Pictures/bilinear_before2.png';" />
-
-If your video seems to have multiple source resolutions in every frame
-(i.. different layers are in different resolutions), which you can
-notice by `getnative` outputting multiple results, your best bet is to
-downscale to the lowest resolution via `Spline36`. While you technically
-can mask each layer to descale all of them to their source resolution,
-then scale each one back up, this is far too much effort for it to be
-worth it.

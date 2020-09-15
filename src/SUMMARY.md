@@ -29,5 +29,6 @@
     - [Surround Sound]()
 - [Appendix]()
     - [Linear Light Processing]()
+    - [Finding Optimal Resolution via FT]()
     - [Grain Matching](appendix/grain_matching.md)
 - [Scriptorium](scriptorium.md)
