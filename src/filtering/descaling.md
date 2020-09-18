@@ -102,7 +102,7 @@ To make comparing easier, these images are zoomed in by a factor of 3:
 <img src='Pictures/descalesub0.png' onmouseover="this.src='Pictures/descalesub1.png';" onmouseout="this.src='Pictures/descalesub0.png';" />
 </p>
 
-The debilinear resize clearly adds haloing artifacts here.
+The debilinear resize clearly adds stronger haloing artifacts here.
 
 To deal with this, we can use the `DescaleM` functions from `fvsfunc`, which mask these elements and scale them via a spline36 resize:
 
@@ -117,7 +117,7 @@ Alternatively, in very rare cases, the resolution and/or kernel will change scen
 You can consider trying `lvsfunc.scale.descale`, which tries to find the ideal height for each frame.
 Ideally, however, you should do this manually.
 
-## Chroma shifting and 4:4:4
+## 4:4:4 and 4:2:0
 
 # Upscaling and Rescaling
 
