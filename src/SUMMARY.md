@@ -31,4 +31,5 @@
     - [Linear Light Processing]()
     - [Finding Optimal Resolution via FT]()
     - [Grain Matching](appendix/grain_matching.md)
+    - [Black & White Clips](appendix/gray.md)
 - [Scriptorium](scriptorium.md)
