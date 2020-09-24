@@ -11,7 +11,7 @@ With our `y` clip, we can perform functions without mod2 limitations.
 For example, we can perform odd crops:
 
 ```py
-crop = y.std.Crop(left=10)
+crop = y.std.Crop(left=1)
 ```
 
 Additionally, as filters are only applied on one plane, this can speed up our script.
