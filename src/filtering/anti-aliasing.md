@@ -1,3 +1,5 @@
+# this needs to be rewritten completely
+
 This is likely the most commonly known issue. If you want to fix this,
 first make sure the issue stems from actual aliasing, not poor
 upscaling. If you've done this, the tool I'd recommend is the `TAAmbk`

@@ -1,3 +1,5 @@
+# this needs to be rewritten completely
+
 The term \"ringing\" can refer to a lot of edge artifacts, with the most
 common ones being mosquito noise and edge enhancement artifacts. Ringing
 is something very common with low quality sources. However, due to poor

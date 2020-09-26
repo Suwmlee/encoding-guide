@@ -1,3 +1,5 @@
+# this needs to be rewritten completely
+
 While this issue is particularly common with anime, it does also occur
 in some live action sources, and many music videos or concerts on played
 on TV stations with logos, hence it's worth looking at how to remove

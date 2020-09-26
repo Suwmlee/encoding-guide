@@ -1,3 +1,5 @@
+# this needs to be rewritten completely
+
 Haloing is a lot what it sounds like: thick, bright lines around edges.
 These are quite common with poorly resized content. You may also find
 that bad descaling or descaling of bad sources can produce noticeable

@@ -1,3 +1,5 @@
+# this needs to be rewritten completely
+
 Denoising is a rather touchy subject. Live action encoders will never
 denoise, while anime encoders will often denoise too much. The main
 reason you'll want to do this for anime is that it shouldn't have any on

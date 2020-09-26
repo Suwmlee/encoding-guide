@@ -1,3 +1,5 @@
+# this needs to be reformatted
+
 Masking is a less straightforward topic. The idea is to limit the
 application of filters according to the source image's properties. A
 mask will typically be grayscale, whereby how much of the two clips in
