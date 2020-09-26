@@ -1,27 +1,7 @@
-# this needs to be rewritten completely
+## DeHalo_alpha
 
-Haloing is a lot what it sounds like: thick, bright lines around edges.
-These are quite common with poorly resized content. You may also find
-that bad descaling or descaling of bad sources can produce noticeable
-haloing. To fix this, you should use either `havsfunc`'s `DeHalo_alpha`
-or its already masked counterpart, `FineDehalo`. If using the former,
-you'll *have* to write your own mask, as unmasked dehaloing usually
-leads to awful results. For a walkthrough of how to write a simple
-dehalo mask, check [encode.moe](encode.moe)'s guide[^37]. Note that
-`FineDehalo` was written for SD content and its mask might not work very
-well with higher resolutions, so it's worth considering writing your own
-mask and using `DeHalo_alpha` instead.
-
-As `FineDehalo` is a wrapper around `DeHalo_alpha`, they share some
-parameters:
-
-    FineDehalo(src, rx=2.0, ry=None, thmi=80, thma=128, thlimi=50, thlima=100, darkstr=1.0, brightstr=1.0, showmask=0, contra=0.0, excl=True, edgeproc=0.0) # ry defaults to rx
-    DeHalo_alpha(clp, rx=2.0, ry=2.0, darkstr=1.0, brightstr=1.0, lowsens=50, highsens=50, ss=1.5)
-
-The explanations on the AviSynth wiki are good enough:
-<http://avisynth.nl/index.php/DeHalo_alpha#Syntax_and_Parameters> and
-<http://avisynth.nl/index.php/FineDehalo#Syntax_and_Parameters>.
-
+<details>
+<summary>old function explanation</summary>
 `DeHalo_alpha` works by downscaling the source according to `rx` and
 `ry` with a mitchell bicubic ($b=\nicefrac{1}{3},\ c=\nicefrac{1}{3}$)
 kernel, scaling back to source resolution with blurred bicubic, and
@@ -48,3 +28,6 @@ following:
         x - (x - y) * darkstr
     else
         x - (x - y) * brightstr
+</details>
+
+### Masking
