@@ -349,7 +349,7 @@ fil = awf.fb(crp, top=1)
 </p>
 
 Our source is now fixed. Some people may want to resize the chroma
-to maintain original aspect ratio while shifting chroma, but whether
+to maintain original aspect ratio performing lossy resampling on chroma, but whether
 this is the way to go is not generally agreed upon (personally, I,
 Aicha, disagree with doing this). If you want to go this route:
 
