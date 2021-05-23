@@ -10,6 +10,13 @@ There are three great tools for VapourSynth that are used to fix
 banding: [`neo_f3kdb`](https://github.com/HomeOfAviSynthPlusEvolution/neo_f3kdb/), `fvsfunc`'s `gradfun3`, which has a built-in
 mask, and `vs-placebo`'s `placebo.Deband`.\
 
+<p align="center">
+<img src='Pictures/debanding0.png' onmouseover="this.src='Pictures/debanding1.png';" onmouseout="this.src='Pictures/debanding0.png';" />
+</p>
+<p align="center">
+<i>Banding example fixed with f3kdb default settings.</i>
+</p>
+
 ## `neo_f3kdb`
 
 ```py
@@ -32,6 +39,9 @@ what they do:
     banded. You should start low and slowly but surely build this up
     until the banding is gone. If it's set too high, lots of details
     will be seen as banding and hence be blurred.
+    Depending on your sample mode, y values will either only have an effect
+    in steps of 16 (mode 2) or 32 (modes 1, 3, 4). This means that y=20 is
+    equivalent to y=30.
 
 -   `cb` and `cr` The same as `y` but for chroma. However, banding on
     the chroma planes is comparatively uncommon, so you can often leave this
