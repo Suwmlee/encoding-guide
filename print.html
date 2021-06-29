@@ -1,0 +1,2475 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Advanced Encoding Guide</title>
+        
+        <meta name="robots" content="noindex" />
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.</strong> Filtering</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">1.1.</strong> Loading the Video</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.2.</strong> Cropping</div></li><li class="chapter-item expanded "><a href="filtering/resizing.html"><strong aria-hidden="true">1.3.</strong> Resizing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="filtering/descaling.html"><strong aria-hidden="true">1.3.1.</strong> Descaling and Rescaling</a></li><li class="chapter-item expanded "><a href="filtering/chroma_res.html"><strong aria-hidden="true">1.3.2.</strong> Chroma Resampling and Shifting</a></li></ol></li><li class="chapter-item expanded "><a href="filtering/bit_depths.html"><strong aria-hidden="true">1.4.</strong> Bit Depths and Dither Algorithms</a></li><li class="chapter-item expanded "><a href="filtering/debanding.html"><strong aria-hidden="true">1.5.</strong> Debanding and Deblocking</a></li><li class="chapter-item expanded "><a href="filtering/graining.html"><strong aria-hidden="true">1.6.</strong> Graining</a></li><li class="chapter-item expanded "><a href="filtering/dirty_lines.html"><strong aria-hidden="true">1.7.</strong> Dirty Lines and Border Issues</a></li><li class="chapter-item expanded "><a href="filtering/detinting.html"><strong aria-hidden="true">1.8.</strong> Detinting and Level Adjustment</a></li><li class="chapter-item expanded "><a href="filtering/masking.html"><strong aria-hidden="true">1.9.</strong> Masking</a></li><li class="chapter-item expanded "><a href="filtering/anti-aliasing.html"><strong aria-hidden="true">1.10.</strong> Anti-Aliasing</a></li><li class="chapter-item expanded "><a href="filtering/deringing.html"><strong aria-hidden="true">1.11.</strong> Deringing</a></li><li class="chapter-item expanded "><a href="filtering/dehaloing.html"><strong aria-hidden="true">1.12.</strong> Dehaloing</a></li><li class="chapter-item expanded "><a href="filtering/denoising.html"><strong aria-hidden="true">1.13.</strong> Denoising</a></li><li class="chapter-item expanded "><a href="filtering/dehardsubbing.html"><strong aria-hidden="true">1.14.</strong> Dehardsubbing and Delogoing</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Encoding</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="encoding/testing.html"><strong aria-hidden="true">2.1.</strong> Test Encodes</a></li><li class="chapter-item expanded "><a href="encoding/x264.html"><strong aria-hidden="true">2.2.</strong> x264 Settings</a></li><li class="chapter-item expanded "><a href="encoding/x265.html"><strong aria-hidden="true">2.3.</strong> x265 Settings</a></li><li class="chapter-item expanded "><a href="encoding/screenshots.html"><strong aria-hidden="true">2.4.</strong> Screenshots and Comparisons</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Audio</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> SoX: Dithering and Down-Mixing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Mono and Stereo</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Surround Sound</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Appendix</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">4.1.</strong> Linear Light Processing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.2.</strong> Finding Optimal Resolution via FT</div></li><li class="chapter-item expanded "><a href="appendix/grain_matching.html"><strong aria-hidden="true">4.3.</strong> Grain Matching</a></li><li class="chapter-item expanded "><a href="appendix/gray.html"><strong aria-hidden="true">4.4.</strong> Black &amp; White Clips</a></li></ol></li><li class="chapter-item expanded "><a href="scriptorium.html"><strong aria-hidden="true">5.</strong> Scriptorium</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Advanced Encoding Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p><a href="https://git.concertos.live/Encode_Guide/mdbook-guide">https://git.concertos.live/Encode_Guide/mdbook-guide</a></p>
+<p>This guide is meant to be both a starting point for newcomers interested in producing high quality encodes as well as a reference for experienced encoders.
+As such, after most functions are introduced and their uses explained, an in-depth explanation can be found.
+These are meant as simple add-ons for the curious and should in no way be necessary reading to apply the function.</p>
+<h1 id="terminology"><a class="header" href="#terminology">Terminology</a></h1>
+<p>For this to work, basic terms and knowledge about video is required.
+These explanations will be heavily simplified, as there should be dozens of web pages with explanations on these subjects on sites like Wikipedia, the AviSynth wiki etc.</p>
+<h2 id="video"><a class="header" href="#video">Video</a></h2>
+<p>Consumer video products are usually stored in YCbCr, a term which is commonly used interchangeably with YUV.
+In this guide, we will mostly be using the term YUV, as VapourSynth formats are written as YUV.</p>
+<p>YUV formatted content has information split into three planes: Y, referred to as luma, which represents the brightness, and U and V, which each represent a chroma plane.
+These chroma planes represent offsets between colors, whereby the middle value of the plane is the neutral point.</p>
+<p>This chroma information is usually subsampled, meaning it is stored in a lower frame size than the luma plane.
+Almost all consumer video will be in 4:2:0, meaning chroma planes are half of the luma plane's size.
+<a href="https://en.wikipedia.org/wiki/Chroma_subsampling">The Wikipedia page on chroma subsampling</a> should hopefully suffice to explain how this works.
+As we usually want to stay in 4:2:0 format, we are restricted in our frame dimensions, as the luma plane's size has to be divisible by 2.
+This means we cannot do uneven cropping or resizing to uneven resolutions.
+However, when necesssary, we can work in each plane individually, although this will be explained in the <a href="">filtering part</a>.</p>
+<p>Additionally, our information has to be stored with a specific precision.
+Usually, we deal with 8-bit per-plane precision.
+However, for UHD Blu-rays, 10-bit per-plane precision is the standard.
+This means possible values for each plane range from 0 to \(2^8 - 1 = 255\).
+In <a href="filtering/bit_depths.html">the bit depths chapter</a>, we will introduce working in higher bit depth precision for increased accuracy during filtering.</p>
+<h2 id="vapoursynth"><a class="header" href="#vapoursynth">VapourSynth</a></h2>
+<p>For loading our clips, removing unwanted black borders, resizing, and combatting unwanted artifacts in our sources, we will employ the VapourSynth framework via Python.
+While using Python might sound intimidating, those with no prior experience need not worry, as we will only be doing extremely basic things.</p>
+<p>There are countless resources to setting up VapourSynth, e.g. <a href="https://guide.encode.moe/encoding/preparation.html#the-frameserver">the Irrational Encoding Wizardry's guide</a> and the <a href="http://www.vapoursynth.com/doc/index.html">VapourSynth documentation</a>.
+As such, this guide will not be covering installation and setup.</p>
+<p>To start with writing scripts, it is important to know that every clip/filter must be given a variable name:</p>
+<pre><code class="language-py">clip_a = source(a)
+clip_b = source(b)
+
+filter_a = filter(clip_a)
+filter_b = filter(clip_b)
+
+filter_x_on_a = filter_x(clip_a)
+filter_y_on_a = filter_y(clip_b)
+</code></pre>
+<p>Additionally, many functions are in script collections or similar.
+These must be loaded manually and are then found under the given alias:</p>
+<pre><code class="language-py">import awsmfunc as awf
+import kagefunc as kgf
+from vsutil import *
+
+bbmod = awf.bbmod(...)
+grain = kgf.adaptive_grain(...)
+
+change_depth = depth(...)
+</code></pre>
+<p>So as to avoid conflicting function names, it is usually not recommended to do <code>from x import *</code>.</p>
+<p>While many filters are in such collections, there are also filters that are available as plugins.
+These plugins can be called via <code>core.namespace.plugin</code> or alternatively <code>clip.namespace.plugin</code>.
+This means the following two are equivalent:</p>
+<pre><code class="language-py">via_core = core.std.Crop(clip, ...)
+via_clip = clip.std.Crop(...)
+</code></pre>
+<p>This is not possible for functions under scripts, meaning the following is NOT possible:</p>
+<pre><code class="language-py">not_possible = clip.awf.bbmod(...)
+</code></pre>
+<p>In this guide, we will name the source clip to be worked with <code>src</code> and set variable names to reflect what their operation does.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><p>Resizing is a very complex topic.
+However, for simple downscaled encodes, one doesn't need to know very much information.
+As such, this page will only cover the necessities for downscaling.
+Those interested in knowing more about resampling should refer to the <a href="https://guide.encode.moe/encoding/resampling.html">Irrational Encoding Wizardry's guide's resampling page</a> for more information.</p>
+<p>You can, however, check the later subchapters for some slightly more advanced topics such as <a href="filtering/descaling.html">descaling and rescaling</a> or <a href="filtering/chroma_res.html">chroma resampling and shifting</a>, both of which are absolute necessities to know about when encoding anime.</p>
+<h1 id="downscaling"><a class="header" href="#downscaling">Downscaling</a></h1>
+<p>For downscaling, the go-to resizer is a spline36 resizer:</p>
+<pre><code class="language-py">resize = src.resize.Spline36(1280, 720, dither_type=&quot;error_diffusion&quot;)
+</code></pre>
+<p>The parameters here should be straightforward: simply adjust width and height as necessary.
+Don't worry about <code>dither_type=&quot;error_diffusion&quot;</code> yet, simply leave this as-is; all it does is make for a nicer looking output.
+The explanation for this parameter can be found in the <a href="filtering/bit_depths.html">dithering</a> chapter.</p>
+<h2 id="finding-target-dimensions"><a class="header" href="#finding-target-dimensions">Finding target dimensions</a></h2>
+<p>The desired dimensions for standard resolutions should be fairly known for 16:9 content: \(3840\times2160\) for 2160p, \(1920\times1080\) for 1080p, \(1280\times720\) for 720p.</p>
+<p>However, most films aren't made in this aspect ratio.
+A more common aspect ratio would be 2.39:1, where the video is in \(2048\times858\).
+Consumer products are usually in the aforementioned resolutions, so it's more likely to see something like \(1920\times804\) after black bars are cropped.</p>
+<p>Going from this to 720p gets us exactly \(1280\times536\):</p>
+<p>\[\begin{align}
+w &amp;= \frac{720}{1080}\times1920=1280 \\
+h &amp;= \frac{720}{1080}\times804 =536
+\end{align}
+\]</p>
+<p>However, this won't always be the case.
+Let's say your source is in \(1920\times806\):</p>
+<p>\[\begin{align}
+w &amp;= \frac{720}{1080}\times1920=1280 \\
+h &amp;= \frac{720}{1080}\times806 =537.\overline{3}
+\end{align}
+\]</p>
+<p>Obviously, we can't resize to \(537.\overline{3}\), so we need to find the closest height with the lowest aspect ratio error.
+The solution here is to divide by two, round, then multiply by two again:</p>
+<p>\[
+h = \mathrm{round}\left( \frac{720}{1080} \times 806 \times \frac{1}{2} \right) \times 2 = 538
+\]</p>
+<p>In Python:</p>
+<pre><code class="language-py">height = round(1280 / src.width / 2 * src.height) * 2
+</code></pre>
+<p>Now, we feed this to our resize:</p>
+<pre><code class="language-py">resize = src.resize.Spline36(1280, height, dither_type=&quot;error_diffusion&quot;)
+</code></pre>
+<p>Alternatively, if our source was cropped on the left and right instead of top and bottom, we do:</p>
+<pre><code class="language-py">width = round(720 / src.height / 2 * src.width) * 2
+</code></pre>
+<p>If you (understandably) don't want to bother with this, you can use the <code>zresize</code> wrapper in <a href="https://git.concertos.live/AHD/awsmfunc/"><code>awsmfunc</code></a>:</p>
+<pre><code class="language-py">resize = awf.zresize(src, preset=720)
+</code></pre>
+<p>With the <code>preset</code> option, you don't have to bother calculating anything, just state the target resolution (in height) and it'll determine the correct dimensions for you.</p>
+<h2 id="notes"><a class="header" href="#notes">Notes</a></h2>
+<p>For resizing uneven crops, please refer to the <a href="filtering/dirty_lines.html">dirty lines</a> chapter, specifically the <a href="filtering/dirty_lines.html#fillborders">FillBorders</a> section and the <a href="filtering/dirty_lines.html#notes">notes</a>.</p>
+<p>Additionally, it is worth noting that resizing should not be done at the beginning of your script, as doing so can damage some of the filtering performed and even reintroduce issues.</p>
+<h1 id="ideal-resolutions"><a class="header" href="#ideal-resolutions">Ideal resolutions</a></h1>
+<p>For digital anime, please refer to the <a href="filtering/descaling.html">descaling subchapter</a> for this.
+It is extremely rare for descaling to be relevant for live action, too, but if your source is especially blurry and clearly a cheap production, it's also worth looking into.</p>
+<p>It's common knowledge that not every source should be encoded in the source's resolution.
+As such, one should know how to determine whether a source warrants e.g. a 1080p encode or if a 720p encode would suffice from a detail-retention standpoint.</p>
+<p>To do this, we simply compare a source downscaling and scaled back up:</p>
+<pre><code class="language-py">downscale = src.resize.Spline36(1280, 720, dither_type=&quot;error_diffusion&quot;)
+rescale = downscale.resize.Spline36(src.width, src.height, dither_type=&quot;error_diffusion&quot;)
+</code></pre>
+<p>Now, we interleave the two, then go through the video and see if details are blurred:</p>
+<pre><code class="language-py">out = core.std.Interleave([src, rescale])
+</code></pre>
+<p>We can also perform all these with the <code>UpscaleCheck</code> wrapper from <code>awsmfunc</code>:</p>
+<pre><code class="language-py">out = awf.UpscaleCheck(src)
+</code></pre>
+<p>Let's look at two examples.
+First, Shinjuku Swan II:</p>
+<p align="center">
+<img src='Pictures/swan_0.png' onmouseover="this.src='Pictures/swan_1.png';" onmouseout="this.src='Pictures/swan_0.png';"/>
+</p>
+<p>Here, edges get very blurry in the rescale, meaning a 1080p is warranted.
+This is especially noticeable in the plants' leaves.</p>
+<p>Now, The Way of the Dragon:</p>
+<p align="center">
+<img src='Pictures/dragon_0.png' onmouseover="this.src='Pictures/dragon_1.png';" onmouseout="this.src='Pictures/dragon_0.png';"/>
+</p>
+<p>Here, we see grain is blurred ever so slightly, and some compression artifacts are warped.
+However, edges and details are not affected, meaning a 720p would do just fine here.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="descaling"><a class="header" href="#descaling">Descaling</a></h1>
+<p>If you've read a bit about anime encoding, you've probably heard the term &quot;descaling&quot; before; this is the process of &quot;reversing&quot; an upscale by finding the native resolution and resize kernel used.
+When done correctly, this is a near-lossless process and produces a sharper output than standard spline36 resizing with less haloing artifacts.
+However, when done incorrectly, this will only add to the already existing issues that come with upscaling, such as haloing, ringing etc.</p>
+<p>The most commonly used plugin to reverse upscales is <a href="https://github.com/Irrational-Encoding-Wizardry/vapoursynth-descale">Descale</a>, which is most easily called via <a href="https://github.com/Irrational-Encoding-Wizardry/fvsfunc"><code>fvsfunc</code></a>, which has an alias for each kernel, e.g. <code>fvf.Debilinear</code>.
+This supports bicubic, bilinear, lanczos, and spline upscales.</p>
+<p>Most digitally produced anime content, especially TV shows, will be a bilinear or bicubic upscale from 720p, 810p, 864p, 900p, or anything in-between.
+While not something that can only be done with anime, it is far more prevalent with such content, so we will focus on anime accordingly.</p>
+<p>As our example, we'll look at Nichijou, which is a bilinear upscale from 720p.</p>
+<p>To showcase how nice a descale can look, let's compare with a standard spline resize:</p>
+<pre><code class="language-py">descale = fvf.Debilinear(src, 1280, 720)
+spline = src.resize.Spline36(1280, 720)
+out = core.std.Interleave([descale, spline])
+</code></pre>
+<p align="center"> 
+<img src='Pictures/descale0.png' onmouseover="this.src='Pictures/descale1.png';" onmouseout="this.src='Pictures/descale0.png';" />
+</p>
+<h2 id="native-resolutions-and-kernels"><a class="header" href="#native-resolutions-and-kernels">Native resolutions and kernels</a></h2>
+<p>Now, the first thing you need to do when you want to descale is figure out what was used to resize the video and from which resolution the resize was done.
+The most popular tool for this is <a href="https://github.com/Infiziert90/getnative">getnative</a>, which allows you to feed it an image, which it will then descale, resize, and calculate the difference from the source, then plot the result so you can find the native resolution.</p>
+<p>For this to work best, you'll want to find a bright frame with very little blurring, VFX, grain etc.</p>
+<p>Once you've found one, you can run the script as follows:</p>
+<pre><code class="language-sh">python getnative.py image.png -k bilinear
+</code></pre>
+<p>This will output a graph in a <code>Results</code> directory and guess the resolution.
+It's based to take a look at the graph yourself, though.
+In our example, these are the correct parameters, so we get the following:</p>
+<p><img src="filtering/Pictures/descalebilinear.svg" alt="alt text" title="getnative bilinear graph" /></p>
+<p>There is a clear dip at 720p.
+We can also test other kernels:</p>
+<pre><code class="language-sh">python getnative.py image.png -k bicubic -b 0 -c 1
+</code></pre>
+<p>The graph then looks as follows:</p>
+<p><img src="filtering/Pictures/descalesharpbicubic.svg" alt="alt text" title="getnative sharp bicubic graph" /></p>
+<p>If you'd like to test all likely kernels, you can use <code>--mode &quot;all&quot;</code>.</p>
+<p>To double check this, we compare the input frame with a descale upscaled back with the same kernel:</p>
+<pre><code class="language-py">descale = fvf.Debilinear(src, 1280, 720)
+rescale = descale.resize.Bilinear(src, src.width, src.height)
+merge_chroma = rescale.std.Merge(src, [0, 1])
+out = core.std.Interleave([src, merge_chroma])
+</code></pre>
+<p>Here, we've merged the chroma from the source with our rescale, as chroma is a lower resolution than the source resolution, so we can't descale it.
+The result:</p>
+<p align="center"> 
+<img src='Pictures/resize0.png' onmouseover="this.src='Pictures/resize1.png';" onmouseout="this.src='Pictures/resize0.png';" />
+</p>
+<p>As you can see, lineart is practically identical and no extra haloing or aliasing was introduced.</p>
+<p>On the other hand, if we try an incorrect kernel and resolution, we see lots more artifacts in the rescaled image:</p>
+<pre><code class="language-py">b, c = 0, 1
+descale = fvf.Debicubic(src, 1440, 810, b=b, c=c)
+rescale = descale.resize.Bicubic(src, src.width, src.height, filter_param_a=b, filter_param_b=c)
+merge_chroma = rescale.std.Merge(src, [0, 1])
+out = core.std.Interleave([src, merge_chroma])
+</code></pre>
+<p align="center"> 
+<img src='Pictures/resize0.png' onmouseover="this.src='Pictures/resize2.png';" onmouseout="this.src='Pictures/resize0.png';" />
+</p>
+<h1 id="mixed-resolutions"><a class="header" href="#mixed-resolutions">Mixed Resolutions</a></h1>
+<p>The example above of incorrect kernel and height should make it obvious that descaling incorrectly is quite destructive.
+Unfortunately, most video that can be descaled has elements in other resolutions.
+Sometimes, different elements in a frame will have different resolutions, e.g. the background is in 900p, character A is in 810p, and character B is in 720p.
+In cases like this, it's usually safer to do a simple spline36 resize.
+One can technically do a lot of masking to fix this, but that's a lot of effort and masks failing is going to be likely.</p>
+<p>A more common situation in which one will encounter mixed resolutions is credits and overlays, which are usually in 1080p.
+Let's look at what happens if we add some text to the above frame and descale that compared to a spline36 resize on it.
+To make comparing easier, these images are zoomed in by a factor of 3:</p>
+<p align="center"> 
+<img src='Pictures/descalesub0.png' onmouseover="this.src='Pictures/descalesub1.png';" onmouseout="this.src='Pictures/descalesub0.png';" />
+</p>
+<p>The debilinear resize clearly adds stronger haloing artifacts here.</p>
+<p>To deal with this, we can use the <code>DescaleM</code> functions from <code>fvsfunc</code>, which mask these elements and scale them via a spline36 resize:</p>
+<pre><code class="language-py">descale = fvf.DebilinearM(src, 1280, 720)
+</code></pre>
+<p>As these functions are comparatively slow, you might want to consider finding these elements beforehand and applying the function only to those frames.
+If you aren't certain that your frame doesn't have 1080p elements, though, stick with these functions.</p>
+<p>Alternatively, in very rare cases, the resolution and/or kernel will change scene-by-scene, or even worse, frame-by-frame.
+You can consider trying <code>lvsfunc.scale.descale</code>, which tries to find the ideal height for each frame.
+Ideally, however, you should do this manually.</p>
+<h2 id="444-and-420"><a class="header" href="#444-and-420">4:4:4 and 4:2:0</a></h2>
+<h1 id="upscaling-and-rescaling"><a class="header" href="#upscaling-and-rescaling">Upscaling and Rescaling</a></h1>
+<h2 id="upscaling"><a class="header" href="#upscaling">Upscaling</a></h2>
+<h2 id="rescaling"><a class="header" href="#rescaling">Rescaling</a></h2>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="chroma-resampling-and-shifting"><a class="header" href="#chroma-resampling-and-shifting">Chroma Resampling and Shifting</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="bit-depths-an-introduction"><a class="header" href="#bit-depths-an-introduction">Bit Depths: An Introduction</a></h1>
+<p>When you filter a frame, the results are limited to values available in your bit depth.
+By default, most SDR content comes in 8-bit and HDR content in 10-bit.
+In 8-bit, you're limited to values between 0 and 255.
+However, as most video content is in limited range, this range becomes 16 to 235 for luma and 16 to 240 for chroma.</p>
+<p>Let's say you want to raise every pixel whose value lies in the rang of 60 to 65 to the power of 0.88.
+Rounding to three decimal places:</p>
+<table><thead><tr><th align="center">Original</th><th align="center">Raised</th></tr></thead><tbody>
+<tr><td align="center">60</td><td align="center">36.709</td></tr>
+<tr><td align="center">61</td><td align="center">37.247</td></tr>
+<tr><td align="center">62</td><td align="center">37.784</td></tr>
+<tr><td align="center">63</td><td align="center">38.319</td></tr>
+<tr><td align="center">64</td><td align="center">38.854</td></tr>
+<tr><td align="center">65</td><td align="center">39.388</td></tr>
+</tbody></table>
+<p>As we're limited to integer values between 0 and 255, these round to 37, 37, 38, 38, 39, 39.
+So, while the filter doesn't lead to the same value, we round these all to the same ones.
+This quickly leads to unwanted <a href="filtering/debanding.html">banding</a> artifacts.
+For example, raising to the power of 0.88 in 8-bit vs a higher bit depth of 32-bit:</p>
+<p align="center"> 
+<img src='Pictures/gamma_lbd.png' onmouseover="this.src='Pictures/gamma_hbd.png';" onmouseout="this.src='Pictures/gamma_lbd.png';" />
+</p>
+<p>To mitigate this, we work in higher bit depths and later use so called dither algorithms to add some fluctuation during rounding and prevent banding.
+The usual bit depths are 16-bit and 32-bit.
+While 16-bit sounds worse at first, the difference isn't noticeable and 32-bit, being in float instead of integer format, is not supported by every filter.</p>
+<p>Luckily for those not working in higher bit depth, lots of filters force higher precisions internally and dither the results back properly.
+However, switching between bit depths multiple times is a waste of CPU cycles and, in extreme cases, can alter the image as well.</p>
+<h2 id="changing-bit-depths"><a class="header" href="#changing-bit-depths">Changing bit depths</a></h2>
+<p>To work in a higher bit depth, you can use the <code>depth</code> function from <code>vsutil</code> at the start and end of your filter chain.
+This will use a high quality dither algorithm by default and takes only a few keystrokes:</p>
+<pre><code class="language-py">from vsutil import depth
+
+src = depth(src, 16)
+
+resize = ...
+
+my_great_filter = ...
+
+out = depth(my_great_filter, 8)
+</code></pre>
+<p>When you're working in higher bit depths, it's important to remember that some functions might expect parameter input values in 8-bit, while others expect them in the input bit depth.
+If you mistakenly enter 255 assuming 8-bit in a function expecting 16-bit input, your results will be extremely different, as 255 is the higher value in 8-bit, while in 16-bit, this is roughly equivalent to 1 in 8-bit.</p>
+<p>To convert values, you can use <code>scale_value</code> from <code>vsutil</code>, which will help handling edge cases etc.:</p>
+<pre><code class="language-py">from vsutil import scale_value
+
+v_8bit = 128
+
+v_16bit = scale_value(128, 8, 16)
+</code></pre>
+<p>This would get you <code>v_16bit = 32768</code>, the middle point of 16-bit.</p>
+<p>This isn't quite as simple for 32-bit float, as you need to specify whether to scale offsets depending on range and whether you're scaling luma or chroma.
+This is because limited range luma values are between 0 and 1, while chroma values are between -0.5 and +0.5.
+Usually, you're going to be dealing with TV range, so set <code>scale_offsets=True</code>:</p>
+<pre><code class="language-py">from vsutil import scale_value
+
+v_8bit = 128
+
+v_32bit_luma = scale_value(128, 8, 32, scale_offsets=True)
+v_32bit_chroma = scale_value(128, 8, 32, scale_offsets=True, chroma=True)
+</code></pre>
+<p>This gets us <code>v_32bit_luma = 0.5, v_32bit_chroma = 0</code>.</p>
+<h1 id="dither-algorithms"><a class="header" href="#dither-algorithms">Dither Algorithms</a></h1>
+<p>TODO</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="debanding"><a class="header" href="#debanding">Debanding</a></h1>
+<p>This is the most common issue one will encounter. Banding usually
+happens when bitstarving and poor settings lead to smoother gradients
+becoming abrupt color changes, which obviously ends up looking bad.  These can be fixed by performing blur-like operations and limiting their outputs.</p>
+<p>Note that, as blurring is a very destructive process, it's advised to only apply this to necessary parts of your video and use <a href="filtering/masking.html">masks</a> to further limit the changes.</p>
+<p>There are three great tools for VapourSynth that are used to fix
+banding: <a href="https://github.com/HomeOfAviSynthPlusEvolution/neo_f3kdb/"><code>neo_f3kdb</code></a>, <code>fvsfunc</code>'s <code>gradfun3</code>, which has a built-in
+mask, and <code>vs-placebo</code>'s <code>placebo.Deband</code>.</p>
+<p align="center">
+<img src='Pictures/debanding0.png' onmouseover="this.src='Pictures/debanding1.png';" onmouseout="this.src='Pictures/debanding0.png';" />
+</p>
+<p align="center">
+<i>Banding example fixed with f3kdb default settings.</i>
+</p>
+<h2 id="neo_f3kdb"><a class="header" href="#neo_f3kdb"><code>neo_f3kdb</code></a></h2>
+<pre><code class="language-py">deband = core.neo_f3kdb.deband(src=clip, range=15, y=64, cb=64, cr=64, grainy=64, grainc=64, dynamic_grain=False, sample_mode=2)
+</code></pre>
+<p>These settings may come off as self-explanatory for some, but here's
+what they do:</p>
+<ul>
+<li>
+<p><code>src</code> This is obviously your source clip.</p>
+</li>
+<li>
+<p><code>range</code> This specifies the range of pixels that are used to
+calculate whether something is banded. A higher range means more
+pixels are used for calculation, meaning it requires more processing
+power. The default of 15 should usually be fine.  Raising this may help make larger gradients with less steps look smoother, while lower values will help catch smaller instances.</p>
+</li>
+<li>
+<p><code>y</code> The most important setting, since most (noticeable) banding
+takes place on the luma plane. It specifies how big the difference
+has to be for something on the luma plane to be considered as
+banded. You should start low and slowly but surely build this up
+until the banding is gone. If it's set too high, lots of details
+will be seen as banding and hence be blurred.
+Depending on your sample mode, y values will either only have an effect
+in steps of 16 (mode 2) or 32 (modes 1, 3, 4). This means that y=20 is
+equivalent to y=30.</p>
+</li>
+<li>
+<p><code>cb</code> and <code>cr</code> The same as <code>y</code> but for chroma. However, banding on
+the chroma planes is comparatively uncommon, so you can often leave this
+off.</p>
+</li>
+<li>
+<p><code>grainy</code> and <code>grainc</code> In order to keep banding from re-occurring and
+to counteract smoothing, grain is usually added after the debanding
+process. However, as this fake grain is quite noticeable, it's
+recommended to be conservative. Alternatively, you can use a custom
+grainer, which will get you a far nicer output (see <a href="filtering/graining.html">the graining section</a> for more on this).</p>
+</li>
+<li>
+<p><code>dynamic_grain</code> By default, grain added by <code>f3kdb</code> is static. This
+compresses better, since there's obviously less variation, but it
+usually looks off with live action content, so it's normally
+recommended to set this to <code>True</code> unless you're working with
+animated content.</p>
+</li>
+<li>
+<p><code>sample_mode</code> Is explained in the README.  Consider switching to 4, since it might have less detail loss.</p>
+</li>
+</ul>
+<details>
+<summary>In-depth function explanation</summary>
+TODO
+</details>
+<h2 id="gradfun3"><a class="header" href="#gradfun3"><code>GradFun3</code></a></h2>
+<p>The most popular alternative to <code>f3kdb</code> is <code>gradfun3</code>.  This function is more resource intensive and less straightforward parameters, but can also prove useful in cases where <code>f3kdb</code> struggles:</p>
+<pre><code class="language-py">import fvsfunc as fvf
+deband = fvf.GradFun3(src, thr=0.35, radius=12, elast=3.0, mask=2, mode=3, ampo=1, ampn=0, pat=32, dyn=False, staticnoise=False, smode=2, thr_det=2 + round(max(thr - 0.35, 0) / 0.3), debug=False, thrc=thr, radiusc=radius, elastc=elast, planes=list(range(src.format.num_planes)), ref=src, bits=src.format.bits_per_sample) # + resizing variables
+</code></pre>
+<p>Lots of these values are for <code>fmtconv</code> bit depth conversion or descaling, both of which aren't relevant here.  The values really of interest here are:</p>
+<ul>
+<li>
+<p><code>thr</code> is equivalent to <code>y</code>, <code>cb</code>, and <code>cr</code> in what it does. You'll
+likely want to raise or lower it.</p>
+</li>
+<li>
+<p><code>radius</code> has the same effect as <code>f3kdb</code>'s <code>range</code>.</p>
+</li>
+<li>
+<p><code>smode</code> sets the smooth mode. It's usually best left at its default,
+or set to 5 if you'd like to use a
+CUDA-enabled GPU instead of your CPU. Uses <code>ref</code> (defaults to input
+clip) as a reference clip.</p>
+</li>
+<li>
+<p><code>mask</code> sets the mask strength.  0 to disable.  The default is a sane value.</p>
+</li>
+<li>
+<p><code>planes</code> sets which planes should be processed.</p>
+</li>
+<li>
+<p><code>debug</code> allows you to view the mask.</p>
+</li>
+<li>
+<p><code>elast</code> controls blending between debanded and source clip.  Default is sane.  Higher values prioritize debanded clip more.</p>
+</li>
+</ul>
+<details>
+<summary>In-depth function explanation</summary>
+TODO
+For a more in-depth explanation of what `thr` and `elast` do, check the
+algorithm explanation in <a href=https://github.com/HomeOfVapourSynthEvolution/mvsfunc/blob/master/mvsfunc.py#L1735><code>mvsfunc</code></a>.
+</details>
+<h2 id="placebodeband"><a class="header" href="#placebodeband"><code>placebo.Deband</code></a></h2>
+<p>This debander is quite new to the VapourSynth scene, but it's very good at fixing strong banding.  However, as such, it is also prone to needless detail loss and hence should only be used when necessary and ideally combined with a detail/edge mask.  It's (current) parameters:</p>
+<pre><code class="language-py">placebo.Deband(clip clip[, int planes = 1, int iterations = 1, float threshold = 4.0, float radius = 16.0, float grain = 6.0, int dither = True, int dither_algo = 0])
+</code></pre>
+<p>It's not unlikely that this function will see significant change in the future, hence <a href="https://github.com/Lypheo/vs-placebo/blob/master/README.md">the README</a> is also very much worth reading.</p>
+<p>Parameters you'll want to look at:</p>
+<ul>
+<li>
+<p><code>planes</code> obviously the to-be-processed planes.  The syntax is different here, check the README.  In short, default for luma-only, <code>1 | 2 | 4</code> for luma and chroma.</p>
+</li>
+<li>
+<p><code>iterations</code> sets how often the debander is looped.  It's not recommended to change this from the default, although this can be useful in extreme cases.</p>
+</li>
+<li>
+<p><code>threshold</code> sets the debander's strength or rather the threshold when a pixel is changed.  You probably don't want to go much higher than 12.  Go up in steps of 1 and fine-tune if possible.</p>
+</li>
+<li>
+<p><code>radius</code> does the same as for the previous functions.</p>
+</li>
+<li>
+<p><code>grain</code> is again the same as <code>f3kdb</code>, although the grain is a lot nicer.</p>
+</li>
+</ul>
+<details>
+<summary>In-depth function explanation</summary>
+TODO
+It uses the
+mpv debander, which just averages pixels within a range and outputs the
+average if the difference is below a threshold.  The algorithm is
+explained in the <a href="https://github.com/haasn/libplacebo/blob/master/src/shaders/sampling.c#L167">source code</a>.
+</details>
+<h2 id="banding-detection"><a class="header" href="#banding-detection">Banding detection</a></h2>
+<p>If you want to automate your banding detection, you can use <code>banddtct</code> from <code>awsmfunc</code>. Make sure to
+adjust the values properly and check the full output. Check <a href="https://git.concertos.live/AHD/awsmfunc/wiki/Using-detect.py">this link</a> for an explanation on how to use it. You can also just run <code>adptvgrnMod</code> or <code>adaptive_grain</code> with a high <code>luma_scaling</code> value in hopes that the
+grain covers it up fully. More on this in
+<a href="filtering/graining">the graining section</a>.  Note that both of these methods won't be able to pick up/fix every kind of banding.  <code>banddtct</code> can't find banding covered by grain, and graining to fix banding only works for smaller instances.</p>
+<h1 id="deblocking"><a class="header" href="#deblocking">Deblocking</a></h1>
+<p align="center">
+<img src='Pictures/deblock1.png' onmouseover="this.src='Pictures/deblock2.png';" onmouseout="this.src='Pictures/deblock1.png';"/>
+</p>
+<p>Deblocking is mostly equivalent to smoothing the source, usually with
+another mask on top. The most popular function here is <code>Deblock_QED</code>
+from <code>havsfunc</code>. The main parameters are</p>
+<ul>
+<li>
+<p><code>quant1</code>: Strength of block edge deblocking. Default is 24. You may
+want to raise this value significantly.</p>
+</li>
+<li>
+<p><code>quant2</code>: Strength of block internal deblocking. Default is 26.
+Again, raising this value may prove to be beneficial.</p>
+</li>
+</ul>
+<details>
+<summary>In-depth function explanation</summary>
+TODO
+</details>
+<p>Other popular options are <code>deblock.Deblock</code>, which is quite strong, but
+almost always works,</p>
+<details>
+<summary>In-depth function explanation</summary>
+TODO
+</details>
+<p><code>dfttest.DFTTest</code>, which is weaker, but still quite aggressive, and
+<code>fvf.AutoDeblock</code>, which is quite useful for deblocking MPEG-2 sources
+and can be applied on the entire video. Another popular method is to
+simply deband, as deblocking and debanding are very similar. This is a
+decent option for AVC Blu-ray sources.</p>
+<details>
+<summary>In-depth function explanation</summary>
+TODO
+</details>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="graining"><a class="header" href="#graining">Graining</a></h1>
+<p>TODO: explain why we love grain so much and static vs. dynamic grain.  Also, images.</p>
+<h1 id="graining-filters"><a class="header" href="#graining-filters">Graining Filters</a></h1>
+<p>There are a couple different filters you can use to grain.
+As lots of functions work similarly, we will only cover AddGrain and libplacebo graining.</p>
+<h2 id="addgrain"><a class="header" href="#addgrain">AddGrain</a></h2>
+<p>This plugin allows you to add grain to the luma and chroma grains in differing strengths and grain patterns:</p>
+<pre><code class="language-py">grain = src.grain.Add(var=1.0, uvar=0.0, seed=-1, constant=False)
+</code></pre>
+<p>Here, <code>var</code> controls the grain strength for the luma plane, and <code>uvar</code> controls the strength for the chroma plane.
+<code>seed</code> allows you to specify a custom grain pattern, which is useful if you'd like to reproduce a grain pattern multiple times, e.g. for comparing encodes.
+<code>constant</code> allows you to choose between static and dynamic grain.</p>
+<p>Raising the strength increases both the amount of grain added as well as the offset a grained pixel will have from the original pixel.
+For example, <code>var=1</code> will lead to values being up to 3 8-bit steps away from the input values.</p>
+<p>There's no real point in using this function directly, but it's good to know what it does, as it's considered the go-to grainer.</p>
+<details>
+<summary>In-depth function explanation</summary>
+This plugin uses a normal distribution to find the values it changes the input by.
+The `var` parameter is the standard deviation (usually noted as \(\sigma\)) of the normal distribution.
+<p>This means that (these are approximations):</p>
+<ul>
+<li>\(68.27\%\) of output pixel values are within \(\pm1\times\mathtt{var}\) of the input value</li>
+<li>\(95.45\%\) of output pixel values are within \(\pm2\times\mathtt{var}\) of the input value</li>
+<li>\(99.73\%\) of output pixel values are within \(\pm3\times\mathtt{var}\) of the input value</li>
+<li>\(50\%\) of output pixel values are within \(\pm0.675\times\mathtt{var}\) of the input value</li>
+<li>\(90\%\) of output pixel values are within \(\pm1.645\times\mathtt{var}\) of the input value</li>
+<li>\(95\%\) of output pixel values are within \(\pm1.960\times\mathtt{var}\) of the input value</li>
+<li>\(99\%\) of output pixel values are within \(\pm2.576\times\mathtt{var}\) of the input value</li>
+</ul>
+</details>
+<h2 id="placebodeband-as-a-grainer"><a class="header" href="#placebodeband-as-a-grainer">placebo.Deband as a grainer</a></h2>
+<p>Alternatively, using <code>placebo.Deband</code> solely as a grainer can also lead to some nice results:</p>
+<pre><code class="language-py">grain = placebo.Deband(iterations=0, grain=6.0)
+</code></pre>
+<p>The main advantage here is it runs on your GPU, so if your GPU isn't already busy with other filters, using this can get you a slight speed-up.</p>
+<details>
+<summary>In-depth function explanation</summary>
+TODO
+</details>
+<h2 id="adaptive_grain"><a class="header" href="#adaptive_grain">adaptive_grain</a></h2>
+<p>This function from <a href="https://github.com/Irrational-Encoding-Wizardry/kagefunc"><code>kagefunc</code></a> applies AddGrain according to overall frame brightness and individual pixel brightness.
+This is very useful for covering up minor banding and/or helping x264 distribute more bits to darks.</p>
+<pre><code class="language-py">grain = kgf.adaptive_grain(src, strength=.25, static=True, luma_scaling=12, show_mask=False)
+</code></pre>
+<p><code>strength</code> here is <code>var</code> from AddGrain.
+The default or slightly lower is usually fine.
+You likely don't want to go above 0.75.</p>
+<p>The <code>luma_scaling</code> parameter is used to control how strong it should favor darker frames over brighter frames, whereby lower <code>luma_scaling</code> will apply more grain to bright frames.
+You can use extremely low or extremely high values here depending on what you want.
+For example, if you want to grain all frames significantly, you might use <code>luma_scaling=5</code>, while if you just want to apply grain to darker parts of darker frames to cover up minor banding, you might use <code>luma_scaling=100</code>.</p>
+<p><code>show_mask</code> shows you the mask that's used to apply the grain, with whiter meaning more grain is applied.
+It's recommended to switch this on when tuning <code>luma_scaling</code>.</p>
+<details>
+<summary>In-depth function explanation</summary>
+The author of the function wrote a <a href="https://blog.kageru.moe/legacy/adaptivegrain.html">fantastic blog post explaining the function and how it works</a>.
+</details>
+<h2 id="grainfactory3"><a class="header" href="#grainfactory3">GrainFactory3</a></h2>
+<p>TODO: rewrite this or just remove it.</p>
+<p>An older alternative to <code>kgf.adaptive_grain</code>, <a href="https://github.com/HomeOfVapourSynthEvolution/havsfunc"><code>havsfunc</code></a>'s <code>GrainFactory3</code> is still quite interesting.
+It splits pixel values into four groups based on their brightness and applies differently sized grain at different strengths via AddGrain to these groups.</p>
+<pre><code class="language-py">grain = haf.GrainFactory3(src, g1str=7.0, g2str=5.0, g3str=3.0, g1shrp=60, g2shrp=66, g3shrp=80, g1size=1.5, g2size=1.2, g3size=0.9, temp_avg=0, ontop_grain=0.0, th1=24, th2=56, th3=128, th4=160)
+</code></pre>
+<p>The parameters are explained <a href="https://github.com/HomeOfVapourSynthEvolution/havsfunc/blob/master/havsfunc.py#L3720">above the source code</a>.</p>
+<p>This function is mainly useful if you want to apply grain to specific frames only, as overall frame brightness should be taken into account if grain is applied to the whole video.</p>
+<p>For example, <code>GrainFactory3</code> to make up for missing grain on left and right borders:</p>
+<p align="center"> 
+<img src='Pictures/grain0.png' onmouseover="this.src='Pictures/grain1.png';" onmouseout="this.src='Pictures/grain0.png';" />
+</p>
+<details>
+<summary>In-depth function explanation</summary>
+TODO
+<p>In short: Create a mask for each brightness group, use bicubic resizing with sharpness controlling b and c to resize the grain, then apply that.
+Temporal averaging just averages the grain for the current frame and its direct neighbors using misc.AverageFrames.</p>
+</details>
+<h2 id="adptvgrnmod"><a class="header" href="#adptvgrnmod">adptvgrnMod</a></h2>
+<p>This function resizes grain in the same way <code>GrainFactory3</code> does, then applies it using the method from <code>adaptive_grain</code>.
+It also has some protection for darks and brights to maintain average frame brightness:</p>
+<pre><code class="language-py">grain = agm.adptvgrnMod(strength=0.25, cstrength=None, size=1, sharp=50, static=False, luma_scaling=12, seed=-1, show_mask=False)
+</code></pre>
+<p>Grain strength is controlled by <code>strength</code> for luma and <code>cstrength</code> for chroma.
+<code>cstrength</code> defaults to half of <code>strength</code>.
+Just like <code>adaptive_grain</code>, the default or slightly lower is usually fine, but you shouldn't go too high.
+If you're using a <code>size</code> greater than the default, you can get away with higher values, e.g. <code>strength=1</code>, but it's still advised to stay conservative with grain application.</p>
+<p>The <code>size</code> and <code>sharp</code> parameters allow you to make the applied grain look a bit more like the rest of the film's.
+It's recommended to play around with these so that fake grain isn't too obvious.
+In most cases, you will want to raise both of them ever so slightly, e.g. <code>size=1.2, sharp=60</code>.</p>
+<p><code>static</code>, <code>luma_scaling</code>, and <code>show_mask</code> are equivalent to <code>adaptive_grain</code>, so scroll up for explanations.
+<code>seed</code> is the same as AddGrain's; again, scroll up.</p>
+<p>By default, <code>adptvgrnMod</code> will fade grain around extremes (16 or 235) and shades of gray.
+These features can be turned off by setting <code>fade_edges=False</code> and <code>protect_neutral=False</code> respectively.</p>
+<p>It's recently become common practice to remove graining entirely from one's debander and grain debanded areas entirely with this function.</p>
+<h3 id="sizedgrn"><a class="header" href="#sizedgrn">sizedgrn</a></h3>
+<p>If one wants to disable the brightness-based application, one can use <code>sizedgrn</code>, which is the internal graining function in <code>adptvgrnMod</code>.</p>
+<details>
+<summary>Some examples of <code>adptvgrnMod</code> compared with <code>sizedgrn</code> for those curious</summary>
+<p>A bright scene, where the brightness-based application makes a large difference:</p>
+<p align="center"> 
+<img src='Pictures/graining4.png' onmouseover="this.src='Pictures/graining7.png';" onmouseout="this.src='Pictures/graining4.png';" />
+</p>
+<p>An overall darker scene, where the difference is a lot smaller:</p>
+<p align="center"> 
+<img src='Pictures/graining3.png' onmouseover="this.src='Pictures/graining6.png';" onmouseout="this.src='Pictures/graining3.png';" />
+</p>
+<p>A dark scene, where grain is applied evenly (almost) everywhere in the frame:</p>
+<p align="center"> 
+<img src='Pictures/graining5.png' onmouseover="this.src='Pictures/graining8.png';" onmouseout="this.src='Pictures/graining5.png';" />
+</p>
+</details>
+<details>
+<summary>In-depth function explanation</summary>
+(Old write-up from the function's author.)
+<h3 id="size-and-sharpness"><a class="header" href="#size-and-sharpness">Size and Sharpness</a></h3>
+<p>The graining part of adptvgrnMod is the same as GrainFactory3's; it creates a &quot;blank&quot; (midway point of bit depth) clip at a resolution defined by the size parameter, then scales that via a bicubic kernel that uses b and c values determined by sharp:</p>
+<p>$$\mathrm{grain\ width} = \mathrm{mod}4 \left( \frac{\mathrm{clip\ width}}{\mathrm{size}} \right)$$</p>
+<p>For example, with a 1920x1080 clip and a size value of 1.5:</p>
+<p>$$ \mathrm{mod}4 \left( \frac{1920}{1.5} \right) = 1280 $$</p>
+<p>This determines the size of the frame the grainer operates on.</p>
+<p>Now, the bicubic kernel's parameters are determined:</p>
+<p>$$ b = \frac{\mathrm{sharp}}{-50} + 1 $$
+$$ c = \frac{1 - b}{2} $$</p>
+<p>This means that for the default sharp of 50, a Catmull-Rom filter is used:</p>
+<p>$$ b = 0, \qquad c = 0.5 $$</p>
+<p>Values under 50 will tend towards B-Spline (b=1, c=0), while ones above 50 will tend towards b=-1, c=1. As such, for a Mitchell (b=1/3, c=1/3) filter, one would require sharp of 100/3.</p>
+<p>The grained &quot;blank&quot; clip is then resized to the input clip's resolution with this kernel. If size is greater than 1.5, an additional resizer call is added before the upscale to the input resolution:</p>
+<p>$$ \mathrm{pre\ width} = \mathrm{mod}4 \left( \frac{\mathrm{clip\ width} + \mathrm{grain\ width}}{2} \right) $$</p>
+<p>With our resolutions so far (assuming we did this for size 1.5), this would be 1600.  This means with size 2, where this preprocessing would actually occur, our grain would go through the following resolutions:</p>
+<p>$$ 960 \rightarrow 1440 \rightarrow 1920 $$</p>
+<h3 id="fade-edges"><a class="header" href="#fade-edges">Fade Edges</a></h3>
+<p>The fade_edges parameter introduces the option to attempt to maintain overall average image brightness, similar to ideal dithering. It does so by limiting the graining at the edges of the clip's range. This is done via the following expression:</p>
+<pre><code>x y neutral - abs - low &lt; x y neutral - abs + high &gt; or
+x y neutral - x + ?
+</code></pre>
+<p>Here, x is the input clip, y is the grained clip, neutral is the midway point from the previously grained clip, and low and high are the edges of the range (e.g. 16 and 235 for 8-bit luma). Converted from postfix to infix notation, this reads:</p>
+<p>\[x = x\ \mathtt{if}\ x - \mathrm{abs}(y - neutral) &lt; low\ \mathtt{or}\ x - \mathrm{abs}(y - neutral) &gt; high\ \mathtt{else}\ x + (y - neutral)\]</p>
+<p>The effect here is that all grain that wouldn't be clipped during output regardless of whether it grains in a positive or negative direction remains, while grain that would pass the plane's limits isn't taken.</p>
+<p>In addition to this parameter, protect_neutral is also available. This parameter protects &quot;neutral&quot; chroma (i.e. chroma for shades of gray) from being grained. To do this, it takes advantage of AddGrainC working according to a Guassian distribution, which means that
+$$max\ value = 3 \times \sigma$$
+(sigma being the standard deviation - the strength or cstrength parameter) is with 99.73% certainty the largest deviated value from the norm (0). This means we can perform a similar operation to the one for fade_edges to keep the midways from being grained. To do this, we resize the input clip to 4:4:4 and use the following expression:</p>
+<p>\[\begin{align}x \leq (low + max\ value)\ \mathtt{or}\ x \geq (high - max\ value)\ \mathtt{and}\\ \mathrm{abs}(y - neutral) \leq max\ value\ \mathtt{and}\ \mathrm{abs}(z - neutral) \leq max\ value \end{align}\]</p>
+<p>With x, y, z being each of the three planes. If the statement is true, the input clip is returned, else the grained clip is returned.</p>
+<p>I originally thought the logic behind protect_neutral would also work well for fade_edges, but I then realized this would completely remove grain near the edges instead of fading it.</p>
+<p>Now, the input clip and grained clip (which was merged via std.MergeDiff, which is x - y - neutral) can be merged via the adaptive_grain mask.</p>
+</details>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><p align="center">
+<img src='Pictures/dirt_source.png' onmouseover="this.src='Pictures/dirt_filtered.png';" onmouseout="this.src='Pictures/dirt_source.png';"/>
+</p>
+<p align="center">
+<i>Dirty lines from A Silent Voice (2016)'s intro.  On mouseover: fixed with ContinuityFixer and FillBorders.</i>
+</p>
+<p>One of the more common issues you may encounter are 'dirty lines', these are usually found on the borders of video where a row or column of pixels exhibits inconsistent luma values comparative to its surroundings. Oftentimes, this is the due to improper downscaling, for example downscaling after applying borders. Dirty lines can also occur because the compressionist doesn't consider that whilst they're working with 4:2:2 chroma subsampling (meaning their height doesn't have to be mod2), consumer video will be 4:2:0, leading to extra black rows that you can't get rid of during cropping if the main clip isn't placed properly. Another form of dirty lines is exhibited when the chroma planes are present on black bars. Usually, these should be cropped out. The opposite can also occur, however, where the planes with legitimate luma information lack chroma information.</p>
+<p>It's important to remember that sometimes your source will have fake lines (often referred to as 'dead' lines), meaning ones without legitimate information. These will usually just mirror the next row/column. Do not bother fixing these, just crop them instead. An example:</p>
+<p align="center">
+<img src='Pictures/dead_lines.png'/>
+</p>
+<p>Similarly, when attempting to fix dirty lines you should thoroughly check that your fix has not caused unwanted problems, such as smearing (common with overzealous ContinuityFixer values) or flickering (especially on credits, it is advisable to omit credit reels from your fix in most cases). If you cannot figure out a proper fix it is completely reasonable to either crop off the dirty line(s) or leave them unfixed. A bad fix is worse than no fix!</p>
+<p>Here are five commonly used methods for fixing dirty lines:</p>
+<h2 id="rektlvls"><a class="header" href="#rektlvls"><code>rektlvls</code></a></h2>
+<p>From <a href="https://gitlab.com/Ututu/rekt"><code>rekt</code></a>.  This is basically <code>FixBrightnessProtect3</code> and <code>FixBrightness</code> from AviSynth in one, although unlike <code>FixBrightness</code>, not the entire frame is processed. Its
+values are quite straightforward. Raise the adjustment values to
+brighten, lower to darken. Set <code>prot_val</code> to <code>None</code> and it will
+function like <code>FixBrightness</code>, meaning the adjustment values will
+need to be changed.</p>
+<pre><code class="language-py">from rekt import rektlvls
+fix = rektlvls(src, rownum=None, rowval=None, colnum=None, colval=None, prot_val=[16, 235])
+</code></pre>
+<p>If you'd like to process multiple rows at a time, you can enter a
+list (e.g. <code>rownum=[0, 1, 2]</code>).</p>
+<p>To illustrate this, let's look at the dirty lines in the black and
+white Blu-ray of Parasite (2019)'s bottom rows:</p>
+<p align="center">
+<img src='Pictures/rektlvls_src.png';"/>
+</p>
+<p>In this example, the bottom four rows have alternating brightness
+offsets from the next two rows. So, we can use <code>rektlvls</code> to raise
+luma in the first and third row from the bottom, and again to lower
+it in the second and fourth:</p>
+<pre><code class="language-py">fix = rektlvls(src, rownum=[803, 802, 801, 800], rowval=[27, -10, 3, -3])
+</code></pre>
+<p>In this case, we are in <code>FixBrightnessProtect3</code> mode. We aren't
+taking advantage of <code>prot_val</code> here, but people usually use this
+mode regardless, as there's always a chance it might help. The
+result:</p>
+<p align="center">
+<img src='Pictures/rektlvls_fix.png' onmouseover="this.src='Pictures/rektlvls_src.png';" onmouseout="this.src='Pictures/rektlvls_fix.png';"/>
+</p>
+<details>
+<summary>In-depth function explanation</summary>
+In <code>FixBrightness</code> mode, this will perform an adjustment with
+<a href="filtering/www.vapoursynth.com/doc/functions/levels.html"><code>std.Levels</code></a> on the desired row. This means that, in 8-bit,
+every possible value \(v\) is mapped to a new value according to the
+following function: 
+$$\begin{aligned}
+&\forall v \leq 255, v\in\mathbb{N}: \\
+&\max\left[\min\left(\frac{\max(\min(v, \texttt{max_in}) - \texttt{min_in}, 0)}{(\texttt{max_in} - \texttt{min_in})}\times (\texttt{max_out} - \texttt{min_out}) + \texttt{min_out}, 255\right), 0\right] + 0.5
+\end{aligned}$$
+For positive <code>adj_val</code>,
+\(\texttt{max_in}=235 - \texttt{adj_val}\). For negative ones,
+\(\texttt{max_out}=235 + \texttt{adj_val}\). The rest of the values
+stay at 16 or 235 depending on whether they are maximums or
+minimums.
+<p><code>FixBrightnessProtect3</code> mode takes this a bit further, performing
+(almost) the same adjustment for values between the first
+\(\texttt{prot_val} + 10\) and the second \(\texttt{prot_val} - 10\),
+where it scales linearly. Its adjustment value does not work the
+same, as it adjusts by \(\texttt{adj_val} \times 2.19\).  In 8-bit:</p>
+<p>Line brightening:
+$$\begin{aligned}
+&amp;\texttt{if }v - 16 &lt;= 0 \\
+&amp;\qquad 16 / \\
+&amp;\qquad \texttt{if } 235 - \texttt{adj_val} \times 2.19 - 16 &lt;= 0 \\
+&amp;\qquad \qquad 0.01 \\
+&amp;\qquad \texttt{else} \\
+&amp;\qquad \qquad 235 - \texttt{adj_val} \times 2.19 - 16 \\
+&amp;\qquad \times 219 \\
+&amp;\texttt{else} \\
+&amp;\qquad (v - 16) / \\
+&amp;\qquad \texttt{if }235 - \texttt{adj_val} \times 2.19 - 16 &lt;= 0 \\
+&amp;\qquad \qquad 0.01 \\
+&amp;\qquad \texttt{else} \\
+&amp;\qquad \qquad 235 - \texttt{adj_val} \times 2.19 - 16 \\
+&amp;\qquad \times 219 + 16
+\end{aligned}$$</p>
+<p>Line darkening:
+$$\begin{aligned}
+&amp;\texttt{if }v - 16 &lt;= 0 \\
+&amp;\qquad\frac{16}{219} \times (235 + \texttt{adj_val} \times 2.19 - 16) \\
+&amp;\texttt{else} \\
+&amp;\qquad\frac{v - 16}{219} \times (235 + \texttt{adj_val} \times 2.19 - 16) + 16 \\
+\end{aligned}$$</p>
+<p>All of this, which we give the variable \(a\), is then protected by (for simplicity's sake, only doing dual <code>prot_val</code>, noted by \(p_1\) and \(p_2\)):
+$$\begin{aligned}
+&amp; a \times \min \left[ \max \left( \frac{v - p_1}{10}, 0 \right), 1 \right] \\
+&amp; + v \times \min \left[ \max \left( \frac{v - (p_1 - 10)}{10}, 0 \right), 1 \right] \times \min \left[ \max \left( \frac{p_0 - v}{-10}, 0\right), 1 \right] \\
+&amp; + v \times \max \left[ \min \left( \frac{p_0 + 10 - v}{10}, 0\right), 1\right] 
+\end{aligned}$$</p>
+</details>
+<h2 id="bbmod"><a class="header" href="#bbmod"><code>bbmod</code></a></h2>
+<p>From <code>awsmfunc</code>.  This is a mod of the original BalanceBorders function. While it
+doesn't preserve original data nearly as well as <code>rektlvls</code>, it will
+lead to decent results with high <code>blur</code> and <code>thresh</code> values and is
+easy to use for multiple rows, especially ones with varying
+brightness, where <code>rektlvls</code> is no longer useful. If it doesn't
+produce decent results, these can be changed, but the function will
+get more destructive the lower you set them. It's also
+significantly faster than the versions in <code>havsfunc</code> and <code>sgvsfunc</code>,
+as only necessary pixels are processed.</p>
+<pre><code class="language-py">import awsmfunc as awf
+bb = awf.bbmod(src=clip, left=0, right=0, top=0, bottom=0, thresh=[128, 128, 128], blur=[20, 20, 20], planes=[0, 1, 2], scale_thresh=False, cpass2=False)
+</code></pre>
+<p>The arrays for <code>thresh</code> and <code>blur</code> are again y, u, and v values.
+It's recommended to try <code>blur=999</code> first, then lowering that and
+<code>thresh</code> until you get decent values.<br />
+<code>thresh</code> specifies how far the result can vary from the input. This
+means that the lower this is, the better. <code>blur</code> is the strength of
+the filter, with lower values being stronger, and larger values
+being less aggressive. If you set <code>blur=1</code>, you're basically copying
+rows. If you're having trouble with chroma, you can try activating
+<code>cpass2</code>, but note that this requires a very low <code>thresh</code> to be set,
+as this changes the chroma processing significantly, making it quite
+aggressive.</p>
+<p>For our example, I've created fake dirty lines, which we will fix:</p>
+<p align="center">
+<img src='Pictures/dirtfixes0.png';"/>
+</p>
+<p>To fix this, we can apply <code>bbmod</code> with a low blur and a high thresh,
+meaning pixel values can change significantly:</p>
+<pre><code class="language-py">fix = awf.bbmod(src, top=6, thresh=90, blur=20)
+</code></pre>
+<p align="center">
+<img src='Pictures/dirtfixes1.png' onmouseover="this.src='Pictures/dirtfixes0.png';" onmouseout="this.src='Pictures/dirtfixes1.png';"/>
+</p>
+<p>Our output is already a lot closer to what we assume the source
+should look like. Unlike <code>rektlvls</code>, this function is quite quick to
+use, so lazy people (i.e. everyone) can use this to fix dirty lines
+before resizing, as the difference won't be noticeable after
+resizing.</p>
+<p>While you can use <code>rektlvls</code> on as many rows/columns as necessary, the same doesn't hold true for <code>bbmod</code>.  Unless you are resizing after, you should only use <code>bbmod</code> on two rows/pixels for low <code>blur</code> values (\(\approx 20\)) or three for higher <code>blur</code> values.  If you are resizing after, you can change the maximum value according to:
+\[
+max_\mathrm{resize} = max \times \frac{resolution_\mathrm{source}}{resolution_\mathrm{resized}}
+\]</p>
+<details>
+<summary>In-depth function explanation</summary>
+<code>bbmod</code> works by blurring the desired rows, input rows, and
+reference rows within the image using a blurred bicubic kernel,
+whereby the blur amount determines the resolution scaled to accord
+to \(\mathtt{\frac{width}{blur}}\). The output is compared using
+expressions and finally merged according to the threshold specified.
+<p>The function re-runs one function for the top border for each side by flipping and transposing.  As such, this explanation will only cover fixing the top.</p>
+<p>First, we double the resolution without any blurring (\(w\) and \(h\) are input clip's width and height):
+\[
+clip_2 = \texttt{resize.Point}(clip, w\times 2, h\times 2)
+\]</p>
+<p align="center">
+<img src='Pictures/bbmod0_0.png' />
+</p>
+<p>Now, the reference is created by cropping off double the to-be-fixed number of rows.  We set the height to 2 and then match the size to the double res clip:
+\[\begin{align}
+clip &amp;= \texttt{CropAbs}(clip_2, \texttt{width}=w \times 2, \texttt{height}=2, \texttt{left}=0, \texttt{top}=top \times 2) \\
+clip &amp;= \texttt{resize.Point}(clip, w \times 2, h \times 2)
+\end{align}\]</p>
+<p align="center">
+<img src='Pictures/bbmod0_1.png' />
+</p>
+<p>Before the next step, we determine the \(blurwidth\):
+\[
+blurwidth = \max \left( 8, \texttt{floor}\left(\frac{w}{blur}\right)\right)
+\]
+In our example, we get 8.</p>
+<p>Now, we use a blurred bicubic resize to go down to \(blurwidth \times 2\) and back up:
+\[\begin{align}
+referenceBlur &amp;= \texttt{resize.Bicubic}(clip, blurwidth \times 2, top \times 2, \texttt{b}=1, \texttt{c}=0) \\
+referenceBlur &amp;= \texttt{resize.Bicubic}(referenceBlur, w \times 2, top \times 2, \texttt{b}=1, \texttt{c}=0)
+\end{align}\]</p>
+<p align="center">
+<img src='Pictures/bbmod0_2.png' />
+</p>
+<p align="center">
+<img src='Pictures/bbmod0_3.png' />
+</p>
+<p>Then, crop the doubled input to have height of \(top \times 2\):
+\[
+original = \texttt{CropAbs}(clip_2, \texttt{width}=w \times 2, \texttt{height}=top \times 2)
+\]</p>
+<p align="center">
+<img src='Pictures/bbmod0_4.png' />
+</p>
+<p>Prepare the original clip using the same bicubic resize downwards:
+\[
+clip = \texttt{resize.Bicubic}(original, blurwidth \times 2, top \times 2, \texttt{b}=1, \texttt{c}=0)
+\]</p>
+<p align="center">
+<img src='Pictures/bbmod0_5.png' />
+</p>
+<p>Our prepared original clip is now also scaled back down:
+\[
+originalBlur = \texttt{resize.Bicubic}(clip, w \times 2, top \times 2, \texttt{b}=1, \texttt{c}=0)
+\]</p>
+<p align="center">
+<img src='Pictures/bbmod0_6.png' />
+</p>
+<p>Now that all our clips have been downscaled and scaled back up, which is the blurring process that approximates what the actual value of the rows should be, we can compare them and choose how much of what we want to use.  First, we perform the following expression (\(x\) is \(original\), \(y\) is \(originalBlur\), and \(z\) is \(referenceBlur\)):
+\[
+\max \left[ \min \left( \frac{z - 16}{y - 16}, 8 \right), 0.4 \right] \times (x + 16) + 16
+\]
+The input here is:
+\[
+balancedLuma = \texttt{Expr}(\texttt{clips}=[original, originalBlur, referenceBlur], \texttt{&quot;z 16 - y 16 - / 8 min 0.4 max x 16 - * 16 +&quot;})
+\]</p>
+<p align="center">
+<img src='Pictures/bbmod0_7.png' />
+</p>
+<p>What did we do here?  In cases where the original blur is low and supersampled reference's blur is high, we did:
+\[
+8 \times (original + 16) + 16
+\]
+This brightens the clip significantly.  Else, if the original clip's blur is high and supersampled reference is low, we darken:
+\[
+0.4 \times (original + 16) + 16
+\]
+In normal cases, we combine all our clips:
+\[
+(original + 16) \times \frac{originalBlur - 16}{referenceBlur - 16} + 16
+\]</p>
+<p>We add 128 so we can merge according to the difference between this and our input clip:
+\[
+difference = \texttt{MakeDiff}(balancedLuma, original)
+\]</p>
+<p>Now, we compare to make sure the difference doesn't exceed \(thresh\):
+\[\begin{align}
+difference &amp;= \texttt{Expr}(difference, &quot;x thresh &gt; thresh x ?&quot;) \\
+difference &amp;= \texttt{Expr}(difference, &quot;x thresh &lt; thresh x ?&quot;)
+\end{align}\]</p>
+<p>These expressions do the following:
+\[\begin{align}
+&amp;\texttt{if }difference &gt;/&lt; thresh:\\
+&amp;\qquad    thresh\\
+&amp;\texttt{else}:\\
+&amp;\qquad    difference
+\end{align}\]</p>
+<p>This is then resized back to the input size and merged using <code>MergeDiff</code> back into the original and the rows are stacked onto the input.  The output resized to the same res as the other images:</p>
+<p align="center">
+<img src='Pictures/bbmod0_9.png' />
+</p>
+</details>
+<h2 id="fillborders"><a class="header" href="#fillborders"><code>FillBorders</code></a></h2>
+<p>From <a href="https://github.com/Moiman/vapoursynth-fillborders"><code>fb</code></a>.  This function pretty much just copies the next column/row in line.
+While this sounds, silly, it can be quite useful when downscaling
+leads to more rows being at the bottom than at the top, and one
+having to fill one up due to YUV420's mod2 height.</p>
+<pre><code class="language-py">fill = core.fb.FillBorders(src=clip, left=0, right=0, bottom=0, top=0, mode=&quot;fillmargins&quot;)
+</code></pre>
+<p>A very interesting use for this function is one similar to applying
+<code>ContinuityFixer</code> only to chroma planes, which can be used on gray
+borders or borders that don't match their surroundings no matter
+what luma fix is applied. This can be done with the following
+script:</p>
+<pre><code class="language-py">fill = core.fb.FillBorders(src=clip, left=0, right=0, bottom=0, top=0, mode=&quot;fillmargins&quot;)
+merge = core.std.Merge(clipa=clip, clipb=fill, weight=[0,1])
+</code></pre>
+<p>You can also split the planes and process the chroma planes
+individually, although this is only slightly faster. A wrapper that
+allows you to specify per-plane values for <code>fb</code> is <code>FillBorders</code> in
+<code>awsmfunc</code>.</p>
+<p>Note that you should only ever fill single columns/rows with <code>FillBorders</code>.  If you have more black lines, crop them!  If there are frames requiring different crops in the video, don't fill these up.  More on this at the end of this chapter.</p>
+<p>To illustrate what a source requiring <code>FillBorders</code> might look like,
+let's look at Parasite (2019)'s SDR UHD once again, which requires
+an uneven crop of 277. However, we can't crop this due to chroma
+subsampling, so we need to fill one row. To illustrate this, we'll
+only be looking at the top rows. Cropping with respect to chroma
+subsampling nets us:</p>
+<pre><code class="language-py">crp = src.std.Crop(top=276)
+</code></pre>
+<p align="center">
+<img src='Pictures/fb_src.png';"/>
+</p>
+<p>Obviously, we want to get rid of the black line at the top, so let's
+use <code>FillBorders</code> on it:</p>
+<pre><code class="language-py">fil = crp.fb.FillBorders(top=1, mode=&quot;fillmargins&quot;)
+</code></pre>
+<p align="center">
+<img src='Pictures/fb_luma.png' onmouseover="this.src='Pictures/fb_src.png';" onmouseout="this.src='Pictures/fb_luma.png';"/>
+</p>
+<p>This already looks better, but the orange tones look washed out.
+This is because <code>FillBorders</code> only fills one chroma if <strong>two</strong> luma
+are fixed. So, we need to fill chroma as well. To make this easier
+to write, let's use the <code>awsmfunc</code> wrapper:</p>
+<pre><code class="language-py">fil = awf.fb(crp, top=1)
+</code></pre>
+<p align="center">
+<img src='Pictures/fb_lumachroma.png' onmouseover="this.src='Pictures/fb_luma.png';" onmouseout="this.src='Pictures/fb_lumachroma.png';"/>
+</p>
+<p>Our source is now fixed. Some people may want to resize the chroma
+to maintain original aspect ratio performing lossy resampling on chroma, but whether
+this is the way to go is not generally agreed upon (personally, I,
+Aicha, disagree with doing this). If you want to go this route:</p>
+<pre><code class="language-py">top = 1
+bot = 1
+new_height = crp.height - (top + bot)
+fil = awf.fb(crp, top=top, bottom=bot)
+out = fil.resize.Spline36(crp.width, new_height, src_height=new_height, src_top=top) 
+</code></pre>
+<details>
+<summary>In-depth function explanation</summary>
+<code>FillBorders</code> has three modes, although we only really care about mirror and fillmargins.
+The mirror mode literally just mirrors the previous pixels.  Contrary to the third mode, repeat, it doesn't just mirror the final row, but the rows after that for fills greater than 1.  This means that, if you only fill one row, these modes are equivalent.  Afterwards, the difference becomes obvious.
+<p>In fillmargins mode, it works a bit like a convolution, whereby it does a [2, 3, 2] of the next row's pixels, meaning it takes 2 of the left pixel, 3 of the middle, and 2 of the right, then averages.  For borders, it works slightly differently: the leftmost pixel is just a mirror of the next pixel, while the eight rightmost pixels are also mirrors of the next pixel.  Nothing else happens here.</p>
+</details>
+<h2 id="continuityfixer"><a class="header" href="#continuityfixer"><code>ContinuityFixer</code></a></h2>
+<p>From <a href="https://gitlab.com/Ututu/VS-ContinuityFixer"><code>cf</code></a>.  <code>ContinuityFixer</code> works by comparing the rows/columns specified to
+the amount of rows/columns specified by <code>range</code> around it and
+finding new values via least squares regression. Results are similar
+to <code>bbmod</code>, but it creates entirely fake data, so it's preferable to
+use <code>rektlvls</code> or <code>bbmod</code> with a high blur instead. Its settings
+look as follows:</p>
+<pre><code class="language-py">fix = core.cf.ContinuityFixer(src=clip, left=[0, 0, 0], right=[0, 0, 0], top=[0, 0, 0], bottom=[0, 0, 0], radius=1920)
+</code></pre>
+<p>This is assuming you're working with 1080p footage, as <code>radius</code>'s
+value is set to the longest set possible as defined by the source's
+resolution. I'd recommend a lower value, although not going much
+lower than 3, as at that point, you may as well be copying pixels
+(see <code>FillBorders</code> below for that). What will probably throw off
+most newcomers is the array I've entered as the values for
+rows/columns to be fixed. These denote the values to be applied to
+the three planes. Usually, dirty lines will only occur on the luma
+plane, so you can often leave the other two at a value of 0. Do note
+an array is not necessary, so you can also just enter the amount of
+rows/columns you'd like the fix to be applied to, and all planes
+will be processed.</p>
+<p>As <code>ContinuityFixer</code> is less likely to keep original data in tact, it's recommended to prioritize <code>bbmod</code> over it.</p>
+<p>Let's look at the <code>bbmod</code> example again and apply <code>ContinuityFixer</code>:</p>
+<pre><code class="language-py">fix = src.cf.ContinuityFixer(top=[6, 6, 6], radius=10)
+</code></pre>
+<p align="center">
+<img src='Pictures/dirtfixes2.png' onmouseover="this.src='Pictures/dirtfixes0.png';" onmouseout="this.src='Pictures/dirtfixes2.png';"/>
+</p>
+<p>Let's compare this with the bbmod fix (remember to mouse-over to compare):</p>
+<p align="center">
+<img src='Pictures/dirtfixes2.png' onmouseover="this.src='Pictures/dirtfixes1.png';" onmouseout="this.src='Pictures/dirtfixes2.png';"/>
+</p>
+The result is ever so slightly in favor of <code>ContinuityFixer</code> here.
+<p>Just like <code>bbmod</code>, <code>ContinuityFixer</code> shouldn't be used on more than two rows/columns.  Again, if you're resizing, you can change this maximum accordingly:
+\[
+max_\mathrm{resize} = max \times \frac{resolution_\mathrm{source}}{resolution_\mathrm{resized}}
+\]</p>
+<details>
+<summary>In-depth function explanation</summary>
+<code>ContinuityFixer</code> works by calculating the <a href=https://en.wikipedia.org/wiki/Least_squares>least squares
+regression</a> of the pixels within the radius. As such, it creates
+entirely fake data based on the image's likely edges.  No special explanation here.
+</details>
+<h2 id="referencefixer"><a class="header" href="#referencefixer"><code>ReferenceFixer</code></a></h2>
+<p>From <a href="https://github.com/sekrit-twc/EdgeFixer"><code>edgefixer</code></a>.  This requires the original version of <code>edgefixer</code> (<code>cf</code> is just an
+old port of it, but it's nicer to use and processing hasn't
+changed). I've never found a good use for it, but in theory, it's
+quite neat. It compares with a reference clip to adjust its edge fix
+as in <code>ContinuityFixer</code>.:</p>
+<pre><code class="language-py">fix = core.edgefixer.Reference(src, ref, left=0, right=0, top=0, bottom=0, radius = 1920)
+</code></pre>
+<h2 id="notes-1"><a class="header" href="#notes-1">Notes</a></h2>
+<p>One thing that shouldn't be ignored is that applying these fixes (other
+than <code>rektlvls</code>) to too many rows/columns may lead to these looking
+blurry on the end result. Because of this, it's recommended to use
+<code>rektlvls</code> whenever possible or carefully apply light fixes to only the
+necessary rows. If this fails, it's better to try <code>bbmod</code> before using
+<code>ContinuityFixer</code>.</p>
+<p>It's important to note that you should <em>always</em> fix dirty lines before
+resizing, as not doing so will introduce even more dirty lines. However,
+it is important to note that, if you have a single black line at an edge
+that you would use <code>FillBorders</code> on, you should remove that using your
+resizer.</p>
+<p>For example, to resize a clip with a single filled line at the top to
+\(1280\times536\) from \(1920\times1080\):</p>
+<pre><code class="language-py">top_crop = 138
+bot_crop = 138
+top_fill = 1
+bot_fill = 0
+src_height = src.height - (top_crop + bot_crop) - (top_fill + bot_fill)
+crop = core.std.Crop(src, top=top_crop, bottom=bot_crop)
+fix = core.fb.FillBorders(crop, top=top_fill, bottom=bot_fill, mode=&quot;fillmargins&quot;)
+resize = core.resize.Spline36(1280, 536, src_top=top_fill, src_height=src_height)
+</code></pre>
+<p>If you're dealing with diagonal borders, the proper approach here is to
+mask the border area and merge the source with a <code>FillBorders</code> call. An
+example of this (from the Your Name (2016)):</p>
+<p align="center">
+<img src='Pictures/improper_borders0.png' onmouseover="this.src='Pictures/improper_borders1.png';" onmouseout="this.src='Pictures/improper_borders0.png';"/>
+</p>
+<p>Fix compared with unmasked in fillmargins mode and contrast adjusted for clarity:</p>
+<p align="center">
+<img src='Pictures/improper_borders_adjusted1.png' onmouseover="this.src='Pictures/improper_borders_adjusted2.png';" onmouseout="this.src='Pictures/improper_borders_adjusted1.png';"/>
+</p>
+<p>Code used (note that this was detinted after):</p>
+<pre><code class="language-py">mask = core.std.ShufflePlanes(src, 0, vs.GRAY).std.Binarize(43500)
+cf = core.fb.FillBorders(src, top=6, mode=&quot;mirror&quot;).std.MaskedMerge(src, mask)
+</code></pre>
+<p>Dirty lines can be quite difficult to spot. If you don't immediately
+spot any upon examining borders on random frames, chances are you'll be
+fine. If you know there are frames with small black borders on each
+side, you can use something like the <a href="https://gitlab.com/snippets/1834089">following script</a>:</p>
+<pre><code class="language-py">def black_detect(clip, thresh=None):
+    if thresh:
+        clip = core.std.ShufflePlanes(clip, 0, vs.GRAY).std.Binarize(
+            &quot;{0}&quot;.format(thresh)).std.Invert().std.Maximum().std.Inflate( ).std.Maximum().std.Inflate()
+    l = core.std.Crop(clip, right=clip.width / 2)
+    r = core.std.Crop(clip, left=clip.width / 2)
+    clip = core.std.StackHorizontal([r, l])
+    t = core.std.Crop(clip, top=clip.height / 2)
+    b = core.std.Crop(clip, bottom=clip.height / 2)
+    return core.std.StackVertical([t, b])
+</code></pre>
+<p>This script will make values under the threshold value (i.e. the black
+borders) show up as vertical or horizontal white lines in the middle on
+a mostly black background. If no threshold is given, it will simply
+center the edges of the clip. You can just skim through your video with
+this active. An automated alternative would be <a href="https://git.concertos.live/AHD/awsmfunc/src/branch/master/awsmfunc/detect.py"><code>dirtdtct</code></a>, which scans
+the video for you.</p>
+<p>Other kinds of variable dirty lines are a bitch to fix and require
+checking scenes manually.</p>
+<p>An issue very similar to dirty lines is unwanted borders. During scenes with
+different crops (e.g. IMAX or 4:3), the black borders may sometimes not
+be entirely black, or be completely messed up. In order to fix this,
+simply crop them and add them back. You may also want to fix dirty lines
+that may have occurred along the way:</p>
+<pre><code class="language-py">crop = core.std.Crop(src, left=100, right=100)
+clean = core.cf.ContinuityFixer(crop, left=2, right=2, top=0, bottom=0, radius=25)
+out = core.std.AddBorders(clean, left=100, right=100)
+</code></pre>
+<p>If you're resizing, you should crop these off before resizing, then add the borders back, as leaving the black bars in during the resize will create dirty lines:</p>
+<pre><code class="language-py">crop = src.std.Crop(left=100, right=100)
+clean = crop.cf.ContinuityFixer(left=2, right=2, top=2, radius=25)
+resize = awf.zresize(clean, preset=720)
+border_size = (1280 - resize.width) / 2
+bsize_mod2 = border_size % 2
+out = resize.std.AddBorders(left=border_size - bsize_mod2, right=border_size + bsize_mod2)
+</code></pre>
+<p>In the above example, we have to add more to one side than the other to reach our desired width.  Ideally, your <code>border_size</code> will be mod2 and you won't have to do this.</p>
+<p>If you know you have borders like these, you can use <code>brdrdtct</code> from <code>awsmfunc</code> similarly to <code>dirtdtct</code> to scan the file for them.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h2 id="the-088-gamma-bug"><a class="header" href="#the-088-gamma-bug">The 0.88 gamma bug</a></h2>
+<p>If you have two sources of which one is noticeably brighter than the other, chances are your brighter source is suffering from what's known as the gamma bug.
+If this is the case, do the following (for 16-bit) and see if it fixes the issue:</p>
+<pre><code class="language-py">out = core.std.Levels(src, gamma=0.88, min_in=4096, max_in=60160, min_out=4096, max_out=60160, planes=0)
+</code></pre>
+<p align="center">
+<img src='Pictures/gamma_before.png' onmouseover="this.src='Pictures/gamma_after.png';" onmouseout="this.src='Pictures/gamma_before.png';" />
+</p>
+<p>Do not perform this operation in low bit depth. Lower bit depths can and will lead to banding:</p>
+<p align="center">
+<img src='Pictures/gamma_lbd.png' onmouseover="this.src='Pictures/gamma_hbd.png';" onmouseout="this.src='Pictures/gamma_lbd.png';" />
+</p>
+<details>
+<summary>In-depth explanation</summary>
+This error seems to stem from Apple software.  <a href="https://vitrolite.wordpress.com/2010/12/31/quicktime_gamma_bug/">This blog post</a> is one of the few mentions of this blug one can find online.
+<p>The reason for this is likely that the software unnecessarily tries to convert between NTSC gamma (2.2) and PC gamma (2.5), as \(\frac{2.2}{2.5}=0.88\).</p>
+<p>To undo this, every value just has to be raised to the power of 0.88, although TV range normalization has to be done:</p>
+<p>\[
+v_\mathrm{new} = \left( \frac{v - min_\mathrm{in}}{max_\mathrm{in} - min_\mathrm{in}} \right) ^ {0.88} \times (max_\mathrm{out} - min_\mathrm{out}) + min_\mathrm{out}
+\]</p>
+<p>For those curious on how the gamma bug source and source will differ: all values other than 16, 232, 233, 234, and 235 are different, with the largest and most common difference being 10, lasting from 63 until 125.
+As an equal number of values can be hit and the operation is usually performed in high bit depth, significant detail loss is unlikely.
+However, do note that, no matter the bit depth, this is a lossy process.</p>
+</details>
+<p>You can also use the <code>fixlvls</code> wrapper in <code>awsmfunc</code> to easily do this in 32-bit precision.</p>
+<h2 id="double-range-compression"><a class="header" href="#double-range-compression">Double range compression</a></h2>
+<p>A similar issue is double range compression.  When this occurs, luma values will range between 30 and 218.  This can easily be fixed with the following:</p>
+<pre><code class="language-py">out = src.resize.Point(range_in=0, range=1, dither_type=&quot;error_diffusion&quot;)
+out = out.std.SetFrameProp(prop=&quot;_ColorRange&quot;, intval=1)
+</code></pre>
+<p align="center">
+<img src='Pictures/double_range_compression0.png' onmouseover="this.src='Pictures/double_range_compression1.png';" onmouseout="this.src='Pictures/double_range_compression0.png';" />
+</p>
+<details>
+<summary>In-depth explanation</summary>
+This issue means something or someone during the encoding pipeline assumed the input to be full range despite it already being in limited range.  As the end result usually has to be limited range, this perceived issue is "fixed".
+<p>One can also do the exact same in <code>std.Levels</code> actually.  The following math is applied for changing range:</p>
+<p>\[
+v_\mathrm{new} = \left( \frac{v - min_\mathrm{in}}{max_\mathrm{in} - min_\mathrm{in}} \right) \times (max_\mathrm{out} - min_\mathrm{out}) + min_\mathrm{out}
+\]</p>
+<p>For range compression, the following values are used:
+\[
+min_\mathrm{in} = 0 \qquad max_\mathrm{in} = 255 \qquad min_\mathrm{out} = 16 \qquad max_\mathrm{out} = 235
+\]</p>
+<p>As the zlib resizers use 32-bit precision to perform this internally, it's easiest to just use those.  However, these will change the file's <code>_ColorRange</code> property, hence the need for <code>std.SetFrameProp</code>. </p>
+</details>
+<h2 id="other-incorrect-levels"><a class="header" href="#other-incorrect-levels">Other incorrect levels</a></h2>
+<p>A closely related issue is otherwise incorrect levels.  To fix this, one ideally uses a reference source with correct levels, finds the equivalent values to 16 and 235, then adjusts from there (in 8-bit for clarity, do this in higher bit depths):</p>
+<pre><code class="language-py">out = src.std.Levels(min_in=x, min_out=16, max_in=y, max_out=235)
+</code></pre>
+<p>However, this usually won't be possible.  Instead, one can do the following math to figure out the correct adjustment values:</p>
+<p>\[
+v = \frac{v_\mathrm{new} + min_\mathrm{out}}{max_\mathrm{out} - min_\mathrm{out}} \times (max_\mathrm{in} - min_\mathrm{in}) + min_\mathrm{in}
+\]</p>
+<p>Whereby one can just choose any low value from the to-be-adjusted source, set that as \(min_\mathrm{in}\), choose the value for that same pixel in the reference source as \(min_\mathrm{out}\).  One does the same for high values and maximums.  Then, one calculates this for 16 and 235 (again, preferably in high bit depths - 4096 and 60160 for 16-bit, 0 and 1 in 32-bit float etc.) and the output values will be our \(x\) and \(y\) in the VapourSynth code above.</p>
+<p>To illustrate this, let's use the German and American Blu-rays of Burning (2018).  The USA Blu-ray has correct levels, while GER has incorrect ones:</p>
+<p align="center">
+<img src='Pictures/burning_usa0.png' onmouseover="this.src='Pictures/burning_ger0.png';" onmouseout="this.src='Pictures/burning_usa0.png';" />
+</p>
+<p>A high value in GER here would be 208, while the same pixel is 216 in USA.  For lows, one can find 25 and 28.  With these, we get 19.5 and 225.9.  Doing these for a couple more pixels and different frames, then averaging the values we get 19 and 224.  We adjust using these and a significantly closer image<sup class="footnote-reference"><a href="#1">1</a></sup>:</p>
+<p align="center">
+<img src='Pictures/burning_ger_fixed0.png' onmouseover="this.src='Pictures/burning_usa0.png';" onmouseout="this.src='Pictures/burning_ger_fixed0.png';" />
+</p>
+<details>
+<summary>In-depth explanation</summary>
+Those who have read the previous explanations should recognize this function, as it is the inverse of the function used for level adjustment.  We simply reverse it, set our desired values as \(v_\mathrm{new}\) and calculate.
+</details>
+<h2 id="improper-color-matrix"><a class="header" href="#improper-color-matrix">Improper color matrix</a></h2>
+<p>If you have a source with an improper color matrix, you can fix this
+with the following:</p>
+<pre><code class="language-py">out = core.resize.Point(src, matrix_in_s='470bg', matrix_s='709')
+</code></pre>
+<p>The <code>’470bg’</code> is what's also known as 601. To know if you should be
+doing this, you'll need some reference sources, preferably not web
+sources. Technically, you can identify bad colors and realize that it's
+necessary to change the matrix, but one should be extremely certain in such cases.</p>
+<p align="center">
+<img src='Pictures/burning_matrix_before.png' onmouseover="this.src='Pictures/burning_matrix_after.png';" onmouseout="this.src='Pictures/burning_matrix_before.png';" />
+</p>
+<details>
+<summary>In-depth explanation</summary>
+Color matrices define how conversion between YCbCr and RGB takes place.  As RGB naturally doesn't have any subsampling, the clip is first converted from 4:2:0 to 4:4:4, then from YCbCr to RGB, then the process is reverted.  During the YCbCr to RGB conversion, we assume Rec.601 matrix coefficients, while during the conversion back, we specify Rec.709.
+<p>The reason why it's difficult to know whether the incorrect standard was assumed is because the two cover a similar range of CIE 1931.  The chromaticity diagrams should make this obvious (Rec.2020 included as a reference):</p>
+<p align="center">
+<img src='Pictures/colorspaces.svg'/>
+</p>
+</details>
+<h2 id="rounding-error"><a class="header" href="#rounding-error">Rounding error</a></h2>
+<p>A slight green tint may be indicative of a rounding error having occured.
+To fix this, we need to add a half step in a higher bit depth than the source's:</p>
+<pre><code class="language-py">high_depth = vsutil.depth(src, 16)
+half_step = high_depth.std.Expr(&quot;x 128 +&quot;)
+out = vsutil.depth(half_step, 8)
+</code></pre>
+<p align="center">
+<img src='Pictures/rounding_0.png' onmouseover="this.src='Pictures/rounding_1.png';" onmouseout="this.src='Pictures/rounding_0.png';" />
+</p>
+<p>Alternatively, one can use <a href="https://github.com/Irrational-Encoding-Wizardry/lvsfunc"><code>lvsfunc.misc.fix_cr_tint</code></a> instead.
+Its defaults are equivalent to the above.</p>
+<details>
+<summary>In-depth explanation</summary>
+When the studio went from their 10-bit master to 8-bit, their software may have always rounded down (e.g. 1.9 would be rounded to 1).
+Our way of solving this simply adds an 8-bit half step, as \(0.5 \times 2 ^ {16 - 8} = 128\).
+</details>
+<h2 id="detinting"><a class="header" href="#detinting">Detinting</a></h2>
+<p>Please note that you should only resort to this method if all others fail.</p>
+<p>If you've got a better source with a tint and a worse source without a
+tint, and you'd like to remove it, you can do so via <a href="https://github.com/sekrit-twc/timecube"><code>timecube</code></a> and
+<a href="https://valeyard.net/2017/03/drdres-color-matching-tool-v1-2.php">DrDre's Color Matching Tool</a><sup class="footnote-reference"><a href="#2">2</a></sup>. First, add two reference screenshots
+to the tool, export the LUT, save it, and add it via something like:</p>
+<pre><code class="language-py">clip = core.resize.Point(src, matrix_in_s=&quot;709&quot;, format=vs.RGBS)
+detint = core.timecube.Cube(clip, &quot;LUT.cube&quot;)
+out = core.resize.Point(detint, matrix=1, format=vs.YUV420P16, dither_type=&quot;error_diffusion&quot;)
+</code></pre>
+<p align="center">
+<img src='Pictures/detint_before2.png' onmouseover="this.src='Pictures/detint_after2.png';" onmouseout="this.src='Pictures/detint_before2.png';" />
+</p>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>For simplicity's sake, chroma planes weren't touched here.  These require far more work than luma planes, as it's harder to find very vibrant colors, especially with screenshots like this.</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>This program is sadly closed source.  I don't know of any alternatives for this.</p>
+</div>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="this-needs-to-be-reformatted"><a class="header" href="#this-needs-to-be-reformatted">this needs to be reformatted</a></h1>
+<p>Masking is a less straightforward topic. The idea is to limit the
+application of filters according to the source image's properties. A
+mask will typically be grayscale, whereby how much of the two clips in
+question are applied is determined by the mask's brightness. So, if you
+do</p>
+<pre><code class="language-py">mask = mask_function(src)
+filtered = filter_function(src)
+merge = core.std.MaskedMerge(src, filtered, mask)
+</code></pre>
+<p>The <code>filtered</code> clip will be used for every completely white pixel in
+<code>mask</code>, and the <code>src</code> clip for every black pixel, with in-between values
+determining the ratio of which clip is applied. Typically, a mask will
+be constructed using one of the following three functions:</p>
+<ul>
+<li>
+<p><code>std.Binarize</code>: This simply separates pixels by whether they are
+above or below a threshold and sets them to black or white
+accordingly.</p>
+</li>
+<li>
+<p><code>std.Expr</code>: Known to be a very complicated function. Applies logic
+via reverse Polish notation. If you don't know what this is, read up
+on Wikipedia. Some cool things you can do with this are make some
+pixels brighter while keeping others the same (instead of making
+them dark as you would with <code>std.Binarize</code>):
+<code>std.Expr(&quot;x 2000 &gt; x 10 * x ?&quot;)</code>. This would multiply every value
+above 2000 by ten and leave the others be. One nice use case is for
+in between values:
+<code>std.Expr(&quot;x 10000 &gt; x 15000 &lt; and x {} = x 0 = ?&quot;.format(2**src.format.bits_per_sample - 1))</code>.<br />
+This makes every value between 10 000 and 15 000 the maximum value
+allowed by the bit depth and makes the rest zero, just like how a
+<code>std.Binarize</code> mask would. Many other functions can be performed via
+this.</p>
+</li>
+<li>
+<p><code>std.Convolution</code>: In essence, apply a matrix to your pixels. The
+documentation explains it well, so just read that if you don't get
+it. Lots of masks are defined via convolution kernels. You can use
+this to do a whole lot of stuff. For example, if you want to average
+all the values surrounding a pixel, do
+<code>std.Convolution([1, 1, 1, 1, 0, 1, 1, 1, 1])</code>. To illustrate, let's
+say you have a pixel with the value \(\mathbf{1}\) with the following
+\(3\times3\) neighborhood:</p>
+<p>\[\begin{bmatrix}
+0 &amp; 2 &amp; 4 \\
+6 &amp; \mathbf{1} &amp; 8 \\
+6 &amp; 4 &amp; 2
+\end{bmatrix}\]</p>
+<p>Now, let's apply a convolution kernel:</p>
+<p>\[\begin{bmatrix}
+2 &amp; 1 &amp; 3 \\
+1 &amp; 0 &amp; 1 \\
+4 &amp; 1 &amp; 5
+\end{bmatrix}\]</p>
+<p>This will result in the pixel 1 becoming:
+\[\frac{1}{18} \times (2 \times 0 + 1 \times 2 + 3 \times 4 + 1 \times 6 + 0 \times \mathbf{1} + 1 \times 8 + 4 \times 6 + 1 \times 4 + 5 \times 2) = \frac{74}{18} \approx 4\]</p>
+</li>
+</ul>
+<p>So, let's say you want to perform what is commonly referred to as a
+simple &quot;luma mask&quot;:</p>
+<pre><code class="language-py">y = core.std.ShufflePlanes(src, 0, vs.GRAY)
+mask = core.std.Binarize(y, 5000)
+merge = core.std.MaskedMerge(filtered, src, mask)
+</code></pre>
+<p>In this case, I'm assuming we're working in 16-bit. What <code>std.Binarize</code>
+is doing here is making every value under 5000 the lowest and every
+value above 5000 the maximum value allowed by our bit depth. This means
+that every pixel above 5000 will be copied from the source clip.</p>
+<p>Let's try this using a <code>filtered</code> clip which has every pixel's value
+multiplied by 8:</p>
+<p><img src="filtering/Pictures/luma_mask.png" alt="Binarize mask applied to luma with filtered clip being std.Expr(&quot;x 8 *&quot;)." /></p>
+<p>Simple binarize masks on luma are very straightforward and often do a
+good job of limiting a filter to the desired area, especially as dark
+areas are more prone to banding and blocking.</p>
+<p>A more sophisticated version of this is <code>adaptive_grain</code> from earlier in
+this guide. It scales values from black to white based on both the
+pixel's luma value compared to the image's average luma value. A more
+in-depth explanation can be found on <a href="https://blog.kageru.moe/legacy/adaptivegrain.html">the creator's blog</a>. We
+manipulate this mask using a <code>luma_scaling</code> parameter. Let's use a very
+high value of 500 here:</p>
+<p><img src="filtering/Pictures/adg_mask.png" alt="kgf.adaptive_grain(y, show_mask=True, luma_scaling=500) mask applied to luma with filtered clip being std.Expr(&quot;x 8 *&quot;)." /></p>
+<p>Alternatively, we can use an <code>std.Expr</code> to merge the clips via the
+following logic:</p>
+<pre><code>if abs(src - filtered) &lt;= 1000:
+    return filtered
+elif abs(src - filtered) &gt;= 30000:
+    return src
+else:
+    return src + (src - filtered) * (30000 - abs(src - filtered)) / 29000
+</code></pre>
+<p>This is almost the exact algorithm used in <code>mvsfunc.LimitFilter</code>, which
+<code>GradFun3</code> uses to apply its bilateral filter. In VapourSynth, this
+would be:</p>
+<pre><code class="language-py">expr = core.std.Expr([src, filtered], &quot;x y - abs 1000 &gt; x y - abs 30000 &gt; x x y - 30000 x y - abs - * 29000 / + x ? y ?&quot;)
+</code></pre>
+<p><img src="filtering/Pictures/expr_limit.png" alt="LimitFilter style expression to apply filter std.Expr(&quot;x 8 *&quot;) to source." /></p>
+<p>Now, let's move on to the third option: convolutions, or more
+interestingly for us, edge masks. Let's say you have a filter that
+smudges details in your clip, but you still want to apply it to
+detail-free areas. We can use the following convolutions to locate
+horizontal and vertical edges in the image:</p>
+<p>\[\begin{aligned}
+&amp;\begin{bmatrix}
+1 &amp; 0 &amp; -1 \\
+2 &amp; 0 &amp; -2 \\
+1 &amp; 0 &amp; -1
+\end{bmatrix}
+&amp;\begin{bmatrix}
+1 &amp; 2 &amp; 1 \\
+0 &amp; 0 &amp; 0 \\
+-1 &amp; -2 &amp; -1
+\end{bmatrix}\end{aligned}\]</p>
+<p>Combining these two is what is commonly referred to as a Sobel-type edge
+mask. It produces the following for our image of the lion:</p>
+<p><img src="filtering/Pictures/sobel.png" alt="image" />
+Now, this result is obviously rather boring. One can see a rough outline
+of the background and the top of the lion, but not much more can be made
+out.<br />
+To change this, let's introduce some new functions:</p>
+<ul>
+<li>
+<p><code>std.Maximum/Minimum</code>: Use this to grow or shrink your mask, you may
+additionally want to apply <code>coordinates=[0, 1, 2, 3, 4, 5, 6, 7]</code>
+with whatever numbers work for you in order to specify weights of
+the surrounding pixels.</p>
+</li>
+<li>
+<p><code>std.Inflate/Deflate</code>: Similar to the previous functions, but
+instead of applying the maximum of pixels, it merges them, which
+gets you a slight blur of edges. Useful at the end of most masks so
+you get a slight transition between masked areas.</p>
+</li>
+</ul>
+<p>We can combine these with the <code>std.Binarize</code> function from before to get
+a nifty output:</p>
+<pre><code class="language-py">mask = y.std.Sobel()
+binarize = mask.std.Binarize(3000)
+maximum = binarize.std.Maximum().std.Maximum()
+inflate = maximum.std.Inflate().std.Inflate().std.Inflate()
+</code></pre>
+<p><img src="filtering/Pictures/sobel_manipulated.png" alt="Sobel mask from before manipulated with std.Binarize, std.Maximum, and std.Inflate." /></p>
+<p>A common example of a filter that might smudge the output is an
+anti-aliasing or a debanding filter. In the case of an anti-aliasing
+filter, we apply the filter via the mask to the source, while in the
+case of the debander, we apply the source via the mask to the filtered
+source:</p>
+<pre><code class="language-py">mask = y.std.Sobel()
+
+aa = taa.TAAmbk(src, aatype=3, mtype=0)
+merge = core.std.MaskedMerge(src, aa, mask)
+
+deband = src.f3kdb.Deband()
+merge = core.std.MaskedMerge(deband, src, mask)
+</code></pre>
+<p>We can also use a different edge mask, namely <code>kgf.retinex_edgemask</code>,
+which raises contrast in dark areas and creates a second edge mask using
+the output of that, then merges it with the edge mask produced using the
+untouched image:</p>
+<p><img src="filtering/Pictures/retinex_edgemask.png" alt="kgf.retinex_edgemask applied to luma." /></p>
+<p>This already looks great. Let's manipulate it similarly to before and
+see how it affects a destructive deband in the twig area at the bottom:</p>
+<pre><code class="language-py">deband = src.f3kdb.Deband(y=150, cb=150, cr=150, grainy=0, grainc=0)
+mask = kgf.retinex_edgemask(src).std.Binarize(8000).std.Maximum()
+merge = core.std.MaskedMerge(deband, src, mask)
+</code></pre>
+<p><img src="filtering/Pictures/masked_deband.png" alt="A very strong deband protected using kgf.retinex_edgemask." /></p>
+<p>While some details remain smudged, we've successfully recovered a very
+noticeable portion of the twigs. Another example of a deband suffering
+from detail loss without an edge mask can be found under figure
+<a href="filtering/masking.html#fig:18">35</a> in the appendix.</p>
+<p>Other noteworthy edge masks easily available in VapourSynth include:</p>
+<ul>
+<li>
+<p><code>std.Prewitt</code> is similar to Sobel. It's the same operator with the 2
+switched out for a 1.</p>
+</li>
+<li>
+<p><code>tcanny.TCanny</code> is basically a Sobel mask thrown over a blurred
+clip.</p>
+</li>
+<li>
+<p><code>kgf.kirsch</code> will generate almost identical results to
+<code>retinex_edgemask</code> in bright scenes, as it's one of its components.
+Slower than the others, as it uses more directions, but will get you
+great results.</p>
+</li>
+</ul>
+<p>Some edge mask comparisons can be found in the appendix under figures
+<a href="filtering/masking.html#fig:16">26</a>{reference-type=&quot;ref&quot; reference=&quot;fig:16&quot;},
+<a href="filtering/masking.html#fig:10">30</a>{reference-type=&quot;ref&quot; reference=&quot;fig:10&quot;} and
+<a href="filtering/masking.html#fig:23">34</a>{reference-type=&quot;ref&quot; reference=&quot;fig:23&quot;}.</p>
+<p>As a debanding alternative to edge masks, we can also use &quot;range&quot;
+masks, which employ <code>std.Minimum</code> and <code>std.Maximum</code> to locate details.
+The most well known example of this is the mask inside <code>GradFun3</code>. This
+works as follows:</p>
+<p>Then, two clips are created, one which will employ <code>std.Maximum</code>, while
+the other obviously will use <code>std.Minimum</code>. These use special
+coordinates depending on the <code>mrad</code> value given. If
+\(\mathtt{mrad} \mod 3 = 1\), <code>[0, 1, 0, 1, 1, 0, 1, 0]</code> will be used as
+coordinates. Otherwise, <code>[1, 1, 1, 1, 1, 1, 1, 1]</code> is used. Then, this
+process is repeated with \(\mathtt{mrad} = \mathtt{mrad} - 1\) until
+$\mathtt{mrad} = 0$. This all probably sounds a bit overwhelming, but
+it's really just finding the maximum and minimum values for each pixel
+neighborhood.</p>
+<p>Once these are calculated, the minimized mask is subtracted from the
+maximized mask, and the mask is complete. So, let's look at the output
+compared to the modified <code>retinex_edgemask</code> from earlier:</p>
+<p><img src="filtering/Pictures/gradfun3_mask.png" alt="Comparison of retinex_edgemask.std.Binarize(8000).std.Maximum() and default GradFun3." /></p>
+<p>Here, we get some more pixels picked up by the <code>GradFun3</code> mask in the
+skies and some brighter flat textures. However, the retinex-type edge
+mask prevails in darker, more detailed areas. Computationally, our
+detail mask is a lot quicker, however, and it does pick up a lot of what
+we want, so it's not a bad choice.</p>
+<p>Fortunately for us, this isn't the end of these kinds of masks. There
+are two notable masks based on this concept: <a href="https://pastebin.com/SHQZjVJ5"><code>debandmask</code></a> and
+<code>lvsfunc.denoise.detail_mask</code>. The former takes our <code>GradFun3</code> mask and
+binarizes it according to the input luma's brightness. Four parameters
+play a role in this process: <code>lo</code>, <code>hi</code>, <code>lothr</code>, and <code>hithr</code>. Values
+below <code>lo</code> are binarized according to <code>lothr</code>, values above <code>hi</code> are
+binarized according to <code>hithr</code>, and values in between are binarized
+according to a linear scaling between the two thresholds:</p>
+<p>\[\frac{\mathtt{mask} - \mathtt{lo}}{\mathtt{hi} - \mathtt{lo}} \times (\mathtt{hithr} - \mathtt{lothr}) + \mathtt{lothr}\]</p>
+<p>This makes it more useful in our specific scenario, as the mask becomes
+stronger in darks compared to <code>GradFun3</code>. When playing around with the
+parameters, we can e.. lower <code>lo</code> so we our very dark areas aren't
+affected too badly, lower <code>lothr</code> to make it stronger in these darks,
+raise <code>hi</code> to enlarge our <code>lo</code> to <code>hi</code> gap, and raise <code>hithr</code> to weaken
+it in brights. Simple values might be
+<code>lo=22 &lt;&lt; 8, lothr=250, hi=48 &lt;&lt; 8, hithr=500</code>:</p>
+<p><img src="filtering/Pictures/debandmask_comparison.png" alt="Comparison of retinex_edgemask.std.Binarize(8000).std.Maximum(), default GradFun3, and default debandmask(lo=22 &lt;&lt; 8, lothr=250, hi=48 &lt;&lt; 8, hithr=500)." /></p>
+<p>While not perfect, as this is a tough scene, and parameters might not be
+optimal, the difference in darks is obvious, and less banding is picked
+up in the background's banding.</p>
+<p>Our other option for an altered <code>GradFun3</code> is <code>lvf.denoise.detail_mask</code>.
+This mask combines the previous idea of the <code>GradFun3</code> mask with a
+Prewitt-type edge mask.</p>
+<p>First, two denoised clips are created using <code>KNLMeansCL</code>, one with half
+the other's denoise strength. The stronger one has a <code>GradFun3</code>-type
+mask applied, which is then binarized, while the latter has a Prewitt
+edge mask applied, which again is binarized. The two are then combined
+so the former mask gets any edges it may have missed from the latter
+mask.</p>
+<p>The output is then put through two calls of <code>RemoveGrain</code>, the first one
+setting each pixel to the nearest value of its four surrounding pixel
+pairs' (e.. top and bottom surrounding pixels make up one pair) highest
+and lowest average value. The second call effectively performs the
+following convolution: 
+\[\begin{bmatrix}
+1 &amp; 2 &amp; 1 \\
+2 &amp; 4 &amp; 2 \\
+1 &amp; 2 &amp; 1
+\end{bmatrix}\]</p>
+<p>By default, the denoiser is turned off, but this is one of its
+advantages for us in this case, as we'd like the sky to have fewer
+pixels picked up while we'd prefer more of the rest of the image to be
+picked up. To compare, I've used a binarize threshold similar to the one
+used in the <code>debandmask</code> example. Keep in mind this is a newer mask, so
+my inexperience with it might show to those who have played around with
+it more:</p>
+<p><img src="filtering/Pictures/detail_mask.png" alt="Comparison of retinex_edgemask.std.Binarize(8000).std.Maximum(), default GradFun3, default debandmask(lo=22 &lt;&lt; 8, lothr=250, hi=48 &lt;&lt; 8, hithr=500), and detail_mask(pre_denoise=.3, brz_a=300, brz_b=300)." /></p>
+<p>Although an improvement in some areas, in this case, we aren't quite
+getting the step up we would like. Again, better optimized parameters
+might have helped.</p>
+<p>In case someone wants to play around with the image used here, it's
+available in this guide's repository:
+<a href="https://git.concertos.live/Encode_Guide/Encode_Guide/src/branch/master/Pictures/lion.png">https://git.concertos.live/Encode_Guide/Encode_Guide/src/branch/master/Pictures/lion.png</a>.</p>
+<p>Additionally, the following functions can be of help when masking,
+limiting et cetera:</p>
+<ul>
+<li>
+<p><code>std.MakeDiff</code> and <code>std.MergeDiff</code>: These should be
+self-explanatory. Use cases can be applying something to a degrained
+clip and then merging the clip back, as was elaborated in the
+Denoising section.</p>
+</li>
+<li>
+<p><code>std.Transpose</code>: Transpose (i.. flip) your clip.</p>
+</li>
+<li>
+<p><code>std.Turn180</code>: Turns by 180 degrees.</p>
+</li>
+<li>
+<p><code>std.BlankClip</code>: Just a frame of a solid color. You can use this to
+replace bad backgrounds or for cases where you've added grain to an
+entire movie but you don't want the end credits to be full of grain.
+To maintain TV range, you can use
+<code>std.BlankClip(src, color=[16, 128, 128]</code>) for 8-bit black. Also
+useful for making area based masks.</p>
+</li>
+<li>
+<p><code>std.Invert</code>: Self-explanatory. You can also just swap which clip
+gets merged via the mask instead of doing this.</p>
+</li>
+<li>
+<p><code>std.Limiter</code>: You can use this to limit pixels to certain values.
+Useful for maintaining TV range (<code>std.Limiter(min=16, max=235)</code>).</p>
+</li>
+<li>
+<p><code>std.Median</code>: This replaces each pixel with the median value in its
+neighborhood. Mostly useless.</p>
+</li>
+<li>
+<p><code>std.StackHorizontal</code>/<code>std.StackVertical</code>: Stack clips on top
+of/next to each other.</p>
+</li>
+<li>
+<p><code>std.Merge</code>: This lets you merge two clips with given weights. A
+weight of 0 will return the first clip, while 1 will return the
+second. The first thing you give it is a list of clips, and the
+second item is a list of weights for each plane. Here's how to merge
+chroma from the second clip into luma from the first:
+<code>std.Merge([first, second], [0, 1])</code>. If no third value is given,
+the second one is copied for the third plane.</p>
+</li>
+<li>
+<p><code>std.ShufflePlanes</code>: Extract or merge planes from a clip. For
+example, you can get the luma plane with
+<code>std.ShufflePlanes(src, 0, vs.GRAY)</code>.</p>
+</li>
+</ul>
+<p>If you want to apply something to only a certain area, you can use the
+wrapper <a href="https://gitlab.com/Ututu/rekt"><code>rekt</code></a> or <code>rekt_fast</code>. The latter only applies you function
+to the given area, which speeds it up and is quite useful for
+anti-aliasing and similar slow filters. Some wrappers around this exist
+already, like <code>rektaa</code> for anti-aliasing. Functions in <code>rekt_fast</code> are
+applied via a lambda function, so instead of <code>src.f3kdb.Deband()</code>, you
+input <code>rekt_fast(src, lambda x: x.f3kdb.Deband())</code>.</p>
+<p>One more very special function is <code>std.FrameEval</code>. What this allows you
+to do is evaluate every frame of a clip and apply a frame-specific
+function. This is quite confusing, but there are some nice examples in
+VapourSynth's documentation:
+<a href="http://www.vapoursynth.com/doc/functions/frameeval.html">http://www.vapoursynth.com/doc/functions/frameeval.html</a>. Now, unless
+you're interested in writing a function that requires this, you likely
+won't ever use it. However, many functions use it, including<br />
+<code>kgf.adaptive_grain</code>, <code>awf.FrameInfo</code>, <code>fvf.AutoDeblock</code>, <code>TAAmbk</code>, and
+many more. One example I can think of to showcase this is applying a
+different debander depending on frame type:</p>
+<pre><code class="language-py">import functools
+def FrameTypeDeband(n, f, clip):
+    if clip.props['_PictType'].decode() == &quot;B&quot;:
+        return core.f3kdb.Deband(clip, y=64, cr=0, cb=0, grainy=64, grainc=0, keep_tv_range=True, dynamic_grain=False)
+    elif clip.props['_PictType'].decode() == &quot;P&quot;:
+        return core.f3kdb.Deband(clip, y=48, cr=0, cb=0, grainy=64, grainc=0, keep_tv_range=True, dynamic_grain=False)
+    else:
+        return core.f3kdb.Deband(clip, y=32, cr=0, cb=0, grainy=64, grainc=0, keep_tv_range=True, dynamic_grain=False)
+        
+out = core.std.FrameEval(src, functools.partial(FrameTypeDeband, clip=src), src)
+</code></pre>
+<p>If you'd like to learn more, I'd suggest reading through the Irrational
+Encoding Wizardry GitHub group's guide:
+<a href="https://guide.encode.moe/encoding/masking-limiting-etc.html">https://guide.encode.moe/encoding/masking-limiting-etc.html</a> and
+reading through most of your favorite Python functions for VapourSynth.
+Pretty much all of the good ones should use some mask or have developed
+their own mask for their specific use case.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="hqderingmod"><a class="header" href="#hqderingmod">HQDeringmod</a></h1>
+<h1 id="sharpening"><a class="header" href="#sharpening">Sharpening</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h2 id="dehalo_alpha"><a class="header" href="#dehalo_alpha">DeHalo_alpha</a></h2>
+<details>
+<summary>old function explanation</summary>
+`DeHalo_alpha` works by downscaling the source according to `rx` and
+`ry` with a mitchell bicubic ($b=\nicefrac{1}{3},\ c=\nicefrac{1}{3}$)
+kernel, scaling back to source resolution with blurred bicubic, and
+checking the difference between a minimum and maximum (check
+[3.2.14](#masking){reference-type="ref" reference="masking"} if you
+don't know what this means) for both the source and resized clip. The
+result is then evaluated to a mask according to the following
+expressions, where $y$ is the maximum and minimum call that works on the
+source, $x$ is the resized source with maximum and minimum, and
+everything is scaled to 8-bit:
+$$\texttt{mask} = \frac{y - x}{y + 0.0001} \times \left[255 - \texttt{lowsens} \times \left(\frac{y + 256}{512} + \frac{\texttt{highsens}}{100}\right)\right]$$
+This mask is used to merge the source back into the resized source. Now,
+the smaller value of each pixel is taken for a lanczos resize to
+$(\texttt{height} \times \texttt{ss})\times(\texttt{width} \times \texttt{ss})$
+of the source and a maximum of the merged clip resized to the same
+resolution with a mitchell kernel. The result of this is evaluated along
+with the minimum of the merged clip resized to the aforementioned
+resolution with a mitchell kernel to find the minimum of each pixel in
+these two clips. This is then resized to the original resolution via a
+lanczos resize, and the result is merged into the source via the
+following:
+<pre><code>if original &lt; processed
+    x - (x - y) * darkstr
+else
+    x - (x - y) * brightstr
+</code></pre>
+</details>
+<h3 id="masking"><a class="header" href="#masking">Masking</a></h3>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="denoising"><a class="header" href="#denoising">Denoising</a></h1>
+<h2 id="bm3d"><a class="header" href="#bm3d">BM3D</a></h2>
+<h2 id="knlmeanscl"><a class="header" href="#knlmeanscl">KNLMeansCL</a></h2>
+<h2 id="smdegrain"><a class="header" href="#smdegrain">SMDegrain</a></h2>
+<h1 id="grain-dampening"><a class="header" href="#grain-dampening">Grain Dampening</a></h1>
+<h2 id="stpresso"><a class="header" href="#stpresso">STPresso</a></h2>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="dehardsubbing"><a class="header" href="#dehardsubbing">Dehardsubbing</a></h1>
+<h2 id="hardsubmask"><a class="header" href="#hardsubmask">hardsubmask</a></h2>
+<h3 id="hardsubmask_fades"><a class="header" href="#hardsubmask_fades">hardsubmask_fades</a></h3>
+<h1 id="delogoing"><a class="header" href="#delogoing">Delogoing</a></h1>
+<h2 id="delogohd"><a class="header" href="#delogohd">DeLogoHD</a></h2>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><p>To start off, you'll want to select a smaller region of your video file
+to use as reference, since testing on the entire thing would take
+forever. The recommended way of doing this is by using <code>awsmfunc</code>'s
+<code>SelectRangeEvery</code>:</p>
+<pre><code>import awsmfunc as awf
+out = awf.SelectRangeEvery(clip, every=15000, length=250, offset=[1000, 5000])
+</code></pre>
+<p>Here, the first number is the offset between sections, the second one is
+the length of each section, and the offset array is the offset from
+start and end.</p>
+<p>You'll want to use a decently long clip (a couple thousand frames
+usually) that includes both dark, bright, static, and action scenes,
+however, these should be roughly as equally distributed as they are in
+the entire video.</p>
+<p>When testing settings, you should always use 2-pass encoding, as many
+settings will substantially change the bitrate CRF gets you. For the
+final encode, both are fine, although CRF is faster.</p>
+<p>To find out what setting is best, compare them all to each other and the
+source. You can do so by interleaving them either individually or by a
+folder via <code>awsmfunc</code>. You'll usually also want to label them, so you
+actually know which clip you're looking at:</p>
+<pre><code># Load the files before this
+src = awf.FrameInfo(src, &quot;Source&quot;)
+test1 = awf.FrameInfo(test1, &quot;Test 1&quot;)
+test2 = awf.FrameInfo(test2, &quot;Test 2&quot;)
+out = core.std.Interleave([src, test1, test2])
+
+# You can also place them all in the same folder and do
+src = awf.FrameInfo(src, &quot;Source&quot;)
+folder = &quot;/path/to/settings_folder&quot;
+out = awf.InterleaveDir(src, folder, PrintInfo=True, first=extract, repeat=True)
+</code></pre>
+<p>If you're using <code>yuuno</code>, you can use the following iPython magic to get
+the preview to switch between two source by hovering over the preview
+screen:</p>
+<pre><code>%vspreview --diff
+clip_A = core.ffms2.Source(&quot;settings/crf/17.0&quot;)
+clip_A.set_output()
+clip_B = core.ffms2.Source(&quot;settings/crf/17.5&quot;)
+clip_B.set_output(1)
+</code></pre>
+<p>Usually, you'll want to test for the bitrate first. Just encode at a
+couple different CRFs and compare them to the source to find the highest
+CRF value that is indistinguishable from the source. Now, round the
+value, preferably down, and switch to 2-pass. For standard testing, test
+qcomp (intervals of 0.05), aq-modes with aq-strengths in large internals
+(e.. for one aq-mode do tests with aq-strengths ranging from 0.6 to 1.0
+in intervals of 0.2), aq-strength (intervals of 0.05), merange (32, 48,
+and 64), psy-rd (intervals of 0.05), ipratio/pbratio (intervals of 0.05
+with distance of 0.10 maintained), and then deblock (intervals of 1). If
+you think mbtree could help (i.. you're encoding animation), redo this
+process with mbtree turned on. You probably won't want to change the
+order much, but it's certainly possible to do so.</p>
+<p>For x265, the order should be qcomp, aq-mode, aq-strength, psy-rd,
+psy-rdoq, ipratio and pbratio, and then deblock.</p>
+<p>If you want that little extra efficiency, you can redo the tests again
+with smaller intervals surrounding the areas around which value you
+ended up deciding on for each setting. It's recommended to do this after
+you've already done one test of each setting, as they do all have a
+slight effect on each other.</p>
+<p>Once you're done testing the settings with 2-pass, switch back to CRF
+and repeat the process of finding the highest transparent CRF value.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h4 id="dxva"><a class="header" href="#dxva">DXVA</a></h4>
+<ul>
+<li>
+<p><code>--level 4.1</code></p>
+</li>
+<li>
+<p><code>--vbv-bufsize 78125 --vbv-maxrate 62500</code> for DXVA (The old guide
+used lower values to account for the possibility of writing the
+encode to BD for playback, this is no longer a consideration as
+other settings break this compatibility. The new values are the max
+level 4.1 can do, if your device breaks because of this the encode
+is not at fault, your device doesn't meet DXVA
+spec).</p>
+</li>
+</ul>
+<h2 id="general-settings"><a class="header" href="#general-settings">General settings</a></h2>
+<ul>
+<li>
+<p><code>--b-adapt 2</code> uses the best algorithm (that x264 has) to decide how
+B frames are placed.</p>
+</li>
+<li>
+<p><code>--min-keyint</code> should typically be the frame rate of your video,
+e.g. if you were encoding 23.976 fps content, then you use 24. This
+is setting the minimum distance between I-frames.</p>
+</li>
+<li>
+<p><code>--rc-lookahead 250</code> if using mbtree, 60 or higher else. This sets
+how many frames ahead x264 can look, which is critical for mbtree.
+You need lots of memory for this. (Personally I just leave this at
+250 now as the impact on memory usage is 2 GB or so.) Definitely
+lower this if you're encoding without mbtree and have a lot of
+ReplaceFramesSimple calls in your script.</p>
+</li>
+<li>
+<p><code>--me umh</code> is the lowest you should go. If your CPU is fast enough,
+you might endure the slowdown from tesa. esa takes as much time as
+tesa without any benefit, so if you want to slow down your encode to
+try and catch more movement vectors, just use tesa, although the
+increase is not necessarily always worth it. This isn't really a
+setting you need to test, but on tough sources, you might squeeze
+some more performance out of x264 if you use tesa.</p>
+</li>
+<li>
+<p><code>--direct auto</code> will automatically choose the prediction mode
+(spatial/temporal)</p>
+</li>
+<li>
+<p><code>--subme 10</code> or <code>11</code> (personally I just set this to 11 the
+difference in encode speed is within 3-4%)</p>
+</li>
+<li>
+<p><code>--trellis 2</code></p>
+</li>
+<li>
+<p><code>--no-dct-decimate</code> dct-decimate is a speed up that sacrifices
+quality. Just leave it off, since your computers can likely handle
+it.</p>
+</li>
+<li>
+<p><code>--no-fast-pskip</code> Similar to the above.</p>
+</li>
+<li>
+<p><code>--preset veryslow</code> or <code>placebo</code>, although the stuff we're changing
+will make veryslow be placebo, anyway.</p>
+</li>
+</ul>
+<h2 id="source-specific-settings"><a class="header" href="#source-specific-settings">Source-specific settings</a></h2>
+<ul>
+<li>
+<p><code>--bitrate</code> / <code>--crf</code> Bitrate is in Kbps (Kilobits per second) and
+CRF takes a float, where lower is better quality. This is the most
+important setting you have; bitstarve an encode and it is guaranteed
+to look like crap. Use too many bits and you've got bloat (and if
+people wanted to download massive files, they would get a remux). Of
+course, the bitrate need can vary drastically depending on the
+source.</p>
+</li>
+<li>
+<p><code>--deblock -3:-3</code> to <code>0:0</code>. For live action, most people just stick
+with -3:-3. For anime, values between -3:-2 and 0:0 are common.
+An explanation of the two params can be found <a href="https://forum.doom9.org/showpost.php?p=1692393&amp;postcount=32">HERE</a>.</p>
+</li>
+<li>
+<p><code>--qcomp 0.6</code> (default) to <code>0.8</code> might prove useful. Don't set this
+too high or too low, or the overall quality of your encode will
+suffer. This setting has a heavy effect on mbtree. A higher qcomp
+value will make mbtree weaker, hence something around 0.80 is
+usually optimal for anime. <code>--qcomp 0</code> will cause a constant
+bitrate, while <code>--qcomp 1</code> will cause a constant quantizer.</p>
+</li>
+<li>
+<p><code>--aq-mode 1</code> to <code>3</code>: 1 distributes bits on a per frame basis, 2
+tends to allocate more bits to the foreground and can distribute
+bits in a small range of frames, 3 is a modified version of 2 that
+attempts to allocate more bits to dark parts of the frames. The only
+way to know what's best for sure it to test. Almost every source
+ends up looking best with aq-mode 3, however.</p>
+</li>
+<li>
+<p><code>--aq-strength 0.5</code> to <code>1.3</code> are worth trying. Higher values might
+help with blocking. Lower values will tend to allocate more bits to
+the foreground, similar to aq-mode 2. Lower values allocate more
+bits to flat areas, while higher values allocate more to
+&quot;detailed&quot; areas. Note that x264 considers grain and noise as
+detail, so you can think of this setting as the ratio of bits
+allocated to edges vs. bits allocated to grain. You're usually going
+to want to have a higher qcomp for a lower aq-strength and vice
+versa. With mode 3, you're usually going to end up somewhere around
+the 0.7-0.8 range for modern film, for which a qcomp of 0.6-0.7
+often works best.</p>
+</li>
+<li>
+<p><code>--merange 24</code> (the lowest that should ever be used) to <code>64</code>,
+setting this too high can hurt (more than 128), 32 or 48 will be
+fine for most encodes. In general, 32-48 for 1080p and 32 for 720p
+(when using umh) for movies with lots of motion this can help (e.g.
+action movies). Talking heads can get away with low values like 24.
+The impact on encode speed is noticeable but not horrible. I prefer
+to use 48 for 1080p and 32 for 720p when using umh or 32 for 1080p
+and 32 for 720p when using tesa.</p>
+</li>
+<li>
+<p><code>--no-mbtree</code> I highly recommend testing with both mbtree enabled
+and disabled, as generally it will result in two very different
+encodes. mbtree basically attempts to degrade the quality of blocks
+rather than frames, so that only the unimportant parts of a frame
+get less bits. To do this, it needs to know how often a block is
+referenced later, which is why <code>--rc-lookahead</code> should be set
+to 250. Useful for things with static backgrounds, like anime. Or
+for things where you've used a high qcomp (.75 or above) and mbtree
+will have a lowered impact. When testing whether this is a decent
+option, you'll likely have to retest every setting, especially
+qcomp, psy-rd, and ipratio.</p>
+</li>
+<li>
+<p><code>--ipratio 1.15</code> to <code>1.40</code>, with 1.30 usually being the go-to
+option. This is the bitrate allocation ratio between I and P frames.</p>
+</li>
+<li>
+<p><code>--pbratio 1.05</code> to <code>1.30</code>, with 1.20 being the usual go-to. This is
+the bitrate allocation ratio between P and B frames. This value
+should always be around 0.10 lower than --ipratio, so lower it
+while testing ipratio. If you're using mbtree, this setting will
+have no affect, as mbtree determines it itself.</p>
+</li>
+<li>
+<p><code>--psy-rd 0.40:0 to 1.15:0</code>: 0.95:0 to 1.15:0 for live action. The
+first number is psy-rd strength, second is psy-trellis strength.
+This tries to keep x264 from making things blurry and instead keep
+the complexity. For anime, between 0.40 and 1.00:0.00 is the usual
+range. Psy-trellis usually introduces a lot of ringing, but can help
+with maintaining dither. You can try values between 0.00 and 0.15
+for live action and try values up to 0.50 for anime, although you'll
+usually get better results if you raise your aq-strength instead.</p>
+</li>
+<li>
+<p><code>--bframes 6</code> to <code>16</code>, This is setting the maximum amount of
+consecutive P frames that can be replaced with B frames. Test with
+16 for your first test run, and set according to the x264 log:</p>
+<p><code>x264 [info]: consecutive B-frames: 1.0% 0.0% 0.0% 0.0% 14.9% 23.8% 13.9% 15.8% 8.9% 9.9% 0.0% 11.9% 0.0% 0.0% 0.0% 0.0% 0.0%</code></p>
+<p>Start counting with the first percentage as 0 and choose the highest
+number with more than 1%, which is 11 in this example.</p>
+<p>Or just leave this at 16, as allowing more bframes will not harm
+your encode and will aid in compression; the impact on speed isn't that
+enormous.</p>
+</li>
+<li>
+<p><code>--ref 16</code> if you don't care about hardware compatibility, else just
+leave this option out and x264 will determine the correct number
+according to your level. This sets the number of previous frames
+each P frame can use as references. The impact on performance is
+quite high, but it's worth it most of the time.</p>
+</li>
+<li>
+<p><code>--zones</code> is quite useful for debanding and blocking, as these areas
+require a larger bitrate to maintain transparency. The syntax is<br />
+<code>--zones 0,100,crf=10/101,200,crf=15</code> or<br />
+<code>--zones 0,100,b=5/101,200,b=10</code> with <code>b</code> being a bitrate multiplier
+in this case. You can also use this for areas that don't get enough
+bits allocated. Especially common areas are darker scenes or scenes
+with lots of reds. Fades can also suffer from bitstarving and
+require zoning. One can also lower the bitrate during credits to
+save that little something.</p>
+</li>
+<li>
+<p><code>--output-depth 8</code> or <code>10</code> depending on what you're encoding in.</p>
+</li>
+<li>
+<p><code>--output-csp i444</code> if you're encoding 4:4:4, else leave this out.</p>
+</li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><p>The documentation here is very good, so I'll just go over recommended
+values:</p>
+<h2 id="source-independent-settings"><a class="header" href="#source-independent-settings">Source-independent settings</a></h2>
+<ul>
+<li>
+<p><code>--preset veryslow</code> or <code>slower</code></p>
+</li>
+<li>
+<p><code>--no-rect</code> for slower computers. There's a slight chance it'll
+prove useful, but it probably isn't worth it.</p>
+</li>
+<li>
+<p><code>--no-amp</code> is similar to <code>rect</code>, although it seems to be slightly
+more useful.</p>
+</li>
+<li>
+<p><code>--no-open-gop</code></p>
+</li>
+<li>
+<p><code>--no-cutree</code> since this seems to be a poor implementation of
+<code>mbtree</code>.</p>
+</li>
+<li>
+<p><code>--no-rskip</code> <code>rskip</code> is a speed up that gives up some quality, so
+it's worth considering with bad CPUs.</p>
+</li>
+<li>
+<p><code>--no-sao</code> because <code>sao</code> is one of the stupidest things in x265.</p>
+</li>
+<li>
+<p><code>--ctu 64</code></p>
+</li>
+<li>
+<p><code>--min-cu-size 8</code></p>
+</li>
+<li>
+<p><code>--rdoq-level 2</code></p>
+</li>
+<li>
+<p><code>--max-merge 5</code></p>
+</li>
+<li>
+<p><code>--rc-lookahead 60</code> although it's irrelevant as long as it's larger
+than min-keyint</p>
+</li>
+<li>
+<p><code>--ref 6</code> for good CPUs, something like <code>4</code> for worse ones.</p>
+</li>
+<li>
+<p><code>--bframes 16</code> or whatever your final bframes log output says.</p>
+</li>
+<li>
+<p><code>--rd 3</code> or <code>4</code> (they're currently the same).  If you can endure the slowdown, you can use <code>6</code>, too, which allows you to test <code>--rd-refine</code>.</p>
+</li>
+<li>
+<p><code>--subme 5</code>. You can also change this to <code>7</code>, but this is known to
+sharpen.</p>
+</li>
+<li>
+<p><code>--merange 57</code> just don't go below <code>32</code> and you should be fine.</p>
+</li>
+<li>
+<p><code>--high-tier</code></p>
+</li>
+<li>
+<p><code>--range limited</code></p>
+</li>
+<li>
+<p><code>--aud</code></p>
+</li>
+<li>
+<p><code>--repeat-headers</code></p>
+</li>
+</ul>
+<h2 id="source-dependent-settings"><a class="header" href="#source-dependent-settings">Source-dependent settings</a></h2>
+<ul>
+<li>
+<p><code>--output-depth 10</code> for 10-bit output.</p>
+</li>
+<li>
+<p><code>--input-depth 10</code> for 10-bit input.</p>
+</li>
+<li>
+<p><code>--colorprim 9</code> for HDR, <code>1</code> for SDR.</p>
+</li>
+<li>
+<p><code>--colormatrix 9</code> for HDR, <code>1</code> for SDR.</p>
+</li>
+<li>
+<p><code>--transfer 16</code> for HDR, <code>1</code> for SDR.</p>
+</li>
+<li>
+<p><code>--hdr10</code> for HDR.</p>
+</li>
+<li>
+<p><code>--hdr10-opt</code> for 4:2:0 HDR, <code>--no-hdr10-opt</code> for 4:4:4 HDR and SDR.</p>
+</li>
+<li>
+<p><code>--dhdr10-info /path/to/metadata.json</code> for HDR10+ content with metadata extracted using <a href="https://github.com/quietvoid/hdr10plus_parser">hdr10plus_parser</a>.</p>
+</li>
+<li>
+<p><code>--dhdr10-opt</code> for HDR10+.</p>
+</li>
+<li>
+<p><code>--master-display &quot;G(8500,39850)B(6550,2300)R(35400,14600)WP(15635,16450)L(10000000,20)&quot;</code>
+for BT.2020 or<br />
+<code>G(13250,34500)B(7500,3000)R(34000,16000)WP(15635,16450)L(10000000,1)</code>
+for Display P3 mastering display color primaries with the values for
+L coming from your source's MediaInfo for mastering display
+luminance.</p>
+<p>For example, if your source MediaInfo reads:</p>
+<pre><code>Mastering display color primaries : BT.2020
+Mastering display luminance : min: 0.0000 cd/m2, max: 1000 cd/m2
+Maximum Content Light Level : 711 cd/m2
+Maximum Frame-Average Light Level : 617 cd/m2
+</code></pre>
+<p>This means you set <code>&quot;G(8500,39850)B(6550,2300)R(35400,14600)WP(15635,16450)L(10000000,0)&quot;</code></p>
+</li>
+<li>
+<p><code>--max-cll &quot;711,617&quot;</code> from your source's MediaInfo for maximum
+content light level and maximum frame-average light level.
+The values here are from the above example.</p>
+</li>
+<li>
+<p><code>--cbqpoffs</code> and <code>--crqpoffs</code> should usually be between -3 and 0 for 4:2:0.
+For 4:4:4, set this to something between 3 and 6.
+This sets an offset between the bitrate applied to the luma and the
+chroma planes.</p>
+</li>
+<li>
+<p><code>--qcomp</code> between <code>0.60</code> and <code>0.80</code>.</p>
+</li>
+<li>
+<p><code>--aq-mode 4</code>, <code>3</code>, <code>2</code>, <code>1</code>, or <code>--hevc-aq</code> with <code>4</code> and <code>3</code>
+usually being the two best options. These do the following</p>
+<ol>
+<li>
+<p>Standard adaptive quantization, simply add more bits to complex
+blocks.</p>
+</li>
+<li>
+<p>Adaptive quantization with auto-variance.</p>
+</li>
+<li>
+<p>Adaptive quantization with auto-variance and bias to dark scene.</p>
+</li>
+<li>
+<p>Adaptive quantization with auto-variance and better edge
+preservation.</p>
+</li>
+<li>
+<p><code>hevc-aq</code> &quot;scales the quantization step size according to the
+spatial activity of one coding unit relative to frame average
+spatial activity. This AQ method utilizes the minimum variance
+of sub-unit in each coding unit to represent the coding unit's
+spatial complexity.&quot; Like most of the x265 documentation, this
+sounds a lot fancier than it is. Don't enable with other modes
+turned on.</p>
+</li>
+</ol>
+</li>
+<li>
+<p><code>--aq-strength</code> between <code>0.80</code> and <code>1.40</code> for AQ modes 1-3 or <code>0.50</code> and <code>1.00</code> for AQ mode 4.</p>
+</li>
+<li>
+<p><code>--deblock -4:-4</code> to <code>0:0</code>, as with x264. You can default <code>-3:-3</code>
+with live action.</p>
+</li>
+<li>
+<p><code>--ipratio</code> and <code>--pbratio</code> same as x264 again.</p>
+</li>
+<li>
+<p><code>--psy-rd 0.80</code> to <code>2.00</code>, similar-ish effect to x264.  Values are generally higher than with x264, though.</p>
+</li>
+<li>
+<p><code>--psy-rdoq</code> anything from <code>0.00</code> to <code>2.00</code> usually.</p>
+</li>
+<li>
+<p><code>--no-strong-intra-smoothing</code> on sharp/grainy content, you can leave
+this on for blurry content, as it's an additional blur that'll help
+prevent banding.</p>
+</li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="taking-screenshots"><a class="header" href="#taking-screenshots">Taking Screenshots</a></h1>
+<p>Taking simple screenshots in VapourSynth is very easy.
+If you're using a previewer, you can likely use that instead, but it might still be useful to know how to take screenshots via VapourSynth directly.</p>
+<p>We recommend using <code>awsmfunc.ScreenGen</code>.
+This has two advantages:</p>
+<ol>
+<li>You save frame numbers and can easily reference these again, e.g. if you want to redo your screenshots.</li>
+<li>It takes care of proper conversion and compression for you, which might not be the case with some previewers (e.g. VSEdit).</li>
+</ol>
+<p>To use <code>ScreenGen</code>, create a new folder you want your screenshots in, e.g. &quot;Screenshots&quot;, and a file called &quot;screens.txt&quot; with the frame numbers you'd like to screenshot, e.g.</p>
+<pre><code>26765
+76960
+82945
+92742
+127245
+</code></pre>
+<p>Then, at the bottom of your VapourSynth script, put</p>
+<pre><code>awf.ScreenGen(src, &quot;Screenshots&quot;, &quot;a&quot;)
+</code></pre>
+<p><code>a</code> is what is put after the frame number.
+This is useful for staying organized and sorting screenshots, as well as preventing unnecessary overwriting of screenshots.</p>
+<p>Now, run your script in the command line (or reload in a previewer):</p>
+<pre><code class="language-sh">python vapoursynth_script.vpy
+</code></pre>
+<p>Done!
+Your screenshots should now be in the given folder.</p>
+<h1 id="comparing-source-vs-encode"><a class="header" href="#comparing-source-vs-encode">Comparing Source vs. Encode</a></h1>
+<p>Comparing the source against your encode allows potential downloaders to judge the quality of your encode easily.
+When taking these, it is important to include the frame types you are comparing, as e.g. comparing two <code>I</code> frames will lead to extremely favorable results.
+You can do this using <code>awsmfunc.FrameInfo</code>:</p>
+<pre><code class="language-py">src = awf.FrameInfo(src, &quot;Source&quot;)
+encode = awf.FrameInfo(encode, &quot;Encode&quot;)
+</code></pre>
+<p>If you'd like to compare these in your previewer, it's recommended to interleave them:</p>
+<pre><code class="language-py">out = core.std.Interleave([src, encode])
+</code></pre>
+<p>However, if you're taking your screenshots with <code>ScreenGen</code>, it's easier not to do that and just run two <code>ScreenGen</code> calls:</p>
+<pre><code class="language-py">src = awf.FrameInfo(src, &quot;Source&quot;)
+awf.ScreenGen(src, &quot;Screenshots&quot;, &quot;a&quot;)
+encode = awf.FrameInfo(encode, &quot;Encode&quot;)
+awf.ScreenGen(encode, &quot;Screenshots&quot;, &quot;b&quot;)
+</code></pre>
+<p>Note that <code>&quot;a&quot;</code> was substituted for <code>&quot;b&quot;</code> in the encode's <code>ScreenGen</code>.
+This will allow you to sort your folder by name and have every source screenshot followed by an encode screenshot, making uploading easier.</p>
+<h3 id="hdr-comparisons"><a class="header" href="#hdr-comparisons">HDR comparisons</a></h3>
+<p>For comparing an HDR source to an HDR encode, it's recommended to tonemap.
+This process is destructive, but you should still be able to tell what's warped, smoothed etc.</p>
+<p>The recommended function for this is <code>awsmfunc.DynamicTonemap</code>:</p>
+<pre><code class="language-py">src = awf.DynamicTonemap(src, src_fmt=False, libplacebo=False)
+encode = awf.DynamicTonemap(encode, src_fmt=False, libplacebo=False)
+</code></pre>
+<p>Note that we've disabled <code>src_fmt</code> and <code>libplacebo</code> here.
+Setting the former to <code>True</code> will output 10-bit 4:2:0, which is suboptimal, as screenshots are usually presented in 8-bit RGB (no chroma subsampling).
+The latter is recommended for comparisons because using libplacebo makes your tonemaps more likely to differ in brightness, making comparing more difficult.</p>
+<h2 id="choosing-frames"><a class="header" href="#choosing-frames">Choosing frames</a></h2>
+<p>When taking screenshots, it is important to not make your encode look deceptively transparent.
+To do so, you need to make sure you're screenshotting the proper frame types as well as content-wise differing kinds of frames.</p>
+<p>Luckily, there's not a lot to remember here:</p>
+<ul>
+<li>Your encode's screenshots should <em>always</em> be <em>B</em> type frames.</li>
+<li>Your source's screenshots should <em>never</em> be <em>I</em> type frames.</li>
+<li>Your comparisons should include dark scenes, bright scenes, close-up shots, long-range shots, static scenes, high action scenes, and whatever you have in-between.</li>
+</ul>
+<h1 id="comparing-different-sources"><a class="header" href="#comparing-different-sources">Comparing Different Sources</a></h1>
+<p>When comparing different sources, you should proceed similarly to comparing source vs. encode.
+However, you'll likely encounter differing crops, resolutions or tints, all of which get in the way of comparing.</p>
+<p>For differing crops, simply add borders back:</p>
+<pre><code class="language-py">src_b = src_b.std.AddBorders(left=X, right=Y, top=Z, bottom=A)
+</code></pre>
+<p>If doing this leads to an offset of the image content, you should resize to 4:4:4 so you can add uneven borders.
+For example, if you want to add 1 pixel tall black bars to the top and bottom:</p>
+<pre><code class="language-py">src_b = src_b.resize.Spline36(format=vs.YUV444P8, dither_type=&quot;error_diffusion&quot;)
+src_b = src_b.std.AddBorders(top=1, bottom=1)
+</code></pre>
+<p>For differing resolutions, it's recommended to use a simple spline resize:</p>
+<pre><code class="language-py">src_b = src_b.resize.Spline36(src_a.width, src_a.height, dither_type=&quot;error_diffusion&quot;)
+</code></pre>
+<p>If one source is HDR and the other one is SDR, you can use <code>awsmfunc.DynamicTonemap</code>:</p>
+<pre><code class="language-py">src_b = awf.DynamicTonemap(src_b, src_fmt=False)
+</code></pre>
+<p>For different tints, refer to the <a href="encoding/../filtering/detinting.html">tinting chapter</a>.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><p>If your debanded clip had very little grain compared to parts with no
+banding, you should consider using a separate function to add matched
+grain so the scenes blend together easier. If there was lots of grain,
+you might want to consider <code>adptvgrnMod</code>, <code>adaptive_grain</code> or
+<code>GrainFactory3</code>; for less obvious grain or simply for brighter scenes
+where there'd usually be very little grain, you can also use 
+<code>grain.Add</code>. The topic of grainers will be further elaborated later in
+<a href="appendix/graining">the graining section</a>.</p>
+<p>Here's an example from Mirai:</p>
+<p align="center">
+<img src='Pictures/banding_graining_before.png' onmouseover="this.src='Pictures/banding_graining_after.png';" onmouseout="this.src='Pictures/banding_graining_before.png';"/>
+</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="black--white-clips-working-in-gray"><a class="header" href="#black--white-clips-working-in-gray">Black &amp; White Clips: Working in GRAY</a></h1>
+<p>Because of the YUV format saving luma in a separate plane, working with black and white movies makes our lives a lot easier when filtering, as we can extract the luma plane and work solely on that:</p>
+<pre><code class="language-py">y = src.std.ShufflePlanes(0, vs.GRAY)
+</code></pre>
+<p>The <code>get_y</code> function in <code>vsutil</code> does the same thing.
+With our <code>y</code> clip, we can perform functions without mod2 limitations.
+For example, we can perform odd crops:</p>
+<pre><code class="language-py">crop = y.std.Crop(left=1)
+</code></pre>
+<p>Additionally, as filters are only applied on one plane, this can speed up our script.
+We also don't have to worry about filters like <code>f3kdb</code> altering our chroma planes in unwanted ways, such as graining them.</p>
+<p>However, when we're done with our clip, we usually want to export the clip as YUV.
+There are two options here:</p>
+<h3 id="1-using-fake-chroma"><a class="header" href="#1-using-fake-chroma">1. Using fake chroma</a></h3>
+<p>Using fake chroma is quick and easy and has the advantage that any accidental chroma offsets in the source (e.g. chroma grain) will be removed.
+All this requires is constant chroma (meaning no tint changes) and mod2 luma.</p>
+<p>The simplest option is for <code>u = v = 128</code> (8-bit):</p>
+<pre><code class="language-py">out = y.resize.Point(format=vs.YUV420P8)
+</code></pre>
+<p>If you have an uneven luma, just pad it with <code>awsmfunc.fb</code>.
+Assuming you want to pad the left:</p>
+<pre><code class="language-py">y = core.std.StackHorizontal([y.std.BlankClip(width=1), y])
+y = awf.fb(y, left=1)
+out = y.resize.Point(format=vs.YUV420P8)
+</code></pre>
+<p>Alternatively, if your source's chroma isn't a neutral gray, use <code>std.BlankClip</code>:</p>
+<pre><code class="language-py">blank = y.std.BlankClip(color=[0, 132, 124])
+out = core.std.ShufflePlanes([y, blank], [0, 1, 2], vs.YUV)
+</code></pre>
+<h3 id="2-using-original-chroma-resized-if-necessary"><a class="header" href="#2-using-original-chroma-resized-if-necessary">2. Using original chroma (resized if necessary).</a></h3>
+<p>This has the advantage that, if there is actual important chroma information (e.g. slight sepia tints), this will be preserved.
+Just use <code>ShufflePlanes</code> on your clips:</p>
+<pre><code class="language-py">out = core.std.ShufflePlanes([y, src], [0, 1, 2], vs.YUV)
+</code></pre>
+<p>However, if you've resized or cropped, this becomes a bit more difficult.
+You might have to shift or resize the chroma appropriately (see <a href="appendix/../filtering/chroma_rs.html">the chroma resampling chapter</a> for explanations).</p>
+<p>If you've cropped, extract and shift accordingly. We will use <code>split</code> and <code>join</code> from <code>vsutil</code> to extract and merge planes:</p>
+<pre><code class="language-py">y, u, v = split(src)
+crop_left = 1
+y = y.std.Crop(left=crop_left)
+u = u.resize.Spline36(src_left=crop_left / 2)
+v = v.resize.Spline36(src_left=crop_left / 2)
+out = join([y, u, v])
+</code></pre>
+<p>If you've resized, you need to shift and resize chroma:</p>
+<pre><code class="language-py">y, u, v = split(src)
+w, h = 1280, 720
+y = y.resize.Spline36(w, h)
+u = u.resize.Spline36(w / 2, h / 2, src_left=.25 - .25 * src.width / w)
+v = v.resize.Spline36(w / 2, h / 2, src_left=.25 - .25 * src.width / w)
+out = join([y, u, v])
+</code></pre>
+<p>Combining cropping and shifting, whereby we pad the crop and use <code>awsmfunc.fb</code> to create a fake line:</p>
+<pre><code class="language-py">y, u, v = split(src)
+w, h = 1280, 720
+crop_left, crop_bottom = 1, 1
+
+y = y.std.Crop(left=crop_left, bottom=crop_bottom)
+y = y.resize.Spline36(w - 1, h - 1)
+y = core.std.StackHorizontal([y.std.BlankClip(width=1), y])
+y = awf.fb(left=1)
+
+u = u.resize.Spline36(w / 2, h / 2, src_left=crop_left / 2 + (.25 - .25 * src.width / w), src_height=u.height - crop_bottom / 2)
+
+v = v.resize.Spline36(w / 2, h / 2, src_left=crop_left / 2 + (.25 - .25 * src.width / w), src_height=u.height - crop_bottom / 2)
+
+out = join([y, u, v])
+</code></pre>
+<p>If you don't understand exactly what's going on here and you encounter a situation like this, ask someone more experienced for help.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="a"><a class="header" href="#a">A</a></h1>
+<ul>
+<li><a href="https://git.kageru.moe/kageru/adaptivegrain">adaptivegrain</a></li>
+<li><a href="https://github.com/HomeOfVapourSynthEvolution/VapourSynth-AddGrain">AddGrain</a></li>
+<li><a href="https://gitlab.com/Ututu/adptvgrnmod">adptvgrnMod</a></li>
+<li><a href="https://git.concertos.live/AHD/awsmfunc">awsmfunc</a></li>
+</ul>
+<h1 id="b"><a class="header" href="#b">B</a></h1>
+<ul>
+<li><a href="https://gitlab.com/snippets/1834089">black_detect</a></li>
+<li><a href="https://gist.github.com/blaze077/ac896645913938591b45e7d65932b136">blazefunc</a></li>
+</ul>
+<h1 id="c"><a class="header" href="#c">C</a></h1>
+<ul>
+<li><a href="https://valeyard.net/2017/03/drdres-color-matching-tool-v1-2.php">ColorMatch</a></li>
+<li><a href="https://gitlab.com/Ututu/VS-ContinuityFixer">ContinuityFixer</a></li>
+</ul>
+<h1 id="d"><a class="header" href="#d">D</a></h1>
+<ul>
+<li><a href="https://pastebin.com/SHQZjVJ5">debandmask</a></li>
+</ul>
+<h1 id="e"><a class="header" href="#e">E</a></h1>
+<ul>
+<li><a href="https://github.com/sekrit-twc/EdgeFixer">EdgeFixer</a></li>
+<li><a href="https://gist.github.com/4re/342624c9e1a144a696c6">edi_rpow2</a></li>
+</ul>
+<h1 id="f"><a class="header" href="#f">F</a></h1>
+<ul>
+<li><a href="https://gist.github.com/Frechdachs/9d9b50d050fa11e438eae5d967296e0e">fag3kdb</a></li>
+<li><a href="https://github.com/dubhater/vapoursynth-fillborders">FillBorders</a></li>
+<li><a href="https://github.com/EleonoreMizo/fmtconv">fmtconv</a></li>
+<li><a href="https://github.com/igv/FSRCNN-TensorFlow">FSRCNNX</a></li>
+<li><a href="https://github.com/Irrational-Encoding-Wizardry/fvsfunc">fvsfunc</a></li>
+</ul>
+<h1 id="g"><a class="header" href="#g">G</a></h1>
+<ul>
+<li><a href="https://github.com/Infiziert90/getnative">getnative</a></li>
+</ul>
+<h1 id="k"><a class="header" href="#k">K</a></h1>
+<ul>
+<li><a href="https://github.com/Irrational-Encoding-Wizardry/kagefunc">kagefunc</a></li>
+<li><a href="https://gist.github.com/igv/a015fc885d5c22e6891820ad89555637">KrigBilateral</a></li>
+</ul>
+<h1 id="l"><a class="header" href="#l">L</a></h1>
+<ul>
+<li><a href="https://github.com/haasn/libplacebo">libplacebo</a></li>
+<li><a href="https://github.com/Irrational-Encoding-Wizardry/lvsfunc">lvsfunc</a></li>
+</ul>
+<h1 id="m"><a class="header" href="#m">M</a></h1>
+<ul>
+<li><a href="https://github.com/HomeOfVapourSynthEvolution/mvsfunc">mvsfunc</a></li>
+<li><a href="https://github.com/WolframRhodium/muvsfunc">muvsfunc</a></li>
+</ul>
+<h1 id="n"><a class="header" href="#n">N</a></h1>
+<ul>
+<li><a href="https://github.com/HomeOfAviSynthPlusEvolution/neo_f3kdb/">neo_f3kdb</a></li>
+</ul>
+<h1 id="r"><a class="header" href="#r">R</a></h1>
+<ul>
+<li><a href="https://gitlab.com/Ututu/rekt">rekt</a></li>
+<li><a href="https://github.com/Irrational-Encoding-Wizardry/RgToolsVS">RgToolsVS</a></li>
+</ul>
+<h1 id="t"><a class="header" href="#t">T</a></h1>
+<ul>
+<li><a href="https://github.com/sekrit-twc/timecube">timecube</a></li>
+</ul>
+<h1 id="v"><a class="header" href="#v">V</a></h1>
+<ul>
+<li><a href="https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Bilateral">VapourSynth bilateral</a></li>
+<li><a href="www.vapoursynth.com/doc/functions.html">VapourSynth Functions</a></li>
+<li><a href="https://github.com/Lypheo/vs-placebo">vs-placebo</a></li>
+<li><a href="https://github.com/HomeOfVapourSynthEvolution/vsTAAmbk">vsTAAmbk</a></li>
+<li><a href="https://github.com/Irrational-Encoding-Wizardry/vsutil">vsutil</a></li>
+</ul>
+<h1 id="z"><a class="header" href="#z">Z</a></h1>
+<ul>
+<li><a href="https://github.com/kgrabs/zzfunc">zzfunc</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            MathJax.Hub.Register.StartupHook('End', function() {
+                window.setTimeout(window.print, 100);
+            });
+        });
+        </script>
+        
+        
+
+    </body>
+</html>

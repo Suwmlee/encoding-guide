@@ -1,0 +1,431 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>x264 Settings - Advanced Encoding Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.</strong> Filtering</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">1.1.</strong> Loading the Video</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.2.</strong> Cropping</div></li><li class="chapter-item expanded "><a href="../filtering/resizing.html"><strong aria-hidden="true">1.3.</strong> Resizing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../filtering/descaling.html"><strong aria-hidden="true">1.3.1.</strong> Descaling and Rescaling</a></li><li class="chapter-item expanded "><a href="../filtering/chroma_res.html"><strong aria-hidden="true">1.3.2.</strong> Chroma Resampling and Shifting</a></li></ol></li><li class="chapter-item expanded "><a href="../filtering/bit_depths.html"><strong aria-hidden="true">1.4.</strong> Bit Depths and Dither Algorithms</a></li><li class="chapter-item expanded "><a href="../filtering/debanding.html"><strong aria-hidden="true">1.5.</strong> Debanding and Deblocking</a></li><li class="chapter-item expanded "><a href="../filtering/graining.html"><strong aria-hidden="true">1.6.</strong> Graining</a></li><li class="chapter-item expanded "><a href="../filtering/dirty_lines.html"><strong aria-hidden="true">1.7.</strong> Dirty Lines and Border Issues</a></li><li class="chapter-item expanded "><a href="../filtering/detinting.html"><strong aria-hidden="true">1.8.</strong> Detinting and Level Adjustment</a></li><li class="chapter-item expanded "><a href="../filtering/masking.html"><strong aria-hidden="true">1.9.</strong> Masking</a></li><li class="chapter-item expanded "><a href="../filtering/anti-aliasing.html"><strong aria-hidden="true">1.10.</strong> Anti-Aliasing</a></li><li class="chapter-item expanded "><a href="../filtering/deringing.html"><strong aria-hidden="true">1.11.</strong> Deringing</a></li><li class="chapter-item expanded "><a href="../filtering/dehaloing.html"><strong aria-hidden="true">1.12.</strong> Dehaloing</a></li><li class="chapter-item expanded "><a href="../filtering/denoising.html"><strong aria-hidden="true">1.13.</strong> Denoising</a></li><li class="chapter-item expanded "><a href="../filtering/dehardsubbing.html"><strong aria-hidden="true">1.14.</strong> Dehardsubbing and Delogoing</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Encoding</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../encoding/testing.html"><strong aria-hidden="true">2.1.</strong> Test Encodes</a></li><li class="chapter-item expanded "><a href="../encoding/x264.html" class="active"><strong aria-hidden="true">2.2.</strong> x264 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/x265.html"><strong aria-hidden="true">2.3.</strong> x265 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/screenshots.html"><strong aria-hidden="true">2.4.</strong> Screenshots and Comparisons</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Audio</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> SoX: Dithering and Down-Mixing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Mono and Stereo</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Surround Sound</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Appendix</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">4.1.</strong> Linear Light Processing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.2.</strong> Finding Optimal Resolution via FT</div></li><li class="chapter-item expanded "><a href="../appendix/grain_matching.html"><strong aria-hidden="true">4.3.</strong> Grain Matching</a></li><li class="chapter-item expanded "><a href="../appendix/gray.html"><strong aria-hidden="true">4.4.</strong> Black &amp; White Clips</a></li></ol></li><li class="chapter-item expanded "><a href="../scriptorium.html"><strong aria-hidden="true">5.</strong> Scriptorium</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Advanced Encoding Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h4 id="dxva"><a class="header" href="#dxva">DXVA</a></h4>
+<ul>
+<li>
+<p><code>--level 4.1</code></p>
+</li>
+<li>
+<p><code>--vbv-bufsize 78125 --vbv-maxrate 62500</code> for DXVA (The old guide
+used lower values to account for the possibility of writing the
+encode to BD for playback, this is no longer a consideration as
+other settings break this compatibility. The new values are the max
+level 4.1 can do, if your device breaks because of this the encode
+is not at fault, your device doesn't meet DXVA
+spec).</p>
+</li>
+</ul>
+<h2 id="general-settings"><a class="header" href="#general-settings">General settings</a></h2>
+<ul>
+<li>
+<p><code>--b-adapt 2</code> uses the best algorithm (that x264 has) to decide how
+B frames are placed.</p>
+</li>
+<li>
+<p><code>--min-keyint</code> should typically be the frame rate of your video,
+e.g. if you were encoding 23.976 fps content, then you use 24. This
+is setting the minimum distance between I-frames.</p>
+</li>
+<li>
+<p><code>--rc-lookahead 250</code> if using mbtree, 60 or higher else. This sets
+how many frames ahead x264 can look, which is critical for mbtree.
+You need lots of memory for this. (Personally I just leave this at
+250 now as the impact on memory usage is 2 GB or so.) Definitely
+lower this if you're encoding without mbtree and have a lot of
+ReplaceFramesSimple calls in your script.</p>
+</li>
+<li>
+<p><code>--me umh</code> is the lowest you should go. If your CPU is fast enough,
+you might endure the slowdown from tesa. esa takes as much time as
+tesa without any benefit, so if you want to slow down your encode to
+try and catch more movement vectors, just use tesa, although the
+increase is not necessarily always worth it. This isn't really a
+setting you need to test, but on tough sources, you might squeeze
+some more performance out of x264 if you use tesa.</p>
+</li>
+<li>
+<p><code>--direct auto</code> will automatically choose the prediction mode
+(spatial/temporal)</p>
+</li>
+<li>
+<p><code>--subme 10</code> or <code>11</code> (personally I just set this to 11 the
+difference in encode speed is within 3-4%)</p>
+</li>
+<li>
+<p><code>--trellis 2</code></p>
+</li>
+<li>
+<p><code>--no-dct-decimate</code> dct-decimate is a speed up that sacrifices
+quality. Just leave it off, since your computers can likely handle
+it.</p>
+</li>
+<li>
+<p><code>--no-fast-pskip</code> Similar to the above.</p>
+</li>
+<li>
+<p><code>--preset veryslow</code> or <code>placebo</code>, although the stuff we're changing
+will make veryslow be placebo, anyway.</p>
+</li>
+</ul>
+<h2 id="source-specific-settings"><a class="header" href="#source-specific-settings">Source-specific settings</a></h2>
+<ul>
+<li>
+<p><code>--bitrate</code> / <code>--crf</code> Bitrate is in Kbps (Kilobits per second) and
+CRF takes a float, where lower is better quality. This is the most
+important setting you have; bitstarve an encode and it is guaranteed
+to look like crap. Use too many bits and you've got bloat (and if
+people wanted to download massive files, they would get a remux). Of
+course, the bitrate need can vary drastically depending on the
+source.</p>
+</li>
+<li>
+<p><code>--deblock -3:-3</code> to <code>0:0</code>. For live action, most people just stick
+with -3:-3. For anime, values between -3:-2 and 0:0 are common.
+An explanation of the two params can be found <a href="https://forum.doom9.org/showpost.php?p=1692393&amp;postcount=32">HERE</a>.</p>
+</li>
+<li>
+<p><code>--qcomp 0.6</code> (default) to <code>0.8</code> might prove useful. Don't set this
+too high or too low, or the overall quality of your encode will
+suffer. This setting has a heavy effect on mbtree. A higher qcomp
+value will make mbtree weaker, hence something around 0.80 is
+usually optimal for anime. <code>--qcomp 0</code> will cause a constant
+bitrate, while <code>--qcomp 1</code> will cause a constant quantizer.</p>
+</li>
+<li>
+<p><code>--aq-mode 1</code> to <code>3</code>: 1 distributes bits on a per frame basis, 2
+tends to allocate more bits to the foreground and can distribute
+bits in a small range of frames, 3 is a modified version of 2 that
+attempts to allocate more bits to dark parts of the frames. The only
+way to know what's best for sure it to test. Almost every source
+ends up looking best with aq-mode 3, however.</p>
+</li>
+<li>
+<p><code>--aq-strength 0.5</code> to <code>1.3</code> are worth trying. Higher values might
+help with blocking. Lower values will tend to allocate more bits to
+the foreground, similar to aq-mode 2. Lower values allocate more
+bits to flat areas, while higher values allocate more to
+&quot;detailed&quot; areas. Note that x264 considers grain and noise as
+detail, so you can think of this setting as the ratio of bits
+allocated to edges vs. bits allocated to grain. You're usually going
+to want to have a higher qcomp for a lower aq-strength and vice
+versa. With mode 3, you're usually going to end up somewhere around
+the 0.7-0.8 range for modern film, for which a qcomp of 0.6-0.7
+often works best.</p>
+</li>
+<li>
+<p><code>--merange 24</code> (the lowest that should ever be used) to <code>64</code>,
+setting this too high can hurt (more than 128), 32 or 48 will be
+fine for most encodes. In general, 32-48 for 1080p and 32 for 720p
+(when using umh) for movies with lots of motion this can help (e.g.
+action movies). Talking heads can get away with low values like 24.
+The impact on encode speed is noticeable but not horrible. I prefer
+to use 48 for 1080p and 32 for 720p when using umh or 32 for 1080p
+and 32 for 720p when using tesa.</p>
+</li>
+<li>
+<p><code>--no-mbtree</code> I highly recommend testing with both mbtree enabled
+and disabled, as generally it will result in two very different
+encodes. mbtree basically attempts to degrade the quality of blocks
+rather than frames, so that only the unimportant parts of a frame
+get less bits. To do this, it needs to know how often a block is
+referenced later, which is why <code>--rc-lookahead</code> should be set
+to 250. Useful for things with static backgrounds, like anime. Or
+for things where you've used a high qcomp (.75 or above) and mbtree
+will have a lowered impact. When testing whether this is a decent
+option, you'll likely have to retest every setting, especially
+qcomp, psy-rd, and ipratio.</p>
+</li>
+<li>
+<p><code>--ipratio 1.15</code> to <code>1.40</code>, with 1.30 usually being the go-to
+option. This is the bitrate allocation ratio between I and P frames.</p>
+</li>
+<li>
+<p><code>--pbratio 1.05</code> to <code>1.30</code>, with 1.20 being the usual go-to. This is
+the bitrate allocation ratio between P and B frames. This value
+should always be around 0.10 lower than --ipratio, so lower it
+while testing ipratio. If you're using mbtree, this setting will
+have no affect, as mbtree determines it itself.</p>
+</li>
+<li>
+<p><code>--psy-rd 0.40:0 to 1.15:0</code>: 0.95:0 to 1.15:0 for live action. The
+first number is psy-rd strength, second is psy-trellis strength.
+This tries to keep x264 from making things blurry and instead keep
+the complexity. For anime, between 0.40 and 1.00:0.00 is the usual
+range. Psy-trellis usually introduces a lot of ringing, but can help
+with maintaining dither. You can try values between 0.00 and 0.15
+for live action and try values up to 0.50 for anime, although you'll
+usually get better results if you raise your aq-strength instead.</p>
+</li>
+<li>
+<p><code>--bframes 6</code> to <code>16</code>, This is setting the maximum amount of
+consecutive P frames that can be replaced with B frames. Test with
+16 for your first test run, and set according to the x264 log:</p>
+<p><code>x264 [info]: consecutive B-frames: 1.0% 0.0% 0.0% 0.0% 14.9% 23.8% 13.9% 15.8% 8.9% 9.9% 0.0% 11.9% 0.0% 0.0% 0.0% 0.0% 0.0%</code></p>
+<p>Start counting with the first percentage as 0 and choose the highest
+number with more than 1%, which is 11 in this example.</p>
+<p>Or just leave this at 16, as allowing more bframes will not harm
+your encode and will aid in compression; the impact on speed isn't that
+enormous.</p>
+</li>
+<li>
+<p><code>--ref 16</code> if you don't care about hardware compatibility, else just
+leave this option out and x264 will determine the correct number
+according to your level. This sets the number of previous frames
+each P frame can use as references. The impact on performance is
+quite high, but it's worth it most of the time.</p>
+</li>
+<li>
+<p><code>--zones</code> is quite useful for debanding and blocking, as these areas
+require a larger bitrate to maintain transparency. The syntax is<br />
+<code>--zones 0,100,crf=10/101,200,crf=15</code> or<br />
+<code>--zones 0,100,b=5/101,200,b=10</code> with <code>b</code> being a bitrate multiplier
+in this case. You can also use this for areas that don't get enough
+bits allocated. Especially common areas are darker scenes or scenes
+with lots of reds. Fades can also suffer from bitstarving and
+require zoning. One can also lower the bitrate during credits to
+save that little something.</p>
+</li>
+<li>
+<p><code>--output-depth 8</code> or <code>10</code> depending on what you're encoding in.</p>
+</li>
+<li>
+<p><code>--output-csp i444</code> if you're encoding 4:4:4, else leave this out.</p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../encoding/testing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../encoding/x265.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../encoding/testing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../encoding/x265.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

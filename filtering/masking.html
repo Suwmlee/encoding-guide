@@ -1,0 +1,594 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Masking - Advanced Encoding Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.</strong> Filtering</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">1.1.</strong> Loading the Video</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.2.</strong> Cropping</div></li><li class="chapter-item expanded "><a href="../filtering/resizing.html"><strong aria-hidden="true">1.3.</strong> Resizing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../filtering/descaling.html"><strong aria-hidden="true">1.3.1.</strong> Descaling and Rescaling</a></li><li class="chapter-item expanded "><a href="../filtering/chroma_res.html"><strong aria-hidden="true">1.3.2.</strong> Chroma Resampling and Shifting</a></li></ol></li><li class="chapter-item expanded "><a href="../filtering/bit_depths.html"><strong aria-hidden="true">1.4.</strong> Bit Depths and Dither Algorithms</a></li><li class="chapter-item expanded "><a href="../filtering/debanding.html"><strong aria-hidden="true">1.5.</strong> Debanding and Deblocking</a></li><li class="chapter-item expanded "><a href="../filtering/graining.html"><strong aria-hidden="true">1.6.</strong> Graining</a></li><li class="chapter-item expanded "><a href="../filtering/dirty_lines.html"><strong aria-hidden="true">1.7.</strong> Dirty Lines and Border Issues</a></li><li class="chapter-item expanded "><a href="../filtering/detinting.html"><strong aria-hidden="true">1.8.</strong> Detinting and Level Adjustment</a></li><li class="chapter-item expanded "><a href="../filtering/masking.html" class="active"><strong aria-hidden="true">1.9.</strong> Masking</a></li><li class="chapter-item expanded "><a href="../filtering/anti-aliasing.html"><strong aria-hidden="true">1.10.</strong> Anti-Aliasing</a></li><li class="chapter-item expanded "><a href="../filtering/deringing.html"><strong aria-hidden="true">1.11.</strong> Deringing</a></li><li class="chapter-item expanded "><a href="../filtering/dehaloing.html"><strong aria-hidden="true">1.12.</strong> Dehaloing</a></li><li class="chapter-item expanded "><a href="../filtering/denoising.html"><strong aria-hidden="true">1.13.</strong> Denoising</a></li><li class="chapter-item expanded "><a href="../filtering/dehardsubbing.html"><strong aria-hidden="true">1.14.</strong> Dehardsubbing and Delogoing</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Encoding</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../encoding/testing.html"><strong aria-hidden="true">2.1.</strong> Test Encodes</a></li><li class="chapter-item expanded "><a href="../encoding/x264.html"><strong aria-hidden="true">2.2.</strong> x264 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/x265.html"><strong aria-hidden="true">2.3.</strong> x265 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/screenshots.html"><strong aria-hidden="true">2.4.</strong> Screenshots and Comparisons</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Audio</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> SoX: Dithering and Down-Mixing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Mono and Stereo</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Surround Sound</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Appendix</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">4.1.</strong> Linear Light Processing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.2.</strong> Finding Optimal Resolution via FT</div></li><li class="chapter-item expanded "><a href="../appendix/grain_matching.html"><strong aria-hidden="true">4.3.</strong> Grain Matching</a></li><li class="chapter-item expanded "><a href="../appendix/gray.html"><strong aria-hidden="true">4.4.</strong> Black &amp; White Clips</a></li></ol></li><li class="chapter-item expanded "><a href="../scriptorium.html"><strong aria-hidden="true">5.</strong> Scriptorium</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Advanced Encoding Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="this-needs-to-be-reformatted"><a class="header" href="#this-needs-to-be-reformatted">this needs to be reformatted</a></h1>
+<p>Masking is a less straightforward topic. The idea is to limit the
+application of filters according to the source image's properties. A
+mask will typically be grayscale, whereby how much of the two clips in
+question are applied is determined by the mask's brightness. So, if you
+do</p>
+<pre><code class="language-py">mask = mask_function(src)
+filtered = filter_function(src)
+merge = core.std.MaskedMerge(src, filtered, mask)
+</code></pre>
+<p>The <code>filtered</code> clip will be used for every completely white pixel in
+<code>mask</code>, and the <code>src</code> clip for every black pixel, with in-between values
+determining the ratio of which clip is applied. Typically, a mask will
+be constructed using one of the following three functions:</p>
+<ul>
+<li>
+<p><code>std.Binarize</code>: This simply separates pixels by whether they are
+above or below a threshold and sets them to black or white
+accordingly.</p>
+</li>
+<li>
+<p><code>std.Expr</code>: Known to be a very complicated function. Applies logic
+via reverse Polish notation. If you don't know what this is, read up
+on Wikipedia. Some cool things you can do with this are make some
+pixels brighter while keeping others the same (instead of making
+them dark as you would with <code>std.Binarize</code>):
+<code>std.Expr(&quot;x 2000 &gt; x 10 * x ?&quot;)</code>. This would multiply every value
+above 2000 by ten and leave the others be. One nice use case is for
+in between values:
+<code>std.Expr(&quot;x 10000 &gt; x 15000 &lt; and x {} = x 0 = ?&quot;.format(2**src.format.bits_per_sample - 1))</code>.<br />
+This makes every value between 10 000 and 15 000 the maximum value
+allowed by the bit depth and makes the rest zero, just like how a
+<code>std.Binarize</code> mask would. Many other functions can be performed via
+this.</p>
+</li>
+<li>
+<p><code>std.Convolution</code>: In essence, apply a matrix to your pixels. The
+documentation explains it well, so just read that if you don't get
+it. Lots of masks are defined via convolution kernels. You can use
+this to do a whole lot of stuff. For example, if you want to average
+all the values surrounding a pixel, do
+<code>std.Convolution([1, 1, 1, 1, 0, 1, 1, 1, 1])</code>. To illustrate, let's
+say you have a pixel with the value \(\mathbf{1}\) with the following
+\(3\times3\) neighborhood:</p>
+<p>\[\begin{bmatrix}
+0 &amp; 2 &amp; 4 \\
+6 &amp; \mathbf{1} &amp; 8 \\
+6 &amp; 4 &amp; 2
+\end{bmatrix}\]</p>
+<p>Now, let's apply a convolution kernel:</p>
+<p>\[\begin{bmatrix}
+2 &amp; 1 &amp; 3 \\
+1 &amp; 0 &amp; 1 \\
+4 &amp; 1 &amp; 5
+\end{bmatrix}\]</p>
+<p>This will result in the pixel 1 becoming:
+\[\frac{1}{18} \times (2 \times 0 + 1 \times 2 + 3 \times 4 + 1 \times 6 + 0 \times \mathbf{1} + 1 \times 8 + 4 \times 6 + 1 \times 4 + 5 \times 2) = \frac{74}{18} \approx 4\]</p>
+</li>
+</ul>
+<p>So, let's say you want to perform what is commonly referred to as a
+simple &quot;luma mask&quot;:</p>
+<pre><code class="language-py">y = core.std.ShufflePlanes(src, 0, vs.GRAY)
+mask = core.std.Binarize(y, 5000)
+merge = core.std.MaskedMerge(filtered, src, mask)
+</code></pre>
+<p>In this case, I'm assuming we're working in 16-bit. What <code>std.Binarize</code>
+is doing here is making every value under 5000 the lowest and every
+value above 5000 the maximum value allowed by our bit depth. This means
+that every pixel above 5000 will be copied from the source clip.</p>
+<p>Let's try this using a <code>filtered</code> clip which has every pixel's value
+multiplied by 8:</p>
+<p><img src="Pictures/luma_mask.png" alt="Binarize mask applied to luma with filtered clip being std.Expr(&quot;x 8 *&quot;)." /></p>
+<p>Simple binarize masks on luma are very straightforward and often do a
+good job of limiting a filter to the desired area, especially as dark
+areas are more prone to banding and blocking.</p>
+<p>A more sophisticated version of this is <code>adaptive_grain</code> from earlier in
+this guide. It scales values from black to white based on both the
+pixel's luma value compared to the image's average luma value. A more
+in-depth explanation can be found on <a href="https://blog.kageru.moe/legacy/adaptivegrain.html">the creator's blog</a>. We
+manipulate this mask using a <code>luma_scaling</code> parameter. Let's use a very
+high value of 500 here:</p>
+<p><img src="Pictures/adg_mask.png" alt="kgf.adaptive_grain(y, show_mask=True, luma_scaling=500) mask applied to luma with filtered clip being std.Expr(&quot;x 8 *&quot;)." /></p>
+<p>Alternatively, we can use an <code>std.Expr</code> to merge the clips via the
+following logic:</p>
+<pre><code>if abs(src - filtered) &lt;= 1000:
+    return filtered
+elif abs(src - filtered) &gt;= 30000:
+    return src
+else:
+    return src + (src - filtered) * (30000 - abs(src - filtered)) / 29000
+</code></pre>
+<p>This is almost the exact algorithm used in <code>mvsfunc.LimitFilter</code>, which
+<code>GradFun3</code> uses to apply its bilateral filter. In VapourSynth, this
+would be:</p>
+<pre><code class="language-py">expr = core.std.Expr([src, filtered], &quot;x y - abs 1000 &gt; x y - abs 30000 &gt; x x y - 30000 x y - abs - * 29000 / + x ? y ?&quot;)
+</code></pre>
+<p><img src="Pictures/expr_limit.png" alt="LimitFilter style expression to apply filter std.Expr(&quot;x 8 *&quot;) to source." /></p>
+<p>Now, let's move on to the third option: convolutions, or more
+interestingly for us, edge masks. Let's say you have a filter that
+smudges details in your clip, but you still want to apply it to
+detail-free areas. We can use the following convolutions to locate
+horizontal and vertical edges in the image:</p>
+<p>\[\begin{aligned}
+&amp;\begin{bmatrix}
+1 &amp; 0 &amp; -1 \\
+2 &amp; 0 &amp; -2 \\
+1 &amp; 0 &amp; -1
+\end{bmatrix}
+&amp;\begin{bmatrix}
+1 &amp; 2 &amp; 1 \\
+0 &amp; 0 &amp; 0 \\
+-1 &amp; -2 &amp; -1
+\end{bmatrix}\end{aligned}\]</p>
+<p>Combining these two is what is commonly referred to as a Sobel-type edge
+mask. It produces the following for our image of the lion:</p>
+<p><img src="Pictures/sobel.png" alt="image" />
+Now, this result is obviously rather boring. One can see a rough outline
+of the background and the top of the lion, but not much more can be made
+out.<br />
+To change this, let's introduce some new functions:</p>
+<ul>
+<li>
+<p><code>std.Maximum/Minimum</code>: Use this to grow or shrink your mask, you may
+additionally want to apply <code>coordinates=[0, 1, 2, 3, 4, 5, 6, 7]</code>
+with whatever numbers work for you in order to specify weights of
+the surrounding pixels.</p>
+</li>
+<li>
+<p><code>std.Inflate/Deflate</code>: Similar to the previous functions, but
+instead of applying the maximum of pixels, it merges them, which
+gets you a slight blur of edges. Useful at the end of most masks so
+you get a slight transition between masked areas.</p>
+</li>
+</ul>
+<p>We can combine these with the <code>std.Binarize</code> function from before to get
+a nifty output:</p>
+<pre><code class="language-py">mask = y.std.Sobel()
+binarize = mask.std.Binarize(3000)
+maximum = binarize.std.Maximum().std.Maximum()
+inflate = maximum.std.Inflate().std.Inflate().std.Inflate()
+</code></pre>
+<p><img src="Pictures/sobel_manipulated.png" alt="Sobel mask from before manipulated with std.Binarize, std.Maximum, and std.Inflate." /></p>
+<p>A common example of a filter that might smudge the output is an
+anti-aliasing or a debanding filter. In the case of an anti-aliasing
+filter, we apply the filter via the mask to the source, while in the
+case of the debander, we apply the source via the mask to the filtered
+source:</p>
+<pre><code class="language-py">mask = y.std.Sobel()
+
+aa = taa.TAAmbk(src, aatype=3, mtype=0)
+merge = core.std.MaskedMerge(src, aa, mask)
+
+deband = src.f3kdb.Deband()
+merge = core.std.MaskedMerge(deband, src, mask)
+</code></pre>
+<p>We can also use a different edge mask, namely <code>kgf.retinex_edgemask</code>,
+which raises contrast in dark areas and creates a second edge mask using
+the output of that, then merges it with the edge mask produced using the
+untouched image:</p>
+<p><img src="Pictures/retinex_edgemask.png" alt="kgf.retinex_edgemask applied to luma." /></p>
+<p>This already looks great. Let's manipulate it similarly to before and
+see how it affects a destructive deband in the twig area at the bottom:</p>
+<pre><code class="language-py">deband = src.f3kdb.Deband(y=150, cb=150, cr=150, grainy=0, grainc=0)
+mask = kgf.retinex_edgemask(src).std.Binarize(8000).std.Maximum()
+merge = core.std.MaskedMerge(deband, src, mask)
+</code></pre>
+<p><img src="Pictures/masked_deband.png" alt="A very strong deband protected using kgf.retinex_edgemask." /></p>
+<p>While some details remain smudged, we've successfully recovered a very
+noticeable portion of the twigs. Another example of a deband suffering
+from detail loss without an edge mask can be found under figure
+<a href="#fig:18">35</a> in the appendix.</p>
+<p>Other noteworthy edge masks easily available in VapourSynth include:</p>
+<ul>
+<li>
+<p><code>std.Prewitt</code> is similar to Sobel. It's the same operator with the 2
+switched out for a 1.</p>
+</li>
+<li>
+<p><code>tcanny.TCanny</code> is basically a Sobel mask thrown over a blurred
+clip.</p>
+</li>
+<li>
+<p><code>kgf.kirsch</code> will generate almost identical results to
+<code>retinex_edgemask</code> in bright scenes, as it's one of its components.
+Slower than the others, as it uses more directions, but will get you
+great results.</p>
+</li>
+</ul>
+<p>Some edge mask comparisons can be found in the appendix under figures
+<a href="#fig:16">26</a>{reference-type=&quot;ref&quot; reference=&quot;fig:16&quot;},
+<a href="#fig:10">30</a>{reference-type=&quot;ref&quot; reference=&quot;fig:10&quot;} and
+<a href="#fig:23">34</a>{reference-type=&quot;ref&quot; reference=&quot;fig:23&quot;}.</p>
+<p>As a debanding alternative to edge masks, we can also use &quot;range&quot;
+masks, which employ <code>std.Minimum</code> and <code>std.Maximum</code> to locate details.
+The most well known example of this is the mask inside <code>GradFun3</code>. This
+works as follows:</p>
+<p>Then, two clips are created, one which will employ <code>std.Maximum</code>, while
+the other obviously will use <code>std.Minimum</code>. These use special
+coordinates depending on the <code>mrad</code> value given. If
+\(\mathtt{mrad} \mod 3 = 1\), <code>[0, 1, 0, 1, 1, 0, 1, 0]</code> will be used as
+coordinates. Otherwise, <code>[1, 1, 1, 1, 1, 1, 1, 1]</code> is used. Then, this
+process is repeated with \(\mathtt{mrad} = \mathtt{mrad} - 1\) until
+$\mathtt{mrad} = 0$. This all probably sounds a bit overwhelming, but
+it's really just finding the maximum and minimum values for each pixel
+neighborhood.</p>
+<p>Once these are calculated, the minimized mask is subtracted from the
+maximized mask, and the mask is complete. So, let's look at the output
+compared to the modified <code>retinex_edgemask</code> from earlier:</p>
+<p><img src="Pictures/gradfun3_mask.png" alt="Comparison of retinex_edgemask.std.Binarize(8000).std.Maximum() and default GradFun3." /></p>
+<p>Here, we get some more pixels picked up by the <code>GradFun3</code> mask in the
+skies and some brighter flat textures. However, the retinex-type edge
+mask prevails in darker, more detailed areas. Computationally, our
+detail mask is a lot quicker, however, and it does pick up a lot of what
+we want, so it's not a bad choice.</p>
+<p>Fortunately for us, this isn't the end of these kinds of masks. There
+are two notable masks based on this concept: <a href="https://pastebin.com/SHQZjVJ5"><code>debandmask</code></a> and
+<code>lvsfunc.denoise.detail_mask</code>. The former takes our <code>GradFun3</code> mask and
+binarizes it according to the input luma's brightness. Four parameters
+play a role in this process: <code>lo</code>, <code>hi</code>, <code>lothr</code>, and <code>hithr</code>. Values
+below <code>lo</code> are binarized according to <code>lothr</code>, values above <code>hi</code> are
+binarized according to <code>hithr</code>, and values in between are binarized
+according to a linear scaling between the two thresholds:</p>
+<p>\[\frac{\mathtt{mask} - \mathtt{lo}}{\mathtt{hi} - \mathtt{lo}} \times (\mathtt{hithr} - \mathtt{lothr}) + \mathtt{lothr}\]</p>
+<p>This makes it more useful in our specific scenario, as the mask becomes
+stronger in darks compared to <code>GradFun3</code>. When playing around with the
+parameters, we can e.. lower <code>lo</code> so we our very dark areas aren't
+affected too badly, lower <code>lothr</code> to make it stronger in these darks,
+raise <code>hi</code> to enlarge our <code>lo</code> to <code>hi</code> gap, and raise <code>hithr</code> to weaken
+it in brights. Simple values might be
+<code>lo=22 &lt;&lt; 8, lothr=250, hi=48 &lt;&lt; 8, hithr=500</code>:</p>
+<p><img src="Pictures/debandmask_comparison.png" alt="Comparison of retinex_edgemask.std.Binarize(8000).std.Maximum(), default GradFun3, and default debandmask(lo=22 &lt;&lt; 8, lothr=250, hi=48 &lt;&lt; 8, hithr=500)." /></p>
+<p>While not perfect, as this is a tough scene, and parameters might not be
+optimal, the difference in darks is obvious, and less banding is picked
+up in the background's banding.</p>
+<p>Our other option for an altered <code>GradFun3</code> is <code>lvf.denoise.detail_mask</code>.
+This mask combines the previous idea of the <code>GradFun3</code> mask with a
+Prewitt-type edge mask.</p>
+<p>First, two denoised clips are created using <code>KNLMeansCL</code>, one with half
+the other's denoise strength. The stronger one has a <code>GradFun3</code>-type
+mask applied, which is then binarized, while the latter has a Prewitt
+edge mask applied, which again is binarized. The two are then combined
+so the former mask gets any edges it may have missed from the latter
+mask.</p>
+<p>The output is then put through two calls of <code>RemoveGrain</code>, the first one
+setting each pixel to the nearest value of its four surrounding pixel
+pairs' (e.. top and bottom surrounding pixels make up one pair) highest
+and lowest average value. The second call effectively performs the
+following convolution: 
+\[\begin{bmatrix}
+1 &amp; 2 &amp; 1 \\
+2 &amp; 4 &amp; 2 \\
+1 &amp; 2 &amp; 1
+\end{bmatrix}\]</p>
+<p>By default, the denoiser is turned off, but this is one of its
+advantages for us in this case, as we'd like the sky to have fewer
+pixels picked up while we'd prefer more of the rest of the image to be
+picked up. To compare, I've used a binarize threshold similar to the one
+used in the <code>debandmask</code> example. Keep in mind this is a newer mask, so
+my inexperience with it might show to those who have played around with
+it more:</p>
+<p><img src="Pictures/detail_mask.png" alt="Comparison of retinex_edgemask.std.Binarize(8000).std.Maximum(), default GradFun3, default debandmask(lo=22 &lt;&lt; 8, lothr=250, hi=48 &lt;&lt; 8, hithr=500), and detail_mask(pre_denoise=.3, brz_a=300, brz_b=300)." /></p>
+<p>Although an improvement in some areas, in this case, we aren't quite
+getting the step up we would like. Again, better optimized parameters
+might have helped.</p>
+<p>In case someone wants to play around with the image used here, it's
+available in this guide's repository:
+<a href="https://git.concertos.live/Encode_Guide/Encode_Guide/src/branch/master/Pictures/lion.png">https://git.concertos.live/Encode_Guide/Encode_Guide/src/branch/master/Pictures/lion.png</a>.</p>
+<p>Additionally, the following functions can be of help when masking,
+limiting et cetera:</p>
+<ul>
+<li>
+<p><code>std.MakeDiff</code> and <code>std.MergeDiff</code>: These should be
+self-explanatory. Use cases can be applying something to a degrained
+clip and then merging the clip back, as was elaborated in the
+Denoising section.</p>
+</li>
+<li>
+<p><code>std.Transpose</code>: Transpose (i.. flip) your clip.</p>
+</li>
+<li>
+<p><code>std.Turn180</code>: Turns by 180 degrees.</p>
+</li>
+<li>
+<p><code>std.BlankClip</code>: Just a frame of a solid color. You can use this to
+replace bad backgrounds or for cases where you've added grain to an
+entire movie but you don't want the end credits to be full of grain.
+To maintain TV range, you can use
+<code>std.BlankClip(src, color=[16, 128, 128]</code>) for 8-bit black. Also
+useful for making area based masks.</p>
+</li>
+<li>
+<p><code>std.Invert</code>: Self-explanatory. You can also just swap which clip
+gets merged via the mask instead of doing this.</p>
+</li>
+<li>
+<p><code>std.Limiter</code>: You can use this to limit pixels to certain values.
+Useful for maintaining TV range (<code>std.Limiter(min=16, max=235)</code>).</p>
+</li>
+<li>
+<p><code>std.Median</code>: This replaces each pixel with the median value in its
+neighborhood. Mostly useless.</p>
+</li>
+<li>
+<p><code>std.StackHorizontal</code>/<code>std.StackVertical</code>: Stack clips on top
+of/next to each other.</p>
+</li>
+<li>
+<p><code>std.Merge</code>: This lets you merge two clips with given weights. A
+weight of 0 will return the first clip, while 1 will return the
+second. The first thing you give it is a list of clips, and the
+second item is a list of weights for each plane. Here's how to merge
+chroma from the second clip into luma from the first:
+<code>std.Merge([first, second], [0, 1])</code>. If no third value is given,
+the second one is copied for the third plane.</p>
+</li>
+<li>
+<p><code>std.ShufflePlanes</code>: Extract or merge planes from a clip. For
+example, you can get the luma plane with
+<code>std.ShufflePlanes(src, 0, vs.GRAY)</code>.</p>
+</li>
+</ul>
+<p>If you want to apply something to only a certain area, you can use the
+wrapper <a href="https://gitlab.com/Ututu/rekt"><code>rekt</code></a> or <code>rekt_fast</code>. The latter only applies you function
+to the given area, which speeds it up and is quite useful for
+anti-aliasing and similar slow filters. Some wrappers around this exist
+already, like <code>rektaa</code> for anti-aliasing. Functions in <code>rekt_fast</code> are
+applied via a lambda function, so instead of <code>src.f3kdb.Deband()</code>, you
+input <code>rekt_fast(src, lambda x: x.f3kdb.Deband())</code>.</p>
+<p>One more very special function is <code>std.FrameEval</code>. What this allows you
+to do is evaluate every frame of a clip and apply a frame-specific
+function. This is quite confusing, but there are some nice examples in
+VapourSynth's documentation:
+<a href="http://www.vapoursynth.com/doc/functions/frameeval.html">http://www.vapoursynth.com/doc/functions/frameeval.html</a>. Now, unless
+you're interested in writing a function that requires this, you likely
+won't ever use it. However, many functions use it, including<br />
+<code>kgf.adaptive_grain</code>, <code>awf.FrameInfo</code>, <code>fvf.AutoDeblock</code>, <code>TAAmbk</code>, and
+many more. One example I can think of to showcase this is applying a
+different debander depending on frame type:</p>
+<pre><code class="language-py">import functools
+def FrameTypeDeband(n, f, clip):
+    if clip.props['_PictType'].decode() == &quot;B&quot;:
+        return core.f3kdb.Deband(clip, y=64, cr=0, cb=0, grainy=64, grainc=0, keep_tv_range=True, dynamic_grain=False)
+    elif clip.props['_PictType'].decode() == &quot;P&quot;:
+        return core.f3kdb.Deband(clip, y=48, cr=0, cb=0, grainy=64, grainc=0, keep_tv_range=True, dynamic_grain=False)
+    else:
+        return core.f3kdb.Deband(clip, y=32, cr=0, cb=0, grainy=64, grainc=0, keep_tv_range=True, dynamic_grain=False)
+        
+out = core.std.FrameEval(src, functools.partial(FrameTypeDeband, clip=src), src)
+</code></pre>
+<p>If you'd like to learn more, I'd suggest reading through the Irrational
+Encoding Wizardry GitHub group's guide:
+<a href="https://guide.encode.moe/encoding/masking-limiting-etc.html">https://guide.encode.moe/encoding/masking-limiting-etc.html</a> and
+reading through most of your favorite Python functions for VapourSynth.
+Pretty much all of the good ones should use some mask or have developed
+their own mask for their specific use case.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../filtering/detinting.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../filtering/anti-aliasing.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../filtering/detinting.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../filtering/anti-aliasing.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

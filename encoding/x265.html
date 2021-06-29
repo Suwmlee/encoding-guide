@@ -1,0 +1,422 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>x265 Settings - Advanced Encoding Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.</strong> Filtering</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">1.1.</strong> Loading the Video</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.2.</strong> Cropping</div></li><li class="chapter-item expanded "><a href="../filtering/resizing.html"><strong aria-hidden="true">1.3.</strong> Resizing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../filtering/descaling.html"><strong aria-hidden="true">1.3.1.</strong> Descaling and Rescaling</a></li><li class="chapter-item expanded "><a href="../filtering/chroma_res.html"><strong aria-hidden="true">1.3.2.</strong> Chroma Resampling and Shifting</a></li></ol></li><li class="chapter-item expanded "><a href="../filtering/bit_depths.html"><strong aria-hidden="true">1.4.</strong> Bit Depths and Dither Algorithms</a></li><li class="chapter-item expanded "><a href="../filtering/debanding.html"><strong aria-hidden="true">1.5.</strong> Debanding and Deblocking</a></li><li class="chapter-item expanded "><a href="../filtering/graining.html"><strong aria-hidden="true">1.6.</strong> Graining</a></li><li class="chapter-item expanded "><a href="../filtering/dirty_lines.html"><strong aria-hidden="true">1.7.</strong> Dirty Lines and Border Issues</a></li><li class="chapter-item expanded "><a href="../filtering/detinting.html"><strong aria-hidden="true">1.8.</strong> Detinting and Level Adjustment</a></li><li class="chapter-item expanded "><a href="../filtering/masking.html"><strong aria-hidden="true">1.9.</strong> Masking</a></li><li class="chapter-item expanded "><a href="../filtering/anti-aliasing.html"><strong aria-hidden="true">1.10.</strong> Anti-Aliasing</a></li><li class="chapter-item expanded "><a href="../filtering/deringing.html"><strong aria-hidden="true">1.11.</strong> Deringing</a></li><li class="chapter-item expanded "><a href="../filtering/dehaloing.html"><strong aria-hidden="true">1.12.</strong> Dehaloing</a></li><li class="chapter-item expanded "><a href="../filtering/denoising.html"><strong aria-hidden="true">1.13.</strong> Denoising</a></li><li class="chapter-item expanded "><a href="../filtering/dehardsubbing.html"><strong aria-hidden="true">1.14.</strong> Dehardsubbing and Delogoing</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Encoding</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../encoding/testing.html"><strong aria-hidden="true">2.1.</strong> Test Encodes</a></li><li class="chapter-item expanded "><a href="../encoding/x264.html"><strong aria-hidden="true">2.2.</strong> x264 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/x265.html" class="active"><strong aria-hidden="true">2.3.</strong> x265 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/screenshots.html"><strong aria-hidden="true">2.4.</strong> Screenshots and Comparisons</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Audio</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> SoX: Dithering and Down-Mixing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Mono and Stereo</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Surround Sound</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Appendix</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">4.1.</strong> Linear Light Processing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.2.</strong> Finding Optimal Resolution via FT</div></li><li class="chapter-item expanded "><a href="../appendix/grain_matching.html"><strong aria-hidden="true">4.3.</strong> Grain Matching</a></li><li class="chapter-item expanded "><a href="../appendix/gray.html"><strong aria-hidden="true">4.4.</strong> Black &amp; White Clips</a></li></ol></li><li class="chapter-item expanded "><a href="../scriptorium.html"><strong aria-hidden="true">5.</strong> Scriptorium</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Advanced Encoding Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p>The documentation here is very good, so I'll just go over recommended
+values:</p>
+<h2 id="source-independent-settings"><a class="header" href="#source-independent-settings">Source-independent settings</a></h2>
+<ul>
+<li>
+<p><code>--preset veryslow</code> or <code>slower</code></p>
+</li>
+<li>
+<p><code>--no-rect</code> for slower computers. There's a slight chance it'll
+prove useful, but it probably isn't worth it.</p>
+</li>
+<li>
+<p><code>--no-amp</code> is similar to <code>rect</code>, although it seems to be slightly
+more useful.</p>
+</li>
+<li>
+<p><code>--no-open-gop</code></p>
+</li>
+<li>
+<p><code>--no-cutree</code> since this seems to be a poor implementation of
+<code>mbtree</code>.</p>
+</li>
+<li>
+<p><code>--no-rskip</code> <code>rskip</code> is a speed up that gives up some quality, so
+it's worth considering with bad CPUs.</p>
+</li>
+<li>
+<p><code>--no-sao</code> because <code>sao</code> is one of the stupidest things in x265.</p>
+</li>
+<li>
+<p><code>--ctu 64</code></p>
+</li>
+<li>
+<p><code>--min-cu-size 8</code></p>
+</li>
+<li>
+<p><code>--rdoq-level 2</code></p>
+</li>
+<li>
+<p><code>--max-merge 5</code></p>
+</li>
+<li>
+<p><code>--rc-lookahead 60</code> although it's irrelevant as long as it's larger
+than min-keyint</p>
+</li>
+<li>
+<p><code>--ref 6</code> for good CPUs, something like <code>4</code> for worse ones.</p>
+</li>
+<li>
+<p><code>--bframes 16</code> or whatever your final bframes log output says.</p>
+</li>
+<li>
+<p><code>--rd 3</code> or <code>4</code> (they're currently the same).  If you can endure the slowdown, you can use <code>6</code>, too, which allows you to test <code>--rd-refine</code>.</p>
+</li>
+<li>
+<p><code>--subme 5</code>. You can also change this to <code>7</code>, but this is known to
+sharpen.</p>
+</li>
+<li>
+<p><code>--merange 57</code> just don't go below <code>32</code> and you should be fine.</p>
+</li>
+<li>
+<p><code>--high-tier</code></p>
+</li>
+<li>
+<p><code>--range limited</code></p>
+</li>
+<li>
+<p><code>--aud</code></p>
+</li>
+<li>
+<p><code>--repeat-headers</code></p>
+</li>
+</ul>
+<h2 id="source-dependent-settings"><a class="header" href="#source-dependent-settings">Source-dependent settings</a></h2>
+<ul>
+<li>
+<p><code>--output-depth 10</code> for 10-bit output.</p>
+</li>
+<li>
+<p><code>--input-depth 10</code> for 10-bit input.</p>
+</li>
+<li>
+<p><code>--colorprim 9</code> for HDR, <code>1</code> for SDR.</p>
+</li>
+<li>
+<p><code>--colormatrix 9</code> for HDR, <code>1</code> for SDR.</p>
+</li>
+<li>
+<p><code>--transfer 16</code> for HDR, <code>1</code> for SDR.</p>
+</li>
+<li>
+<p><code>--hdr10</code> for HDR.</p>
+</li>
+<li>
+<p><code>--hdr10-opt</code> for 4:2:0 HDR, <code>--no-hdr10-opt</code> for 4:4:4 HDR and SDR.</p>
+</li>
+<li>
+<p><code>--dhdr10-info /path/to/metadata.json</code> for HDR10+ content with metadata extracted using <a href="https://github.com/quietvoid/hdr10plus_parser">hdr10plus_parser</a>.</p>
+</li>
+<li>
+<p><code>--dhdr10-opt</code> for HDR10+.</p>
+</li>
+<li>
+<p><code>--master-display &quot;G(8500,39850)B(6550,2300)R(35400,14600)WP(15635,16450)L(10000000,20)&quot;</code>
+for BT.2020 or<br />
+<code>G(13250,34500)B(7500,3000)R(34000,16000)WP(15635,16450)L(10000000,1)</code>
+for Display P3 mastering display color primaries with the values for
+L coming from your source's MediaInfo for mastering display
+luminance.</p>
+<p>For example, if your source MediaInfo reads:</p>
+<pre><code>Mastering display color primaries : BT.2020
+Mastering display luminance : min: 0.0000 cd/m2, max: 1000 cd/m2
+Maximum Content Light Level : 711 cd/m2
+Maximum Frame-Average Light Level : 617 cd/m2
+</code></pre>
+<p>This means you set <code>&quot;G(8500,39850)B(6550,2300)R(35400,14600)WP(15635,16450)L(10000000,0)&quot;</code></p>
+</li>
+<li>
+<p><code>--max-cll &quot;711,617&quot;</code> from your source's MediaInfo for maximum
+content light level and maximum frame-average light level.
+The values here are from the above example.</p>
+</li>
+<li>
+<p><code>--cbqpoffs</code> and <code>--crqpoffs</code> should usually be between -3 and 0 for 4:2:0.
+For 4:4:4, set this to something between 3 and 6.
+This sets an offset between the bitrate applied to the luma and the
+chroma planes.</p>
+</li>
+<li>
+<p><code>--qcomp</code> between <code>0.60</code> and <code>0.80</code>.</p>
+</li>
+<li>
+<p><code>--aq-mode 4</code>, <code>3</code>, <code>2</code>, <code>1</code>, or <code>--hevc-aq</code> with <code>4</code> and <code>3</code>
+usually being the two best options. These do the following</p>
+<ol>
+<li>
+<p>Standard adaptive quantization, simply add more bits to complex
+blocks.</p>
+</li>
+<li>
+<p>Adaptive quantization with auto-variance.</p>
+</li>
+<li>
+<p>Adaptive quantization with auto-variance and bias to dark scene.</p>
+</li>
+<li>
+<p>Adaptive quantization with auto-variance and better edge
+preservation.</p>
+</li>
+<li>
+<p><code>hevc-aq</code> &quot;scales the quantization step size according to the
+spatial activity of one coding unit relative to frame average
+spatial activity. This AQ method utilizes the minimum variance
+of sub-unit in each coding unit to represent the coding unit's
+spatial complexity.&quot; Like most of the x265 documentation, this
+sounds a lot fancier than it is. Don't enable with other modes
+turned on.</p>
+</li>
+</ol>
+</li>
+<li>
+<p><code>--aq-strength</code> between <code>0.80</code> and <code>1.40</code> for AQ modes 1-3 or <code>0.50</code> and <code>1.00</code> for AQ mode 4.</p>
+</li>
+<li>
+<p><code>--deblock -4:-4</code> to <code>0:0</code>, as with x264. You can default <code>-3:-3</code>
+with live action.</p>
+</li>
+<li>
+<p><code>--ipratio</code> and <code>--pbratio</code> same as x264 again.</p>
+</li>
+<li>
+<p><code>--psy-rd 0.80</code> to <code>2.00</code>, similar-ish effect to x264.  Values are generally higher than with x264, though.</p>
+</li>
+<li>
+<p><code>--psy-rdoq</code> anything from <code>0.00</code> to <code>2.00</code> usually.</p>
+</li>
+<li>
+<p><code>--no-strong-intra-smoothing</code> on sharp/grainy content, you can leave
+this on for blurry content, as it's an additional blur that'll help
+prevent banding.</p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../encoding/x264.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../encoding/screenshots.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../encoding/x264.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../encoding/screenshots.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

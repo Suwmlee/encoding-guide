@@ -1,0 +1,321 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Descaling and Rescaling - Advanced Encoding Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.</strong> Filtering</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">1.1.</strong> Loading the Video</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.2.</strong> Cropping</div></li><li class="chapter-item expanded "><a href="../filtering/resizing.html"><strong aria-hidden="true">1.3.</strong> Resizing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../filtering/descaling.html" class="active"><strong aria-hidden="true">1.3.1.</strong> Descaling and Rescaling</a></li><li class="chapter-item expanded "><a href="../filtering/chroma_res.html"><strong aria-hidden="true">1.3.2.</strong> Chroma Resampling and Shifting</a></li></ol></li><li class="chapter-item expanded "><a href="../filtering/bit_depths.html"><strong aria-hidden="true">1.4.</strong> Bit Depths and Dither Algorithms</a></li><li class="chapter-item expanded "><a href="../filtering/debanding.html"><strong aria-hidden="true">1.5.</strong> Debanding and Deblocking</a></li><li class="chapter-item expanded "><a href="../filtering/graining.html"><strong aria-hidden="true">1.6.</strong> Graining</a></li><li class="chapter-item expanded "><a href="../filtering/dirty_lines.html"><strong aria-hidden="true">1.7.</strong> Dirty Lines and Border Issues</a></li><li class="chapter-item expanded "><a href="../filtering/detinting.html"><strong aria-hidden="true">1.8.</strong> Detinting and Level Adjustment</a></li><li class="chapter-item expanded "><a href="../filtering/masking.html"><strong aria-hidden="true">1.9.</strong> Masking</a></li><li class="chapter-item expanded "><a href="../filtering/anti-aliasing.html"><strong aria-hidden="true">1.10.</strong> Anti-Aliasing</a></li><li class="chapter-item expanded "><a href="../filtering/deringing.html"><strong aria-hidden="true">1.11.</strong> Deringing</a></li><li class="chapter-item expanded "><a href="../filtering/dehaloing.html"><strong aria-hidden="true">1.12.</strong> Dehaloing</a></li><li class="chapter-item expanded "><a href="../filtering/denoising.html"><strong aria-hidden="true">1.13.</strong> Denoising</a></li><li class="chapter-item expanded "><a href="../filtering/dehardsubbing.html"><strong aria-hidden="true">1.14.</strong> Dehardsubbing and Delogoing</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Encoding</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../encoding/testing.html"><strong aria-hidden="true">2.1.</strong> Test Encodes</a></li><li class="chapter-item expanded "><a href="../encoding/x264.html"><strong aria-hidden="true">2.2.</strong> x264 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/x265.html"><strong aria-hidden="true">2.3.</strong> x265 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/screenshots.html"><strong aria-hidden="true">2.4.</strong> Screenshots and Comparisons</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Audio</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> SoX: Dithering and Down-Mixing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Mono and Stereo</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Surround Sound</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Appendix</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">4.1.</strong> Linear Light Processing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.2.</strong> Finding Optimal Resolution via FT</div></li><li class="chapter-item expanded "><a href="../appendix/grain_matching.html"><strong aria-hidden="true">4.3.</strong> Grain Matching</a></li><li class="chapter-item expanded "><a href="../appendix/gray.html"><strong aria-hidden="true">4.4.</strong> Black &amp; White Clips</a></li></ol></li><li class="chapter-item expanded "><a href="../scriptorium.html"><strong aria-hidden="true">5.</strong> Scriptorium</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Advanced Encoding Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="descaling"><a class="header" href="#descaling">Descaling</a></h1>
+<p>If you've read a bit about anime encoding, you've probably heard the term &quot;descaling&quot; before; this is the process of &quot;reversing&quot; an upscale by finding the native resolution and resize kernel used.
+When done correctly, this is a near-lossless process and produces a sharper output than standard spline36 resizing with less haloing artifacts.
+However, when done incorrectly, this will only add to the already existing issues that come with upscaling, such as haloing, ringing etc.</p>
+<p>The most commonly used plugin to reverse upscales is <a href="https://github.com/Irrational-Encoding-Wizardry/vapoursynth-descale">Descale</a>, which is most easily called via <a href="https://github.com/Irrational-Encoding-Wizardry/fvsfunc"><code>fvsfunc</code></a>, which has an alias for each kernel, e.g. <code>fvf.Debilinear</code>.
+This supports bicubic, bilinear, lanczos, and spline upscales.</p>
+<p>Most digitally produced anime content, especially TV shows, will be a bilinear or bicubic upscale from 720p, 810p, 864p, 900p, or anything in-between.
+While not something that can only be done with anime, it is far more prevalent with such content, so we will focus on anime accordingly.</p>
+<p>As our example, we'll look at Nichijou, which is a bilinear upscale from 720p.</p>
+<p>To showcase how nice a descale can look, let's compare with a standard spline resize:</p>
+<pre><code class="language-py">descale = fvf.Debilinear(src, 1280, 720)
+spline = src.resize.Spline36(1280, 720)
+out = core.std.Interleave([descale, spline])
+</code></pre>
+<p align="center"> 
+<img src='Pictures/descale0.png' onmouseover="this.src='Pictures/descale1.png';" onmouseout="this.src='Pictures/descale0.png';" />
+</p>
+<h2 id="native-resolutions-and-kernels"><a class="header" href="#native-resolutions-and-kernels">Native resolutions and kernels</a></h2>
+<p>Now, the first thing you need to do when you want to descale is figure out what was used to resize the video and from which resolution the resize was done.
+The most popular tool for this is <a href="https://github.com/Infiziert90/getnative">getnative</a>, which allows you to feed it an image, which it will then descale, resize, and calculate the difference from the source, then plot the result so you can find the native resolution.</p>
+<p>For this to work best, you'll want to find a bright frame with very little blurring, VFX, grain etc.</p>
+<p>Once you've found one, you can run the script as follows:</p>
+<pre><code class="language-sh">python getnative.py image.png -k bilinear
+</code></pre>
+<p>This will output a graph in a <code>Results</code> directory and guess the resolution.
+It's based to take a look at the graph yourself, though.
+In our example, these are the correct parameters, so we get the following:</p>
+<p><img src="Pictures/descalebilinear.svg" alt="alt text" title="getnative bilinear graph" /></p>
+<p>There is a clear dip at 720p.
+We can also test other kernels:</p>
+<pre><code class="language-sh">python getnative.py image.png -k bicubic -b 0 -c 1
+</code></pre>
+<p>The graph then looks as follows:</p>
+<p><img src="Pictures/descalesharpbicubic.svg" alt="alt text" title="getnative sharp bicubic graph" /></p>
+<p>If you'd like to test all likely kernels, you can use <code>--mode &quot;all&quot;</code>.</p>
+<p>To double check this, we compare the input frame with a descale upscaled back with the same kernel:</p>
+<pre><code class="language-py">descale = fvf.Debilinear(src, 1280, 720)
+rescale = descale.resize.Bilinear(src, src.width, src.height)
+merge_chroma = rescale.std.Merge(src, [0, 1])
+out = core.std.Interleave([src, merge_chroma])
+</code></pre>
+<p>Here, we've merged the chroma from the source with our rescale, as chroma is a lower resolution than the source resolution, so we can't descale it.
+The result:</p>
+<p align="center"> 
+<img src='Pictures/resize0.png' onmouseover="this.src='Pictures/resize1.png';" onmouseout="this.src='Pictures/resize0.png';" />
+</p>
+<p>As you can see, lineart is practically identical and no extra haloing or aliasing was introduced.</p>
+<p>On the other hand, if we try an incorrect kernel and resolution, we see lots more artifacts in the rescaled image:</p>
+<pre><code class="language-py">b, c = 0, 1
+descale = fvf.Debicubic(src, 1440, 810, b=b, c=c)
+rescale = descale.resize.Bicubic(src, src.width, src.height, filter_param_a=b, filter_param_b=c)
+merge_chroma = rescale.std.Merge(src, [0, 1])
+out = core.std.Interleave([src, merge_chroma])
+</code></pre>
+<p align="center"> 
+<img src='Pictures/resize0.png' onmouseover="this.src='Pictures/resize2.png';" onmouseout="this.src='Pictures/resize0.png';" />
+</p>
+<h1 id="mixed-resolutions"><a class="header" href="#mixed-resolutions">Mixed Resolutions</a></h1>
+<p>The example above of incorrect kernel and height should make it obvious that descaling incorrectly is quite destructive.
+Unfortunately, most video that can be descaled has elements in other resolutions.
+Sometimes, different elements in a frame will have different resolutions, e.g. the background is in 900p, character A is in 810p, and character B is in 720p.
+In cases like this, it's usually safer to do a simple spline36 resize.
+One can technically do a lot of masking to fix this, but that's a lot of effort and masks failing is going to be likely.</p>
+<p>A more common situation in which one will encounter mixed resolutions is credits and overlays, which are usually in 1080p.
+Let's look at what happens if we add some text to the above frame and descale that compared to a spline36 resize on it.
+To make comparing easier, these images are zoomed in by a factor of 3:</p>
+<p align="center"> 
+<img src='Pictures/descalesub0.png' onmouseover="this.src='Pictures/descalesub1.png';" onmouseout="this.src='Pictures/descalesub0.png';" />
+</p>
+<p>The debilinear resize clearly adds stronger haloing artifacts here.</p>
+<p>To deal with this, we can use the <code>DescaleM</code> functions from <code>fvsfunc</code>, which mask these elements and scale them via a spline36 resize:</p>
+<pre><code class="language-py">descale = fvf.DebilinearM(src, 1280, 720)
+</code></pre>
+<p>As these functions are comparatively slow, you might want to consider finding these elements beforehand and applying the function only to those frames.
+If you aren't certain that your frame doesn't have 1080p elements, though, stick with these functions.</p>
+<p>Alternatively, in very rare cases, the resolution and/or kernel will change scene-by-scene, or even worse, frame-by-frame.
+You can consider trying <code>lvsfunc.scale.descale</code>, which tries to find the ideal height for each frame.
+Ideally, however, you should do this manually.</p>
+<h2 id="444-and-420"><a class="header" href="#444-and-420">4:4:4 and 4:2:0</a></h2>
+<h1 id="upscaling-and-rescaling"><a class="header" href="#upscaling-and-rescaling">Upscaling and Rescaling</a></h1>
+<h2 id="upscaling"><a class="header" href="#upscaling">Upscaling</a></h2>
+<h2 id="rescaling"><a class="header" href="#rescaling">Rescaling</a></h2>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../filtering/resizing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../filtering/chroma_res.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../filtering/resizing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../filtering/chroma_res.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

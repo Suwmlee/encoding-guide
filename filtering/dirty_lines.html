@@ -1,0 +1,673 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Dirty Lines and Border Issues - Advanced Encoding Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.</strong> Filtering</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">1.1.</strong> Loading the Video</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.2.</strong> Cropping</div></li><li class="chapter-item expanded "><a href="../filtering/resizing.html"><strong aria-hidden="true">1.3.</strong> Resizing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../filtering/descaling.html"><strong aria-hidden="true">1.3.1.</strong> Descaling and Rescaling</a></li><li class="chapter-item expanded "><a href="../filtering/chroma_res.html"><strong aria-hidden="true">1.3.2.</strong> Chroma Resampling and Shifting</a></li></ol></li><li class="chapter-item expanded "><a href="../filtering/bit_depths.html"><strong aria-hidden="true">1.4.</strong> Bit Depths and Dither Algorithms</a></li><li class="chapter-item expanded "><a href="../filtering/debanding.html"><strong aria-hidden="true">1.5.</strong> Debanding and Deblocking</a></li><li class="chapter-item expanded "><a href="../filtering/graining.html"><strong aria-hidden="true">1.6.</strong> Graining</a></li><li class="chapter-item expanded "><a href="../filtering/dirty_lines.html" class="active"><strong aria-hidden="true">1.7.</strong> Dirty Lines and Border Issues</a></li><li class="chapter-item expanded "><a href="../filtering/detinting.html"><strong aria-hidden="true">1.8.</strong> Detinting and Level Adjustment</a></li><li class="chapter-item expanded "><a href="../filtering/masking.html"><strong aria-hidden="true">1.9.</strong> Masking</a></li><li class="chapter-item expanded "><a href="../filtering/anti-aliasing.html"><strong aria-hidden="true">1.10.</strong> Anti-Aliasing</a></li><li class="chapter-item expanded "><a href="../filtering/deringing.html"><strong aria-hidden="true">1.11.</strong> Deringing</a></li><li class="chapter-item expanded "><a href="../filtering/dehaloing.html"><strong aria-hidden="true">1.12.</strong> Dehaloing</a></li><li class="chapter-item expanded "><a href="../filtering/denoising.html"><strong aria-hidden="true">1.13.</strong> Denoising</a></li><li class="chapter-item expanded "><a href="../filtering/dehardsubbing.html"><strong aria-hidden="true">1.14.</strong> Dehardsubbing and Delogoing</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Encoding</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../encoding/testing.html"><strong aria-hidden="true">2.1.</strong> Test Encodes</a></li><li class="chapter-item expanded "><a href="../encoding/x264.html"><strong aria-hidden="true">2.2.</strong> x264 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/x265.html"><strong aria-hidden="true">2.3.</strong> x265 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/screenshots.html"><strong aria-hidden="true">2.4.</strong> Screenshots and Comparisons</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Audio</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> SoX: Dithering and Down-Mixing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Mono and Stereo</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Surround Sound</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Appendix</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">4.1.</strong> Linear Light Processing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.2.</strong> Finding Optimal Resolution via FT</div></li><li class="chapter-item expanded "><a href="../appendix/grain_matching.html"><strong aria-hidden="true">4.3.</strong> Grain Matching</a></li><li class="chapter-item expanded "><a href="../appendix/gray.html"><strong aria-hidden="true">4.4.</strong> Black &amp; White Clips</a></li></ol></li><li class="chapter-item expanded "><a href="../scriptorium.html"><strong aria-hidden="true">5.</strong> Scriptorium</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Advanced Encoding Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p align="center">
+<img src='Pictures/dirt_source.png' onmouseover="this.src='Pictures/dirt_filtered.png';" onmouseout="this.src='Pictures/dirt_source.png';"/>
+</p>
+<p align="center">
+<i>Dirty lines from A Silent Voice (2016)'s intro.  On mouseover: fixed with ContinuityFixer and FillBorders.</i>
+</p>
+<p>One of the more common issues you may encounter are 'dirty lines', these are usually found on the borders of video where a row or column of pixels exhibits inconsistent luma values comparative to its surroundings. Oftentimes, this is the due to improper downscaling, for example downscaling after applying borders. Dirty lines can also occur because the compressionist doesn't consider that whilst they're working with 4:2:2 chroma subsampling (meaning their height doesn't have to be mod2), consumer video will be 4:2:0, leading to extra black rows that you can't get rid of during cropping if the main clip isn't placed properly. Another form of dirty lines is exhibited when the chroma planes are present on black bars. Usually, these should be cropped out. The opposite can also occur, however, where the planes with legitimate luma information lack chroma information.</p>
+<p>It's important to remember that sometimes your source will have fake lines (often referred to as 'dead' lines), meaning ones without legitimate information. These will usually just mirror the next row/column. Do not bother fixing these, just crop them instead. An example:</p>
+<p align="center">
+<img src='Pictures/dead_lines.png'/>
+</p>
+<p>Similarly, when attempting to fix dirty lines you should thoroughly check that your fix has not caused unwanted problems, such as smearing (common with overzealous ContinuityFixer values) or flickering (especially on credits, it is advisable to omit credit reels from your fix in most cases). If you cannot figure out a proper fix it is completely reasonable to either crop off the dirty line(s) or leave them unfixed. A bad fix is worse than no fix!</p>
+<p>Here are five commonly used methods for fixing dirty lines:</p>
+<h2 id="rektlvls"><a class="header" href="#rektlvls"><code>rektlvls</code></a></h2>
+<p>From <a href="https://gitlab.com/Ututu/rekt"><code>rekt</code></a>.  This is basically <code>FixBrightnessProtect3</code> and <code>FixBrightness</code> from AviSynth in one, although unlike <code>FixBrightness</code>, not the entire frame is processed. Its
+values are quite straightforward. Raise the adjustment values to
+brighten, lower to darken. Set <code>prot_val</code> to <code>None</code> and it will
+function like <code>FixBrightness</code>, meaning the adjustment values will
+need to be changed.</p>
+<pre><code class="language-py">from rekt import rektlvls
+fix = rektlvls(src, rownum=None, rowval=None, colnum=None, colval=None, prot_val=[16, 235])
+</code></pre>
+<p>If you'd like to process multiple rows at a time, you can enter a
+list (e.g. <code>rownum=[0, 1, 2]</code>).</p>
+<p>To illustrate this, let's look at the dirty lines in the black and
+white Blu-ray of Parasite (2019)'s bottom rows:</p>
+<p align="center">
+<img src='Pictures/rektlvls_src.png';"/>
+</p>
+<p>In this example, the bottom four rows have alternating brightness
+offsets from the next two rows. So, we can use <code>rektlvls</code> to raise
+luma in the first and third row from the bottom, and again to lower
+it in the second and fourth:</p>
+<pre><code class="language-py">fix = rektlvls(src, rownum=[803, 802, 801, 800], rowval=[27, -10, 3, -3])
+</code></pre>
+<p>In this case, we are in <code>FixBrightnessProtect3</code> mode. We aren't
+taking advantage of <code>prot_val</code> here, but people usually use this
+mode regardless, as there's always a chance it might help. The
+result:</p>
+<p align="center">
+<img src='Pictures/rektlvls_fix.png' onmouseover="this.src='Pictures/rektlvls_src.png';" onmouseout="this.src='Pictures/rektlvls_fix.png';"/>
+</p>
+<details>
+<summary>In-depth function explanation</summary>
+In <code>FixBrightness</code> mode, this will perform an adjustment with
+<a href="www.vapoursynth.com/doc/functions/levels.html"><code>std.Levels</code></a> on the desired row. This means that, in 8-bit,
+every possible value \(v\) is mapped to a new value according to the
+following function: 
+$$\begin{aligned}
+&\forall v \leq 255, v\in\mathbb{N}: \\
+&\max\left[\min\left(\frac{\max(\min(v, \texttt{max_in}) - \texttt{min_in}, 0)}{(\texttt{max_in} - \texttt{min_in})}\times (\texttt{max_out} - \texttt{min_out}) + \texttt{min_out}, 255\right), 0\right] + 0.5
+\end{aligned}$$
+For positive <code>adj_val</code>,
+\(\texttt{max_in}=235 - \texttt{adj_val}\). For negative ones,
+\(\texttt{max_out}=235 + \texttt{adj_val}\). The rest of the values
+stay at 16 or 235 depending on whether they are maximums or
+minimums.
+<p><code>FixBrightnessProtect3</code> mode takes this a bit further, performing
+(almost) the same adjustment for values between the first
+\(\texttt{prot_val} + 10\) and the second \(\texttt{prot_val} - 10\),
+where it scales linearly. Its adjustment value does not work the
+same, as it adjusts by \(\texttt{adj_val} \times 2.19\).  In 8-bit:</p>
+<p>Line brightening:
+$$\begin{aligned}
+&amp;\texttt{if }v - 16 &lt;= 0 \\
+&amp;\qquad 16 / \\
+&amp;\qquad \texttt{if } 235 - \texttt{adj_val} \times 2.19 - 16 &lt;= 0 \\
+&amp;\qquad \qquad 0.01 \\
+&amp;\qquad \texttt{else} \\
+&amp;\qquad \qquad 235 - \texttt{adj_val} \times 2.19 - 16 \\
+&amp;\qquad \times 219 \\
+&amp;\texttt{else} \\
+&amp;\qquad (v - 16) / \\
+&amp;\qquad \texttt{if }235 - \texttt{adj_val} \times 2.19 - 16 &lt;= 0 \\
+&amp;\qquad \qquad 0.01 \\
+&amp;\qquad \texttt{else} \\
+&amp;\qquad \qquad 235 - \texttt{adj_val} \times 2.19 - 16 \\
+&amp;\qquad \times 219 + 16
+\end{aligned}$$</p>
+<p>Line darkening:
+$$\begin{aligned}
+&amp;\texttt{if }v - 16 &lt;= 0 \\
+&amp;\qquad\frac{16}{219} \times (235 + \texttt{adj_val} \times 2.19 - 16) \\
+&amp;\texttt{else} \\
+&amp;\qquad\frac{v - 16}{219} \times (235 + \texttt{adj_val} \times 2.19 - 16) + 16 \\
+\end{aligned}$$</p>
+<p>All of this, which we give the variable \(a\), is then protected by (for simplicity's sake, only doing dual <code>prot_val</code>, noted by \(p_1\) and \(p_2\)):
+$$\begin{aligned}
+&amp; a \times \min \left[ \max \left( \frac{v - p_1}{10}, 0 \right), 1 \right] \\
+&amp; + v \times \min \left[ \max \left( \frac{v - (p_1 - 10)}{10}, 0 \right), 1 \right] \times \min \left[ \max \left( \frac{p_0 - v}{-10}, 0\right), 1 \right] \\
+&amp; + v \times \max \left[ \min \left( \frac{p_0 + 10 - v}{10}, 0\right), 1\right] 
+\end{aligned}$$</p>
+</details>
+<h2 id="bbmod"><a class="header" href="#bbmod"><code>bbmod</code></a></h2>
+<p>From <code>awsmfunc</code>.  This is a mod of the original BalanceBorders function. While it
+doesn't preserve original data nearly as well as <code>rektlvls</code>, it will
+lead to decent results with high <code>blur</code> and <code>thresh</code> values and is
+easy to use for multiple rows, especially ones with varying
+brightness, where <code>rektlvls</code> is no longer useful. If it doesn't
+produce decent results, these can be changed, but the function will
+get more destructive the lower you set them. It's also
+significantly faster than the versions in <code>havsfunc</code> and <code>sgvsfunc</code>,
+as only necessary pixels are processed.</p>
+<pre><code class="language-py">import awsmfunc as awf
+bb = awf.bbmod(src=clip, left=0, right=0, top=0, bottom=0, thresh=[128, 128, 128], blur=[20, 20, 20], planes=[0, 1, 2], scale_thresh=False, cpass2=False)
+</code></pre>
+<p>The arrays for <code>thresh</code> and <code>blur</code> are again y, u, and v values.
+It's recommended to try <code>blur=999</code> first, then lowering that and
+<code>thresh</code> until you get decent values.<br />
+<code>thresh</code> specifies how far the result can vary from the input. This
+means that the lower this is, the better. <code>blur</code> is the strength of
+the filter, with lower values being stronger, and larger values
+being less aggressive. If you set <code>blur=1</code>, you're basically copying
+rows. If you're having trouble with chroma, you can try activating
+<code>cpass2</code>, but note that this requires a very low <code>thresh</code> to be set,
+as this changes the chroma processing significantly, making it quite
+aggressive.</p>
+<p>For our example, I've created fake dirty lines, which we will fix:</p>
+<p align="center">
+<img src='Pictures/dirtfixes0.png';"/>
+</p>
+<p>To fix this, we can apply <code>bbmod</code> with a low blur and a high thresh,
+meaning pixel values can change significantly:</p>
+<pre><code class="language-py">fix = awf.bbmod(src, top=6, thresh=90, blur=20)
+</code></pre>
+<p align="center">
+<img src='Pictures/dirtfixes1.png' onmouseover="this.src='Pictures/dirtfixes0.png';" onmouseout="this.src='Pictures/dirtfixes1.png';"/>
+</p>
+<p>Our output is already a lot closer to what we assume the source
+should look like. Unlike <code>rektlvls</code>, this function is quite quick to
+use, so lazy people (i.e. everyone) can use this to fix dirty lines
+before resizing, as the difference won't be noticeable after
+resizing.</p>
+<p>While you can use <code>rektlvls</code> on as many rows/columns as necessary, the same doesn't hold true for <code>bbmod</code>.  Unless you are resizing after, you should only use <code>bbmod</code> on two rows/pixels for low <code>blur</code> values (\(\approx 20\)) or three for higher <code>blur</code> values.  If you are resizing after, you can change the maximum value according to:
+\[
+max_\mathrm{resize} = max \times \frac{resolution_\mathrm{source}}{resolution_\mathrm{resized}}
+\]</p>
+<details>
+<summary>In-depth function explanation</summary>
+<code>bbmod</code> works by blurring the desired rows, input rows, and
+reference rows within the image using a blurred bicubic kernel,
+whereby the blur amount determines the resolution scaled to accord
+to \(\mathtt{\frac{width}{blur}}\). The output is compared using
+expressions and finally merged according to the threshold specified.
+<p>The function re-runs one function for the top border for each side by flipping and transposing.  As such, this explanation will only cover fixing the top.</p>
+<p>First, we double the resolution without any blurring (\(w\) and \(h\) are input clip's width and height):
+\[
+clip_2 = \texttt{resize.Point}(clip, w\times 2, h\times 2)
+\]</p>
+<p align="center">
+<img src='Pictures/bbmod0_0.png' />
+</p>
+<p>Now, the reference is created by cropping off double the to-be-fixed number of rows.  We set the height to 2 and then match the size to the double res clip:
+\[\begin{align}
+clip &amp;= \texttt{CropAbs}(clip_2, \texttt{width}=w \times 2, \texttt{height}=2, \texttt{left}=0, \texttt{top}=top \times 2) \\
+clip &amp;= \texttt{resize.Point}(clip, w \times 2, h \times 2)
+\end{align}\]</p>
+<p align="center">
+<img src='Pictures/bbmod0_1.png' />
+</p>
+<p>Before the next step, we determine the \(blurwidth\):
+\[
+blurwidth = \max \left( 8, \texttt{floor}\left(\frac{w}{blur}\right)\right)
+\]
+In our example, we get 8.</p>
+<p>Now, we use a blurred bicubic resize to go down to \(blurwidth \times 2\) and back up:
+\[\begin{align}
+referenceBlur &amp;= \texttt{resize.Bicubic}(clip, blurwidth \times 2, top \times 2, \texttt{b}=1, \texttt{c}=0) \\
+referenceBlur &amp;= \texttt{resize.Bicubic}(referenceBlur, w \times 2, top \times 2, \texttt{b}=1, \texttt{c}=0)
+\end{align}\]</p>
+<p align="center">
+<img src='Pictures/bbmod0_2.png' />
+</p>
+<p align="center">
+<img src='Pictures/bbmod0_3.png' />
+</p>
+<p>Then, crop the doubled input to have height of \(top \times 2\):
+\[
+original = \texttt{CropAbs}(clip_2, \texttt{width}=w \times 2, \texttt{height}=top \times 2)
+\]</p>
+<p align="center">
+<img src='Pictures/bbmod0_4.png' />
+</p>
+<p>Prepare the original clip using the same bicubic resize downwards:
+\[
+clip = \texttt{resize.Bicubic}(original, blurwidth \times 2, top \times 2, \texttt{b}=1, \texttt{c}=0)
+\]</p>
+<p align="center">
+<img src='Pictures/bbmod0_5.png' />
+</p>
+<p>Our prepared original clip is now also scaled back down:
+\[
+originalBlur = \texttt{resize.Bicubic}(clip, w \times 2, top \times 2, \texttt{b}=1, \texttt{c}=0)
+\]</p>
+<p align="center">
+<img src='Pictures/bbmod0_6.png' />
+</p>
+<p>Now that all our clips have been downscaled and scaled back up, which is the blurring process that approximates what the actual value of the rows should be, we can compare them and choose how much of what we want to use.  First, we perform the following expression (\(x\) is \(original\), \(y\) is \(originalBlur\), and \(z\) is \(referenceBlur\)):
+\[
+\max \left[ \min \left( \frac{z - 16}{y - 16}, 8 \right), 0.4 \right] \times (x + 16) + 16
+\]
+The input here is:
+\[
+balancedLuma = \texttt{Expr}(\texttt{clips}=[original, originalBlur, referenceBlur], \texttt{&quot;z 16 - y 16 - / 8 min 0.4 max x 16 - * 16 +&quot;})
+\]</p>
+<p align="center">
+<img src='Pictures/bbmod0_7.png' />
+</p>
+<p>What did we do here?  In cases where the original blur is low and supersampled reference's blur is high, we did:
+\[
+8 \times (original + 16) + 16
+\]
+This brightens the clip significantly.  Else, if the original clip's blur is high and supersampled reference is low, we darken:
+\[
+0.4 \times (original + 16) + 16
+\]
+In normal cases, we combine all our clips:
+\[
+(original + 16) \times \frac{originalBlur - 16}{referenceBlur - 16} + 16
+\]</p>
+<p>We add 128 so we can merge according to the difference between this and our input clip:
+\[
+difference = \texttt{MakeDiff}(balancedLuma, original)
+\]</p>
+<p>Now, we compare to make sure the difference doesn't exceed \(thresh\):
+\[\begin{align}
+difference &amp;= \texttt{Expr}(difference, &quot;x thresh &gt; thresh x ?&quot;) \\
+difference &amp;= \texttt{Expr}(difference, &quot;x thresh &lt; thresh x ?&quot;)
+\end{align}\]</p>
+<p>These expressions do the following:
+\[\begin{align}
+&amp;\texttt{if }difference &gt;/&lt; thresh:\\
+&amp;\qquad    thresh\\
+&amp;\texttt{else}:\\
+&amp;\qquad    difference
+\end{align}\]</p>
+<p>This is then resized back to the input size and merged using <code>MergeDiff</code> back into the original and the rows are stacked onto the input.  The output resized to the same res as the other images:</p>
+<p align="center">
+<img src='Pictures/bbmod0_9.png' />
+</p>
+</details>
+<h2 id="fillborders"><a class="header" href="#fillborders"><code>FillBorders</code></a></h2>
+<p>From <a href="https://github.com/Moiman/vapoursynth-fillborders"><code>fb</code></a>.  This function pretty much just copies the next column/row in line.
+While this sounds, silly, it can be quite useful when downscaling
+leads to more rows being at the bottom than at the top, and one
+having to fill one up due to YUV420's mod2 height.</p>
+<pre><code class="language-py">fill = core.fb.FillBorders(src=clip, left=0, right=0, bottom=0, top=0, mode=&quot;fillmargins&quot;)
+</code></pre>
+<p>A very interesting use for this function is one similar to applying
+<code>ContinuityFixer</code> only to chroma planes, which can be used on gray
+borders or borders that don't match their surroundings no matter
+what luma fix is applied. This can be done with the following
+script:</p>
+<pre><code class="language-py">fill = core.fb.FillBorders(src=clip, left=0, right=0, bottom=0, top=0, mode=&quot;fillmargins&quot;)
+merge = core.std.Merge(clipa=clip, clipb=fill, weight=[0,1])
+</code></pre>
+<p>You can also split the planes and process the chroma planes
+individually, although this is only slightly faster. A wrapper that
+allows you to specify per-plane values for <code>fb</code> is <code>FillBorders</code> in
+<code>awsmfunc</code>.</p>
+<p>Note that you should only ever fill single columns/rows with <code>FillBorders</code>.  If you have more black lines, crop them!  If there are frames requiring different crops in the video, don't fill these up.  More on this at the end of this chapter.</p>
+<p>To illustrate what a source requiring <code>FillBorders</code> might look like,
+let's look at Parasite (2019)'s SDR UHD once again, which requires
+an uneven crop of 277. However, we can't crop this due to chroma
+subsampling, so we need to fill one row. To illustrate this, we'll
+only be looking at the top rows. Cropping with respect to chroma
+subsampling nets us:</p>
+<pre><code class="language-py">crp = src.std.Crop(top=276)
+</code></pre>
+<p align="center">
+<img src='Pictures/fb_src.png';"/>
+</p>
+<p>Obviously, we want to get rid of the black line at the top, so let's
+use <code>FillBorders</code> on it:</p>
+<pre><code class="language-py">fil = crp.fb.FillBorders(top=1, mode=&quot;fillmargins&quot;)
+</code></pre>
+<p align="center">
+<img src='Pictures/fb_luma.png' onmouseover="this.src='Pictures/fb_src.png';" onmouseout="this.src='Pictures/fb_luma.png';"/>
+</p>
+<p>This already looks better, but the orange tones look washed out.
+This is because <code>FillBorders</code> only fills one chroma if <strong>two</strong> luma
+are fixed. So, we need to fill chroma as well. To make this easier
+to write, let's use the <code>awsmfunc</code> wrapper:</p>
+<pre><code class="language-py">fil = awf.fb(crp, top=1)
+</code></pre>
+<p align="center">
+<img src='Pictures/fb_lumachroma.png' onmouseover="this.src='Pictures/fb_luma.png';" onmouseout="this.src='Pictures/fb_lumachroma.png';"/>
+</p>
+<p>Our source is now fixed. Some people may want to resize the chroma
+to maintain original aspect ratio performing lossy resampling on chroma, but whether
+this is the way to go is not generally agreed upon (personally, I,
+Aicha, disagree with doing this). If you want to go this route:</p>
+<pre><code class="language-py">top = 1
+bot = 1
+new_height = crp.height - (top + bot)
+fil = awf.fb(crp, top=top, bottom=bot)
+out = fil.resize.Spline36(crp.width, new_height, src_height=new_height, src_top=top) 
+</code></pre>
+<details>
+<summary>In-depth function explanation</summary>
+<code>FillBorders</code> has three modes, although we only really care about mirror and fillmargins.
+The mirror mode literally just mirrors the previous pixels.  Contrary to the third mode, repeat, it doesn't just mirror the final row, but the rows after that for fills greater than 1.  This means that, if you only fill one row, these modes are equivalent.  Afterwards, the difference becomes obvious.
+<p>In fillmargins mode, it works a bit like a convolution, whereby it does a [2, 3, 2] of the next row's pixels, meaning it takes 2 of the left pixel, 3 of the middle, and 2 of the right, then averages.  For borders, it works slightly differently: the leftmost pixel is just a mirror of the next pixel, while the eight rightmost pixels are also mirrors of the next pixel.  Nothing else happens here.</p>
+</details>
+<h2 id="continuityfixer"><a class="header" href="#continuityfixer"><code>ContinuityFixer</code></a></h2>
+<p>From <a href="https://gitlab.com/Ututu/VS-ContinuityFixer"><code>cf</code></a>.  <code>ContinuityFixer</code> works by comparing the rows/columns specified to
+the amount of rows/columns specified by <code>range</code> around it and
+finding new values via least squares regression. Results are similar
+to <code>bbmod</code>, but it creates entirely fake data, so it's preferable to
+use <code>rektlvls</code> or <code>bbmod</code> with a high blur instead. Its settings
+look as follows:</p>
+<pre><code class="language-py">fix = core.cf.ContinuityFixer(src=clip, left=[0, 0, 0], right=[0, 0, 0], top=[0, 0, 0], bottom=[0, 0, 0], radius=1920)
+</code></pre>
+<p>This is assuming you're working with 1080p footage, as <code>radius</code>'s
+value is set to the longest set possible as defined by the source's
+resolution. I'd recommend a lower value, although not going much
+lower than 3, as at that point, you may as well be copying pixels
+(see <code>FillBorders</code> below for that). What will probably throw off
+most newcomers is the array I've entered as the values for
+rows/columns to be fixed. These denote the values to be applied to
+the three planes. Usually, dirty lines will only occur on the luma
+plane, so you can often leave the other two at a value of 0. Do note
+an array is not necessary, so you can also just enter the amount of
+rows/columns you'd like the fix to be applied to, and all planes
+will be processed.</p>
+<p>As <code>ContinuityFixer</code> is less likely to keep original data in tact, it's recommended to prioritize <code>bbmod</code> over it.</p>
+<p>Let's look at the <code>bbmod</code> example again and apply <code>ContinuityFixer</code>:</p>
+<pre><code class="language-py">fix = src.cf.ContinuityFixer(top=[6, 6, 6], radius=10)
+</code></pre>
+<p align="center">
+<img src='Pictures/dirtfixes2.png' onmouseover="this.src='Pictures/dirtfixes0.png';" onmouseout="this.src='Pictures/dirtfixes2.png';"/>
+</p>
+<p>Let's compare this with the bbmod fix (remember to mouse-over to compare):</p>
+<p align="center">
+<img src='Pictures/dirtfixes2.png' onmouseover="this.src='Pictures/dirtfixes1.png';" onmouseout="this.src='Pictures/dirtfixes2.png';"/>
+</p>
+The result is ever so slightly in favor of <code>ContinuityFixer</code> here.
+<p>Just like <code>bbmod</code>, <code>ContinuityFixer</code> shouldn't be used on more than two rows/columns.  Again, if you're resizing, you can change this maximum accordingly:
+\[
+max_\mathrm{resize} = max \times \frac{resolution_\mathrm{source}}{resolution_\mathrm{resized}}
+\]</p>
+<details>
+<summary>In-depth function explanation</summary>
+<code>ContinuityFixer</code> works by calculating the <a href=https://en.wikipedia.org/wiki/Least_squares>least squares
+regression</a> of the pixels within the radius. As such, it creates
+entirely fake data based on the image's likely edges.  No special explanation here.
+</details>
+<h2 id="referencefixer"><a class="header" href="#referencefixer"><code>ReferenceFixer</code></a></h2>
+<p>From <a href="https://github.com/sekrit-twc/EdgeFixer"><code>edgefixer</code></a>.  This requires the original version of <code>edgefixer</code> (<code>cf</code> is just an
+old port of it, but it's nicer to use and processing hasn't
+changed). I've never found a good use for it, but in theory, it's
+quite neat. It compares with a reference clip to adjust its edge fix
+as in <code>ContinuityFixer</code>.:</p>
+<pre><code class="language-py">fix = core.edgefixer.Reference(src, ref, left=0, right=0, top=0, bottom=0, radius = 1920)
+</code></pre>
+<h2 id="notes"><a class="header" href="#notes">Notes</a></h2>
+<p>One thing that shouldn't be ignored is that applying these fixes (other
+than <code>rektlvls</code>) to too many rows/columns may lead to these looking
+blurry on the end result. Because of this, it's recommended to use
+<code>rektlvls</code> whenever possible or carefully apply light fixes to only the
+necessary rows. If this fails, it's better to try <code>bbmod</code> before using
+<code>ContinuityFixer</code>.</p>
+<p>It's important to note that you should <em>always</em> fix dirty lines before
+resizing, as not doing so will introduce even more dirty lines. However,
+it is important to note that, if you have a single black line at an edge
+that you would use <code>FillBorders</code> on, you should remove that using your
+resizer.</p>
+<p>For example, to resize a clip with a single filled line at the top to
+\(1280\times536\) from \(1920\times1080\):</p>
+<pre><code class="language-py">top_crop = 138
+bot_crop = 138
+top_fill = 1
+bot_fill = 0
+src_height = src.height - (top_crop + bot_crop) - (top_fill + bot_fill)
+crop = core.std.Crop(src, top=top_crop, bottom=bot_crop)
+fix = core.fb.FillBorders(crop, top=top_fill, bottom=bot_fill, mode=&quot;fillmargins&quot;)
+resize = core.resize.Spline36(1280, 536, src_top=top_fill, src_height=src_height)
+</code></pre>
+<p>If you're dealing with diagonal borders, the proper approach here is to
+mask the border area and merge the source with a <code>FillBorders</code> call. An
+example of this (from the Your Name (2016)):</p>
+<p align="center">
+<img src='Pictures/improper_borders0.png' onmouseover="this.src='Pictures/improper_borders1.png';" onmouseout="this.src='Pictures/improper_borders0.png';"/>
+</p>
+<p>Fix compared with unmasked in fillmargins mode and contrast adjusted for clarity:</p>
+<p align="center">
+<img src='Pictures/improper_borders_adjusted1.png' onmouseover="this.src='Pictures/improper_borders_adjusted2.png';" onmouseout="this.src='Pictures/improper_borders_adjusted1.png';"/>
+</p>
+<p>Code used (note that this was detinted after):</p>
+<pre><code class="language-py">mask = core.std.ShufflePlanes(src, 0, vs.GRAY).std.Binarize(43500)
+cf = core.fb.FillBorders(src, top=6, mode=&quot;mirror&quot;).std.MaskedMerge(src, mask)
+</code></pre>
+<p>Dirty lines can be quite difficult to spot. If you don't immediately
+spot any upon examining borders on random frames, chances are you'll be
+fine. If you know there are frames with small black borders on each
+side, you can use something like the <a href="https://gitlab.com/snippets/1834089">following script</a>:</p>
+<pre><code class="language-py">def black_detect(clip, thresh=None):
+    if thresh:
+        clip = core.std.ShufflePlanes(clip, 0, vs.GRAY).std.Binarize(
+            &quot;{0}&quot;.format(thresh)).std.Invert().std.Maximum().std.Inflate( ).std.Maximum().std.Inflate()
+    l = core.std.Crop(clip, right=clip.width / 2)
+    r = core.std.Crop(clip, left=clip.width / 2)
+    clip = core.std.StackHorizontal([r, l])
+    t = core.std.Crop(clip, top=clip.height / 2)
+    b = core.std.Crop(clip, bottom=clip.height / 2)
+    return core.std.StackVertical([t, b])
+</code></pre>
+<p>This script will make values under the threshold value (i.e. the black
+borders) show up as vertical or horizontal white lines in the middle on
+a mostly black background. If no threshold is given, it will simply
+center the edges of the clip. You can just skim through your video with
+this active. An automated alternative would be <a href="https://git.concertos.live/AHD/awsmfunc/src/branch/master/awsmfunc/detect.py"><code>dirtdtct</code></a>, which scans
+the video for you.</p>
+<p>Other kinds of variable dirty lines are a bitch to fix and require
+checking scenes manually.</p>
+<p>An issue very similar to dirty lines is unwanted borders. During scenes with
+different crops (e.g. IMAX or 4:3), the black borders may sometimes not
+be entirely black, or be completely messed up. In order to fix this,
+simply crop them and add them back. You may also want to fix dirty lines
+that may have occurred along the way:</p>
+<pre><code class="language-py">crop = core.std.Crop(src, left=100, right=100)
+clean = core.cf.ContinuityFixer(crop, left=2, right=2, top=0, bottom=0, radius=25)
+out = core.std.AddBorders(clean, left=100, right=100)
+</code></pre>
+<p>If you're resizing, you should crop these off before resizing, then add the borders back, as leaving the black bars in during the resize will create dirty lines:</p>
+<pre><code class="language-py">crop = src.std.Crop(left=100, right=100)
+clean = crop.cf.ContinuityFixer(left=2, right=2, top=2, radius=25)
+resize = awf.zresize(clean, preset=720)
+border_size = (1280 - resize.width) / 2
+bsize_mod2 = border_size % 2
+out = resize.std.AddBorders(left=border_size - bsize_mod2, right=border_size + bsize_mod2)
+</code></pre>
+<p>In the above example, we have to add more to one side than the other to reach our desired width.  Ideally, your <code>border_size</code> will be mod2 and you won't have to do this.</p>
+<p>If you know you have borders like these, you can use <code>brdrdtct</code> from <code>awsmfunc</code> similarly to <code>dirtdtct</code> to scan the file for them.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../filtering/graining.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../filtering/detinting.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../filtering/graining.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../filtering/detinting.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

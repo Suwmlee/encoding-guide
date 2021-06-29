@@ -1,0 +1,417 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Debanding and Deblocking - Advanced Encoding Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.</strong> Filtering</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">1.1.</strong> Loading the Video</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.2.</strong> Cropping</div></li><li class="chapter-item expanded "><a href="../filtering/resizing.html"><strong aria-hidden="true">1.3.</strong> Resizing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../filtering/descaling.html"><strong aria-hidden="true">1.3.1.</strong> Descaling and Rescaling</a></li><li class="chapter-item expanded "><a href="../filtering/chroma_res.html"><strong aria-hidden="true">1.3.2.</strong> Chroma Resampling and Shifting</a></li></ol></li><li class="chapter-item expanded "><a href="../filtering/bit_depths.html"><strong aria-hidden="true">1.4.</strong> Bit Depths and Dither Algorithms</a></li><li class="chapter-item expanded "><a href="../filtering/debanding.html" class="active"><strong aria-hidden="true">1.5.</strong> Debanding and Deblocking</a></li><li class="chapter-item expanded "><a href="../filtering/graining.html"><strong aria-hidden="true">1.6.</strong> Graining</a></li><li class="chapter-item expanded "><a href="../filtering/dirty_lines.html"><strong aria-hidden="true">1.7.</strong> Dirty Lines and Border Issues</a></li><li class="chapter-item expanded "><a href="../filtering/detinting.html"><strong aria-hidden="true">1.8.</strong> Detinting and Level Adjustment</a></li><li class="chapter-item expanded "><a href="../filtering/masking.html"><strong aria-hidden="true">1.9.</strong> Masking</a></li><li class="chapter-item expanded "><a href="../filtering/anti-aliasing.html"><strong aria-hidden="true">1.10.</strong> Anti-Aliasing</a></li><li class="chapter-item expanded "><a href="../filtering/deringing.html"><strong aria-hidden="true">1.11.</strong> Deringing</a></li><li class="chapter-item expanded "><a href="../filtering/dehaloing.html"><strong aria-hidden="true">1.12.</strong> Dehaloing</a></li><li class="chapter-item expanded "><a href="../filtering/denoising.html"><strong aria-hidden="true">1.13.</strong> Denoising</a></li><li class="chapter-item expanded "><a href="../filtering/dehardsubbing.html"><strong aria-hidden="true">1.14.</strong> Dehardsubbing and Delogoing</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Encoding</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../encoding/testing.html"><strong aria-hidden="true">2.1.</strong> Test Encodes</a></li><li class="chapter-item expanded "><a href="../encoding/x264.html"><strong aria-hidden="true">2.2.</strong> x264 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/x265.html"><strong aria-hidden="true">2.3.</strong> x265 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/screenshots.html"><strong aria-hidden="true">2.4.</strong> Screenshots and Comparisons</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Audio</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> SoX: Dithering and Down-Mixing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Mono and Stereo</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Surround Sound</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Appendix</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">4.1.</strong> Linear Light Processing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.2.</strong> Finding Optimal Resolution via FT</div></li><li class="chapter-item expanded "><a href="../appendix/grain_matching.html"><strong aria-hidden="true">4.3.</strong> Grain Matching</a></li><li class="chapter-item expanded "><a href="../appendix/gray.html"><strong aria-hidden="true">4.4.</strong> Black &amp; White Clips</a></li></ol></li><li class="chapter-item expanded "><a href="../scriptorium.html"><strong aria-hidden="true">5.</strong> Scriptorium</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Advanced Encoding Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="debanding"><a class="header" href="#debanding">Debanding</a></h1>
+<p>This is the most common issue one will encounter. Banding usually
+happens when bitstarving and poor settings lead to smoother gradients
+becoming abrupt color changes, which obviously ends up looking bad.  These can be fixed by performing blur-like operations and limiting their outputs.</p>
+<p>Note that, as blurring is a very destructive process, it's advised to only apply this to necessary parts of your video and use <a href="masking.html">masks</a> to further limit the changes.</p>
+<p>There are three great tools for VapourSynth that are used to fix
+banding: <a href="https://github.com/HomeOfAviSynthPlusEvolution/neo_f3kdb/"><code>neo_f3kdb</code></a>, <code>fvsfunc</code>'s <code>gradfun3</code>, which has a built-in
+mask, and <code>vs-placebo</code>'s <code>placebo.Deband</code>.</p>
+<p align="center">
+<img src='Pictures/debanding0.png' onmouseover="this.src='Pictures/debanding1.png';" onmouseout="this.src='Pictures/debanding0.png';" />
+</p>
+<p align="center">
+<i>Banding example fixed with f3kdb default settings.</i>
+</p>
+<h2 id="neo_f3kdb"><a class="header" href="#neo_f3kdb"><code>neo_f3kdb</code></a></h2>
+<pre><code class="language-py">deband = core.neo_f3kdb.deband(src=clip, range=15, y=64, cb=64, cr=64, grainy=64, grainc=64, dynamic_grain=False, sample_mode=2)
+</code></pre>
+<p>These settings may come off as self-explanatory for some, but here's
+what they do:</p>
+<ul>
+<li>
+<p><code>src</code> This is obviously your source clip.</p>
+</li>
+<li>
+<p><code>range</code> This specifies the range of pixels that are used to
+calculate whether something is banded. A higher range means more
+pixels are used for calculation, meaning it requires more processing
+power. The default of 15 should usually be fine.  Raising this may help make larger gradients with less steps look smoother, while lower values will help catch smaller instances.</p>
+</li>
+<li>
+<p><code>y</code> The most important setting, since most (noticeable) banding
+takes place on the luma plane. It specifies how big the difference
+has to be for something on the luma plane to be considered as
+banded. You should start low and slowly but surely build this up
+until the banding is gone. If it's set too high, lots of details
+will be seen as banding and hence be blurred.
+Depending on your sample mode, y values will either only have an effect
+in steps of 16 (mode 2) or 32 (modes 1, 3, 4). This means that y=20 is
+equivalent to y=30.</p>
+</li>
+<li>
+<p><code>cb</code> and <code>cr</code> The same as <code>y</code> but for chroma. However, banding on
+the chroma planes is comparatively uncommon, so you can often leave this
+off.</p>
+</li>
+<li>
+<p><code>grainy</code> and <code>grainc</code> In order to keep banding from re-occurring and
+to counteract smoothing, grain is usually added after the debanding
+process. However, as this fake grain is quite noticeable, it's
+recommended to be conservative. Alternatively, you can use a custom
+grainer, which will get you a far nicer output (see <a href="graining.html">the graining section</a> for more on this).</p>
+</li>
+<li>
+<p><code>dynamic_grain</code> By default, grain added by <code>f3kdb</code> is static. This
+compresses better, since there's obviously less variation, but it
+usually looks off with live action content, so it's normally
+recommended to set this to <code>True</code> unless you're working with
+animated content.</p>
+</li>
+<li>
+<p><code>sample_mode</code> Is explained in the README.  Consider switching to 4, since it might have less detail loss.</p>
+</li>
+</ul>
+<details>
+<summary>In-depth function explanation</summary>
+TODO
+</details>
+<h2 id="gradfun3"><a class="header" href="#gradfun3"><code>GradFun3</code></a></h2>
+<p>The most popular alternative to <code>f3kdb</code> is <code>gradfun3</code>.  This function is more resource intensive and less straightforward parameters, but can also prove useful in cases where <code>f3kdb</code> struggles:</p>
+<pre><code class="language-py">import fvsfunc as fvf
+deband = fvf.GradFun3(src, thr=0.35, radius=12, elast=3.0, mask=2, mode=3, ampo=1, ampn=0, pat=32, dyn=False, staticnoise=False, smode=2, thr_det=2 + round(max(thr - 0.35, 0) / 0.3), debug=False, thrc=thr, radiusc=radius, elastc=elast, planes=list(range(src.format.num_planes)), ref=src, bits=src.format.bits_per_sample) # + resizing variables
+</code></pre>
+<p>Lots of these values are for <code>fmtconv</code> bit depth conversion or descaling, both of which aren't relevant here.  The values really of interest here are:</p>
+<ul>
+<li>
+<p><code>thr</code> is equivalent to <code>y</code>, <code>cb</code>, and <code>cr</code> in what it does. You'll
+likely want to raise or lower it.</p>
+</li>
+<li>
+<p><code>radius</code> has the same effect as <code>f3kdb</code>'s <code>range</code>.</p>
+</li>
+<li>
+<p><code>smode</code> sets the smooth mode. It's usually best left at its default,
+or set to 5 if you'd like to use a
+CUDA-enabled GPU instead of your CPU. Uses <code>ref</code> (defaults to input
+clip) as a reference clip.</p>
+</li>
+<li>
+<p><code>mask</code> sets the mask strength.  0 to disable.  The default is a sane value.</p>
+</li>
+<li>
+<p><code>planes</code> sets which planes should be processed.</p>
+</li>
+<li>
+<p><code>debug</code> allows you to view the mask.</p>
+</li>
+<li>
+<p><code>elast</code> controls blending between debanded and source clip.  Default is sane.  Higher values prioritize debanded clip more.</p>
+</li>
+</ul>
+<details>
+<summary>In-depth function explanation</summary>
+TODO
+For a more in-depth explanation of what `thr` and `elast` do, check the
+algorithm explanation in <a href=https://github.com/HomeOfVapourSynthEvolution/mvsfunc/blob/master/mvsfunc.py#L1735><code>mvsfunc</code></a>.
+</details>
+<h2 id="placebodeband"><a class="header" href="#placebodeband"><code>placebo.Deband</code></a></h2>
+<p>This debander is quite new to the VapourSynth scene, but it's very good at fixing strong banding.  However, as such, it is also prone to needless detail loss and hence should only be used when necessary and ideally combined with a detail/edge mask.  It's (current) parameters:</p>
+<pre><code class="language-py">placebo.Deband(clip clip[, int planes = 1, int iterations = 1, float threshold = 4.0, float radius = 16.0, float grain = 6.0, int dither = True, int dither_algo = 0])
+</code></pre>
+<p>It's not unlikely that this function will see significant change in the future, hence <a href="https://github.com/Lypheo/vs-placebo/blob/master/README.md">the README</a> is also very much worth reading.</p>
+<p>Parameters you'll want to look at:</p>
+<ul>
+<li>
+<p><code>planes</code> obviously the to-be-processed planes.  The syntax is different here, check the README.  In short, default for luma-only, <code>1 | 2 | 4</code> for luma and chroma.</p>
+</li>
+<li>
+<p><code>iterations</code> sets how often the debander is looped.  It's not recommended to change this from the default, although this can be useful in extreme cases.</p>
+</li>
+<li>
+<p><code>threshold</code> sets the debander's strength or rather the threshold when a pixel is changed.  You probably don't want to go much higher than 12.  Go up in steps of 1 and fine-tune if possible.</p>
+</li>
+<li>
+<p><code>radius</code> does the same as for the previous functions.</p>
+</li>
+<li>
+<p><code>grain</code> is again the same as <code>f3kdb</code>, although the grain is a lot nicer.</p>
+</li>
+</ul>
+<details>
+<summary>In-depth function explanation</summary>
+TODO
+It uses the
+mpv debander, which just averages pixels within a range and outputs the
+average if the difference is below a threshold.  The algorithm is
+explained in the <a href="https://github.com/haasn/libplacebo/blob/master/src/shaders/sampling.c#L167">source code</a>.
+</details>
+<h2 id="banding-detection"><a class="header" href="#banding-detection">Banding detection</a></h2>
+<p>If you want to automate your banding detection, you can use <code>banddtct</code> from <code>awsmfunc</code>. Make sure to
+adjust the values properly and check the full output. Check <a href="https://git.concertos.live/AHD/awsmfunc/wiki/Using-detect.py">this link</a> for an explanation on how to use it. You can also just run <code>adptvgrnMod</code> or <code>adaptive_grain</code> with a high <code>luma_scaling</code> value in hopes that the
+grain covers it up fully. More on this in
+<a href="graining">the graining section</a>.  Note that both of these methods won't be able to pick up/fix every kind of banding.  <code>banddtct</code> can't find banding covered by grain, and graining to fix banding only works for smaller instances.</p>
+<h1 id="deblocking"><a class="header" href="#deblocking">Deblocking</a></h1>
+<p align="center">
+<img src='Pictures/deblock1.png' onmouseover="this.src='Pictures/deblock2.png';" onmouseout="this.src='Pictures/deblock1.png';"/>
+</p>
+<p>Deblocking is mostly equivalent to smoothing the source, usually with
+another mask on top. The most popular function here is <code>Deblock_QED</code>
+from <code>havsfunc</code>. The main parameters are</p>
+<ul>
+<li>
+<p><code>quant1</code>: Strength of block edge deblocking. Default is 24. You may
+want to raise this value significantly.</p>
+</li>
+<li>
+<p><code>quant2</code>: Strength of block internal deblocking. Default is 26.
+Again, raising this value may prove to be beneficial.</p>
+</li>
+</ul>
+<details>
+<summary>In-depth function explanation</summary>
+TODO
+</details>
+<p>Other popular options are <code>deblock.Deblock</code>, which is quite strong, but
+almost always works,</p>
+<details>
+<summary>In-depth function explanation</summary>
+TODO
+</details>
+<p><code>dfttest.DFTTest</code>, which is weaker, but still quite aggressive, and
+<code>fvf.AutoDeblock</code>, which is quite useful for deblocking MPEG-2 sources
+and can be applied on the entire video. Another popular method is to
+simply deband, as deblocking and debanding are very similar. This is a
+decent option for AVC Blu-ray sources.</p>
+<details>
+<summary>In-depth function explanation</summary>
+TODO
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../filtering/bit_depths.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../filtering/graining.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../filtering/bit_depths.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../filtering/graining.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

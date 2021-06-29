@@ -1,0 +1,320 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Screenshots and Comparisons - Advanced Encoding Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.</strong> Filtering</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">1.1.</strong> Loading the Video</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.2.</strong> Cropping</div></li><li class="chapter-item expanded "><a href="../filtering/resizing.html"><strong aria-hidden="true">1.3.</strong> Resizing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../filtering/descaling.html"><strong aria-hidden="true">1.3.1.</strong> Descaling and Rescaling</a></li><li class="chapter-item expanded "><a href="../filtering/chroma_res.html"><strong aria-hidden="true">1.3.2.</strong> Chroma Resampling and Shifting</a></li></ol></li><li class="chapter-item expanded "><a href="../filtering/bit_depths.html"><strong aria-hidden="true">1.4.</strong> Bit Depths and Dither Algorithms</a></li><li class="chapter-item expanded "><a href="../filtering/debanding.html"><strong aria-hidden="true">1.5.</strong> Debanding and Deblocking</a></li><li class="chapter-item expanded "><a href="../filtering/graining.html"><strong aria-hidden="true">1.6.</strong> Graining</a></li><li class="chapter-item expanded "><a href="../filtering/dirty_lines.html"><strong aria-hidden="true">1.7.</strong> Dirty Lines and Border Issues</a></li><li class="chapter-item expanded "><a href="../filtering/detinting.html"><strong aria-hidden="true">1.8.</strong> Detinting and Level Adjustment</a></li><li class="chapter-item expanded "><a href="../filtering/masking.html"><strong aria-hidden="true">1.9.</strong> Masking</a></li><li class="chapter-item expanded "><a href="../filtering/anti-aliasing.html"><strong aria-hidden="true">1.10.</strong> Anti-Aliasing</a></li><li class="chapter-item expanded "><a href="../filtering/deringing.html"><strong aria-hidden="true">1.11.</strong> Deringing</a></li><li class="chapter-item expanded "><a href="../filtering/dehaloing.html"><strong aria-hidden="true">1.12.</strong> Dehaloing</a></li><li class="chapter-item expanded "><a href="../filtering/denoising.html"><strong aria-hidden="true">1.13.</strong> Denoising</a></li><li class="chapter-item expanded "><a href="../filtering/dehardsubbing.html"><strong aria-hidden="true">1.14.</strong> Dehardsubbing and Delogoing</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Encoding</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../encoding/testing.html"><strong aria-hidden="true">2.1.</strong> Test Encodes</a></li><li class="chapter-item expanded "><a href="../encoding/x264.html"><strong aria-hidden="true">2.2.</strong> x264 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/x265.html"><strong aria-hidden="true">2.3.</strong> x265 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/screenshots.html" class="active"><strong aria-hidden="true">2.4.</strong> Screenshots and Comparisons</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Audio</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> SoX: Dithering and Down-Mixing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Mono and Stereo</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Surround Sound</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Appendix</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">4.1.</strong> Linear Light Processing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.2.</strong> Finding Optimal Resolution via FT</div></li><li class="chapter-item expanded "><a href="../appendix/grain_matching.html"><strong aria-hidden="true">4.3.</strong> Grain Matching</a></li><li class="chapter-item expanded "><a href="../appendix/gray.html"><strong aria-hidden="true">4.4.</strong> Black &amp; White Clips</a></li></ol></li><li class="chapter-item expanded "><a href="../scriptorium.html"><strong aria-hidden="true">5.</strong> Scriptorium</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Advanced Encoding Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="taking-screenshots"><a class="header" href="#taking-screenshots">Taking Screenshots</a></h1>
+<p>Taking simple screenshots in VapourSynth is very easy.
+If you're using a previewer, you can likely use that instead, but it might still be useful to know how to take screenshots via VapourSynth directly.</p>
+<p>We recommend using <code>awsmfunc.ScreenGen</code>.
+This has two advantages:</p>
+<ol>
+<li>You save frame numbers and can easily reference these again, e.g. if you want to redo your screenshots.</li>
+<li>It takes care of proper conversion and compression for you, which might not be the case with some previewers (e.g. VSEdit).</li>
+</ol>
+<p>To use <code>ScreenGen</code>, create a new folder you want your screenshots in, e.g. &quot;Screenshots&quot;, and a file called &quot;screens.txt&quot; with the frame numbers you'd like to screenshot, e.g.</p>
+<pre><code>26765
+76960
+82945
+92742
+127245
+</code></pre>
+<p>Then, at the bottom of your VapourSynth script, put</p>
+<pre><code>awf.ScreenGen(src, &quot;Screenshots&quot;, &quot;a&quot;)
+</code></pre>
+<p><code>a</code> is what is put after the frame number.
+This is useful for staying organized and sorting screenshots, as well as preventing unnecessary overwriting of screenshots.</p>
+<p>Now, run your script in the command line (or reload in a previewer):</p>
+<pre><code class="language-sh">python vapoursynth_script.vpy
+</code></pre>
+<p>Done!
+Your screenshots should now be in the given folder.</p>
+<h1 id="comparing-source-vs-encode"><a class="header" href="#comparing-source-vs-encode">Comparing Source vs. Encode</a></h1>
+<p>Comparing the source against your encode allows potential downloaders to judge the quality of your encode easily.
+When taking these, it is important to include the frame types you are comparing, as e.g. comparing two <code>I</code> frames will lead to extremely favorable results.
+You can do this using <code>awsmfunc.FrameInfo</code>:</p>
+<pre><code class="language-py">src = awf.FrameInfo(src, &quot;Source&quot;)
+encode = awf.FrameInfo(encode, &quot;Encode&quot;)
+</code></pre>
+<p>If you'd like to compare these in your previewer, it's recommended to interleave them:</p>
+<pre><code class="language-py">out = core.std.Interleave([src, encode])
+</code></pre>
+<p>However, if you're taking your screenshots with <code>ScreenGen</code>, it's easier not to do that and just run two <code>ScreenGen</code> calls:</p>
+<pre><code class="language-py">src = awf.FrameInfo(src, &quot;Source&quot;)
+awf.ScreenGen(src, &quot;Screenshots&quot;, &quot;a&quot;)
+encode = awf.FrameInfo(encode, &quot;Encode&quot;)
+awf.ScreenGen(encode, &quot;Screenshots&quot;, &quot;b&quot;)
+</code></pre>
+<p>Note that <code>&quot;a&quot;</code> was substituted for <code>&quot;b&quot;</code> in the encode's <code>ScreenGen</code>.
+This will allow you to sort your folder by name and have every source screenshot followed by an encode screenshot, making uploading easier.</p>
+<h3 id="hdr-comparisons"><a class="header" href="#hdr-comparisons">HDR comparisons</a></h3>
+<p>For comparing an HDR source to an HDR encode, it's recommended to tonemap.
+This process is destructive, but you should still be able to tell what's warped, smoothed etc.</p>
+<p>The recommended function for this is <code>awsmfunc.DynamicTonemap</code>:</p>
+<pre><code class="language-py">src = awf.DynamicTonemap(src, src_fmt=False, libplacebo=False)
+encode = awf.DynamicTonemap(encode, src_fmt=False, libplacebo=False)
+</code></pre>
+<p>Note that we've disabled <code>src_fmt</code> and <code>libplacebo</code> here.
+Setting the former to <code>True</code> will output 10-bit 4:2:0, which is suboptimal, as screenshots are usually presented in 8-bit RGB (no chroma subsampling).
+The latter is recommended for comparisons because using libplacebo makes your tonemaps more likely to differ in brightness, making comparing more difficult.</p>
+<h2 id="choosing-frames"><a class="header" href="#choosing-frames">Choosing frames</a></h2>
+<p>When taking screenshots, it is important to not make your encode look deceptively transparent.
+To do so, you need to make sure you're screenshotting the proper frame types as well as content-wise differing kinds of frames.</p>
+<p>Luckily, there's not a lot to remember here:</p>
+<ul>
+<li>Your encode's screenshots should <em>always</em> be <em>B</em> type frames.</li>
+<li>Your source's screenshots should <em>never</em> be <em>I</em> type frames.</li>
+<li>Your comparisons should include dark scenes, bright scenes, close-up shots, long-range shots, static scenes, high action scenes, and whatever you have in-between.</li>
+</ul>
+<h1 id="comparing-different-sources"><a class="header" href="#comparing-different-sources">Comparing Different Sources</a></h1>
+<p>When comparing different sources, you should proceed similarly to comparing source vs. encode.
+However, you'll likely encounter differing crops, resolutions or tints, all of which get in the way of comparing.</p>
+<p>For differing crops, simply add borders back:</p>
+<pre><code class="language-py">src_b = src_b.std.AddBorders(left=X, right=Y, top=Z, bottom=A)
+</code></pre>
+<p>If doing this leads to an offset of the image content, you should resize to 4:4:4 so you can add uneven borders.
+For example, if you want to add 1 pixel tall black bars to the top and bottom:</p>
+<pre><code class="language-py">src_b = src_b.resize.Spline36(format=vs.YUV444P8, dither_type=&quot;error_diffusion&quot;)
+src_b = src_b.std.AddBorders(top=1, bottom=1)
+</code></pre>
+<p>For differing resolutions, it's recommended to use a simple spline resize:</p>
+<pre><code class="language-py">src_b = src_b.resize.Spline36(src_a.width, src_a.height, dither_type=&quot;error_diffusion&quot;)
+</code></pre>
+<p>If one source is HDR and the other one is SDR, you can use <code>awsmfunc.DynamicTonemap</code>:</p>
+<pre><code class="language-py">src_b = awf.DynamicTonemap(src_b, src_fmt=False)
+</code></pre>
+<p>For different tints, refer to the <a href="../filtering/detinting.html">tinting chapter</a>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../encoding/x265.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../appendix/grain_matching.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../encoding/x265.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../appendix/grain_matching.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

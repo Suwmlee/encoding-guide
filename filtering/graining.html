@@ -1,0 +1,382 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Graining - Advanced Encoding Guide</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../favicon.png">
+        
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.</strong> Filtering</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">1.1.</strong> Loading the Video</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.2.</strong> Cropping</div></li><li class="chapter-item expanded "><a href="../filtering/resizing.html"><strong aria-hidden="true">1.3.</strong> Resizing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../filtering/descaling.html"><strong aria-hidden="true">1.3.1.</strong> Descaling and Rescaling</a></li><li class="chapter-item expanded "><a href="../filtering/chroma_res.html"><strong aria-hidden="true">1.3.2.</strong> Chroma Resampling and Shifting</a></li></ol></li><li class="chapter-item expanded "><a href="../filtering/bit_depths.html"><strong aria-hidden="true">1.4.</strong> Bit Depths and Dither Algorithms</a></li><li class="chapter-item expanded "><a href="../filtering/debanding.html"><strong aria-hidden="true">1.5.</strong> Debanding and Deblocking</a></li><li class="chapter-item expanded "><a href="../filtering/graining.html" class="active"><strong aria-hidden="true">1.6.</strong> Graining</a></li><li class="chapter-item expanded "><a href="../filtering/dirty_lines.html"><strong aria-hidden="true">1.7.</strong> Dirty Lines and Border Issues</a></li><li class="chapter-item expanded "><a href="../filtering/detinting.html"><strong aria-hidden="true">1.8.</strong> Detinting and Level Adjustment</a></li><li class="chapter-item expanded "><a href="../filtering/masking.html"><strong aria-hidden="true">1.9.</strong> Masking</a></li><li class="chapter-item expanded "><a href="../filtering/anti-aliasing.html"><strong aria-hidden="true">1.10.</strong> Anti-Aliasing</a></li><li class="chapter-item expanded "><a href="../filtering/deringing.html"><strong aria-hidden="true">1.11.</strong> Deringing</a></li><li class="chapter-item expanded "><a href="../filtering/dehaloing.html"><strong aria-hidden="true">1.12.</strong> Dehaloing</a></li><li class="chapter-item expanded "><a href="../filtering/denoising.html"><strong aria-hidden="true">1.13.</strong> Denoising</a></li><li class="chapter-item expanded "><a href="../filtering/dehardsubbing.html"><strong aria-hidden="true">1.14.</strong> Dehardsubbing and Delogoing</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> Encoding</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../encoding/testing.html"><strong aria-hidden="true">2.1.</strong> Test Encodes</a></li><li class="chapter-item expanded "><a href="../encoding/x264.html"><strong aria-hidden="true">2.2.</strong> x264 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/x265.html"><strong aria-hidden="true">2.3.</strong> x265 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/screenshots.html"><strong aria-hidden="true">2.4.</strong> Screenshots and Comparisons</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Audio</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> SoX: Dithering and Down-Mixing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> Mono and Stereo</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> Surround Sound</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> Appendix</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">4.1.</strong> Linear Light Processing</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.2.</strong> Finding Optimal Resolution via FT</div></li><li class="chapter-item expanded "><a href="../appendix/grain_matching.html"><strong aria-hidden="true">4.3.</strong> Grain Matching</a></li><li class="chapter-item expanded "><a href="../appendix/gray.html"><strong aria-hidden="true">4.4.</strong> Black &amp; White Clips</a></li></ol></li><li class="chapter-item expanded "><a href="../scriptorium.html"><strong aria-hidden="true">5.</strong> Scriptorium</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Advanced Encoding Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="graining"><a class="header" href="#graining">Graining</a></h1>
+<p>TODO: explain why we love grain so much and static vs. dynamic grain.  Also, images.</p>
+<h1 id="graining-filters"><a class="header" href="#graining-filters">Graining Filters</a></h1>
+<p>There are a couple different filters you can use to grain.
+As lots of functions work similarly, we will only cover AddGrain and libplacebo graining.</p>
+<h2 id="addgrain"><a class="header" href="#addgrain">AddGrain</a></h2>
+<p>This plugin allows you to add grain to the luma and chroma grains in differing strengths and grain patterns:</p>
+<pre><code class="language-py">grain = src.grain.Add(var=1.0, uvar=0.0, seed=-1, constant=False)
+</code></pre>
+<p>Here, <code>var</code> controls the grain strength for the luma plane, and <code>uvar</code> controls the strength for the chroma plane.
+<code>seed</code> allows you to specify a custom grain pattern, which is useful if you'd like to reproduce a grain pattern multiple times, e.g. for comparing encodes.
+<code>constant</code> allows you to choose between static and dynamic grain.</p>
+<p>Raising the strength increases both the amount of grain added as well as the offset a grained pixel will have from the original pixel.
+For example, <code>var=1</code> will lead to values being up to 3 8-bit steps away from the input values.</p>
+<p>There's no real point in using this function directly, but it's good to know what it does, as it's considered the go-to grainer.</p>
+<details>
+<summary>In-depth function explanation</summary>
+This plugin uses a normal distribution to find the values it changes the input by.
+The `var` parameter is the standard deviation (usually noted as \(\sigma\)) of the normal distribution.
+<p>This means that (these are approximations):</p>
+<ul>
+<li>\(68.27\%\) of output pixel values are within \(\pm1\times\mathtt{var}\) of the input value</li>
+<li>\(95.45\%\) of output pixel values are within \(\pm2\times\mathtt{var}\) of the input value</li>
+<li>\(99.73\%\) of output pixel values are within \(\pm3\times\mathtt{var}\) of the input value</li>
+<li>\(50\%\) of output pixel values are within \(\pm0.675\times\mathtt{var}\) of the input value</li>
+<li>\(90\%\) of output pixel values are within \(\pm1.645\times\mathtt{var}\) of the input value</li>
+<li>\(95\%\) of output pixel values are within \(\pm1.960\times\mathtt{var}\) of the input value</li>
+<li>\(99\%\) of output pixel values are within \(\pm2.576\times\mathtt{var}\) of the input value</li>
+</ul>
+</details>
+<h2 id="placebodeband-as-a-grainer"><a class="header" href="#placebodeband-as-a-grainer">placebo.Deband as a grainer</a></h2>
+<p>Alternatively, using <code>placebo.Deband</code> solely as a grainer can also lead to some nice results:</p>
+<pre><code class="language-py">grain = placebo.Deband(iterations=0, grain=6.0)
+</code></pre>
+<p>The main advantage here is it runs on your GPU, so if your GPU isn't already busy with other filters, using this can get you a slight speed-up.</p>
+<details>
+<summary>In-depth function explanation</summary>
+TODO
+</details>
+<h2 id="adaptive_grain"><a class="header" href="#adaptive_grain">adaptive_grain</a></h2>
+<p>This function from <a href="https://github.com/Irrational-Encoding-Wizardry/kagefunc"><code>kagefunc</code></a> applies AddGrain according to overall frame brightness and individual pixel brightness.
+This is very useful for covering up minor banding and/or helping x264 distribute more bits to darks.</p>
+<pre><code class="language-py">grain = kgf.adaptive_grain(src, strength=.25, static=True, luma_scaling=12, show_mask=False)
+</code></pre>
+<p><code>strength</code> here is <code>var</code> from AddGrain.
+The default or slightly lower is usually fine.
+You likely don't want to go above 0.75.</p>
+<p>The <code>luma_scaling</code> parameter is used to control how strong it should favor darker frames over brighter frames, whereby lower <code>luma_scaling</code> will apply more grain to bright frames.
+You can use extremely low or extremely high values here depending on what you want.
+For example, if you want to grain all frames significantly, you might use <code>luma_scaling=5</code>, while if you just want to apply grain to darker parts of darker frames to cover up minor banding, you might use <code>luma_scaling=100</code>.</p>
+<p><code>show_mask</code> shows you the mask that's used to apply the grain, with whiter meaning more grain is applied.
+It's recommended to switch this on when tuning <code>luma_scaling</code>.</p>
+<details>
+<summary>In-depth function explanation</summary>
+The author of the function wrote a <a href="https://blog.kageru.moe/legacy/adaptivegrain.html">fantastic blog post explaining the function and how it works</a>.
+</details>
+<h2 id="grainfactory3"><a class="header" href="#grainfactory3">GrainFactory3</a></h2>
+<p>TODO: rewrite this or just remove it.</p>
+<p>An older alternative to <code>kgf.adaptive_grain</code>, <a href="https://github.com/HomeOfVapourSynthEvolution/havsfunc"><code>havsfunc</code></a>'s <code>GrainFactory3</code> is still quite interesting.
+It splits pixel values into four groups based on their brightness and applies differently sized grain at different strengths via AddGrain to these groups.</p>
+<pre><code class="language-py">grain = haf.GrainFactory3(src, g1str=7.0, g2str=5.0, g3str=3.0, g1shrp=60, g2shrp=66, g3shrp=80, g1size=1.5, g2size=1.2, g3size=0.9, temp_avg=0, ontop_grain=0.0, th1=24, th2=56, th3=128, th4=160)
+</code></pre>
+<p>The parameters are explained <a href="https://github.com/HomeOfVapourSynthEvolution/havsfunc/blob/master/havsfunc.py#L3720">above the source code</a>.</p>
+<p>This function is mainly useful if you want to apply grain to specific frames only, as overall frame brightness should be taken into account if grain is applied to the whole video.</p>
+<p>For example, <code>GrainFactory3</code> to make up for missing grain on left and right borders:</p>
+<p align="center"> 
+<img src='Pictures/grain0.png' onmouseover="this.src='Pictures/grain1.png';" onmouseout="this.src='Pictures/grain0.png';" />
+</p>
+<details>
+<summary>In-depth function explanation</summary>
+TODO
+<p>In short: Create a mask for each brightness group, use bicubic resizing with sharpness controlling b and c to resize the grain, then apply that.
+Temporal averaging just averages the grain for the current frame and its direct neighbors using misc.AverageFrames.</p>
+</details>
+<h2 id="adptvgrnmod"><a class="header" href="#adptvgrnmod">adptvgrnMod</a></h2>
+<p>This function resizes grain in the same way <code>GrainFactory3</code> does, then applies it using the method from <code>adaptive_grain</code>.
+It also has some protection for darks and brights to maintain average frame brightness:</p>
+<pre><code class="language-py">grain = agm.adptvgrnMod(strength=0.25, cstrength=None, size=1, sharp=50, static=False, luma_scaling=12, seed=-1, show_mask=False)
+</code></pre>
+<p>Grain strength is controlled by <code>strength</code> for luma and <code>cstrength</code> for chroma.
+<code>cstrength</code> defaults to half of <code>strength</code>.
+Just like <code>adaptive_grain</code>, the default or slightly lower is usually fine, but you shouldn't go too high.
+If you're using a <code>size</code> greater than the default, you can get away with higher values, e.g. <code>strength=1</code>, but it's still advised to stay conservative with grain application.</p>
+<p>The <code>size</code> and <code>sharp</code> parameters allow you to make the applied grain look a bit more like the rest of the film's.
+It's recommended to play around with these so that fake grain isn't too obvious.
+In most cases, you will want to raise both of them ever so slightly, e.g. <code>size=1.2, sharp=60</code>.</p>
+<p><code>static</code>, <code>luma_scaling</code>, and <code>show_mask</code> are equivalent to <code>adaptive_grain</code>, so scroll up for explanations.
+<code>seed</code> is the same as AddGrain's; again, scroll up.</p>
+<p>By default, <code>adptvgrnMod</code> will fade grain around extremes (16 or 235) and shades of gray.
+These features can be turned off by setting <code>fade_edges=False</code> and <code>protect_neutral=False</code> respectively.</p>
+<p>It's recently become common practice to remove graining entirely from one's debander and grain debanded areas entirely with this function.</p>
+<h3 id="sizedgrn"><a class="header" href="#sizedgrn">sizedgrn</a></h3>
+<p>If one wants to disable the brightness-based application, one can use <code>sizedgrn</code>, which is the internal graining function in <code>adptvgrnMod</code>.</p>
+<details>
+<summary>Some examples of <code>adptvgrnMod</code> compared with <code>sizedgrn</code> for those curious</summary>
+<p>A bright scene, where the brightness-based application makes a large difference:</p>
+<p align="center"> 
+<img src='Pictures/graining4.png' onmouseover="this.src='Pictures/graining7.png';" onmouseout="this.src='Pictures/graining4.png';" />
+</p>
+<p>An overall darker scene, where the difference is a lot smaller:</p>
+<p align="center"> 
+<img src='Pictures/graining3.png' onmouseover="this.src='Pictures/graining6.png';" onmouseout="this.src='Pictures/graining3.png';" />
+</p>
+<p>A dark scene, where grain is applied evenly (almost) everywhere in the frame:</p>
+<p align="center"> 
+<img src='Pictures/graining5.png' onmouseover="this.src='Pictures/graining8.png';" onmouseout="this.src='Pictures/graining5.png';" />
+</p>
+</details>
+<details>
+<summary>In-depth function explanation</summary>
+(Old write-up from the function's author.)
+<h3 id="size-and-sharpness"><a class="header" href="#size-and-sharpness">Size and Sharpness</a></h3>
+<p>The graining part of adptvgrnMod is the same as GrainFactory3's; it creates a &quot;blank&quot; (midway point of bit depth) clip at a resolution defined by the size parameter, then scales that via a bicubic kernel that uses b and c values determined by sharp:</p>
+<p>$$\mathrm{grain\ width} = \mathrm{mod}4 \left( \frac{\mathrm{clip\ width}}{\mathrm{size}} \right)$$</p>
+<p>For example, with a 1920x1080 clip and a size value of 1.5:</p>
+<p>$$ \mathrm{mod}4 \left( \frac{1920}{1.5} \right) = 1280 $$</p>
+<p>This determines the size of the frame the grainer operates on.</p>
+<p>Now, the bicubic kernel's parameters are determined:</p>
+<p>$$ b = \frac{\mathrm{sharp}}{-50} + 1 $$
+$$ c = \frac{1 - b}{2} $$</p>
+<p>This means that for the default sharp of 50, a Catmull-Rom filter is used:</p>
+<p>$$ b = 0, \qquad c = 0.5 $$</p>
+<p>Values under 50 will tend towards B-Spline (b=1, c=0), while ones above 50 will tend towards b=-1, c=1. As such, for a Mitchell (b=1/3, c=1/3) filter, one would require sharp of 100/3.</p>
+<p>The grained &quot;blank&quot; clip is then resized to the input clip's resolution with this kernel. If size is greater than 1.5, an additional resizer call is added before the upscale to the input resolution:</p>
+<p>$$ \mathrm{pre\ width} = \mathrm{mod}4 \left( \frac{\mathrm{clip\ width} + \mathrm{grain\ width}}{2} \right) $$</p>
+<p>With our resolutions so far (assuming we did this for size 1.5), this would be 1600.  This means with size 2, where this preprocessing would actually occur, our grain would go through the following resolutions:</p>
+<p>$$ 960 \rightarrow 1440 \rightarrow 1920 $$</p>
+<h3 id="fade-edges"><a class="header" href="#fade-edges">Fade Edges</a></h3>
+<p>The fade_edges parameter introduces the option to attempt to maintain overall average image brightness, similar to ideal dithering. It does so by limiting the graining at the edges of the clip's range. This is done via the following expression:</p>
+<pre><code>x y neutral - abs - low &lt; x y neutral - abs + high &gt; or
+x y neutral - x + ?
+</code></pre>
+<p>Here, x is the input clip, y is the grained clip, neutral is the midway point from the previously grained clip, and low and high are the edges of the range (e.g. 16 and 235 for 8-bit luma). Converted from postfix to infix notation, this reads:</p>
+<p>\[x = x\ \mathtt{if}\ x - \mathrm{abs}(y - neutral) &lt; low\ \mathtt{or}\ x - \mathrm{abs}(y - neutral) &gt; high\ \mathtt{else}\ x + (y - neutral)\]</p>
+<p>The effect here is that all grain that wouldn't be clipped during output regardless of whether it grains in a positive or negative direction remains, while grain that would pass the plane's limits isn't taken.</p>
+<p>In addition to this parameter, protect_neutral is also available. This parameter protects &quot;neutral&quot; chroma (i.e. chroma for shades of gray) from being grained. To do this, it takes advantage of AddGrainC working according to a Guassian distribution, which means that
+$$max\ value = 3 \times \sigma$$
+(sigma being the standard deviation - the strength or cstrength parameter) is with 99.73% certainty the largest deviated value from the norm (0). This means we can perform a similar operation to the one for fade_edges to keep the midways from being grained. To do this, we resize the input clip to 4:4:4 and use the following expression:</p>
+<p>\[\begin{align}x \leq (low + max\ value)\ \mathtt{or}\ x \geq (high - max\ value)\ \mathtt{and}\\ \mathrm{abs}(y - neutral) \leq max\ value\ \mathtt{and}\ \mathrm{abs}(z - neutral) \leq max\ value \end{align}\]</p>
+<p>With x, y, z being each of the three planes. If the statement is true, the input clip is returned, else the grained clip is returned.</p>
+<p>I originally thought the logic behind protect_neutral would also work well for fade_edges, but I then realized this would completely remove grain near the edges instead of fading it.</p>
+<p>Now, the input clip and grained clip (which was merged via std.MergeDiff, which is x - y - neutral) can be merged via the adaptive_grain mask.</p>
+</details>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../filtering/debanding.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../filtering/dirty_lines.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../filtering/debanding.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../filtering/dirty_lines.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
