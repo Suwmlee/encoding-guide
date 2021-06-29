@@ -3,43 +3,43 @@
 <https://git.concertos.live/Encode_Guide/mdbook-guide>
 
 本指南既可以作为对制作高质量编码作品感兴趣的新手的起点，也可以作为有经验的压制人员的参考。
-因此，在大多数功能介绍完并解释了它们的用途之后，可以找到深入的解释。
-这些只是为好奇的人提供简单扩展，完全不是靠阅读来应用该功能。
+因此，在大多数功能介绍完并解释了它们的用途之后，可以找到深入的解释资料。
+这些只是为想深入研究的人提供简单扩展，不是只依靠阅读就能运用的。
 
-# Terminology
+# 术语
 
-For this to work, basic terms and knowledge about video is required.
-These explanations will be heavily simplified, as there should be dozens of web pages with explanations on these subjects on sites like Wikipedia, the AviSynth wiki etc.
+为此，涉及有关视频的基本术语和知识。
+一些解释将被大大简化，因为在 Wikipedia、AviSynth wiki 等网站上应该有很多页面对这些主题进行解释。
 
-## Video
+## 视频
 
 消费类视频产品通常存储在 YCbCr 中，该术语通常与 YUV 互换使用。在本指南中，我们将主要使用术语 YUV，因为 VapourSynth 格式编写也是 YUV。
 
-YUV formatted content has information split into three planes: Y, referred to as luma, which represents the brightness, and U and V, which each represent a chroma plane.
-These chroma planes represent offsets between colors, whereby the middle value of the plane is the neutral point.
+YUV 格式的内容将信息分为三个平面: Y, 指代 luma, 表示亮度, U 和 V，分别表示色度平面。
+这些色度平面代表颜色之间的偏移，其中平面的中间值是中性点。
 
-This chroma information is usually subsampled, meaning it is stored in a lower frame size than the luma plane.
-Almost all consumer video will be in 4:2:0, meaning chroma planes are half of the luma plane's size.
-[The Wikipedia page on chroma subsampling](https://en.wikipedia.org/wiki/Chroma_subsampling) should hopefully suffice to explain how this works.
-As we usually want to stay in 4:2:0 format, we are restricted in our frame dimensions, as the luma plane's size has to be divisible by 2.
-This means we cannot do uneven cropping or resizing to uneven resolutions.
-However, when necesssary, we can work in each plane individually, although this will be explained in the [filtering part]().
+这个色度信息通常是二次采样的, 这意味着它存储在比亮度平面更低的帧大小中。
+几乎所有消费者视频都采用 4:2:0 格式，这意味着色度平面是亮度平面大小的一半。
+[关于色度子采样的Wikipedia](https://en.wikipedia.org/wiki/Chroma_subsampling) 应该足以解释这是如何工作的。
+由于我们通常希望保持 4:2:0 格式，因此我们的框架尺寸受到限制，因为亮度平面的大小必须被 2 整除。
+这意味着我们不能进行不均匀的裁剪或将大小调整为不均匀的分辨率。
+但是，在必要时，我们可以在每个平面中单独处理，这些将会在[过滤章节]()进行解释。
 
-Additionally, our information has to be stored with a specific precision.
-Usually, we deal with 8-bit per-plane precision.
-However, for UHD Blu-rays, 10-bit per-plane precision is the standard.
-This means possible values for each plane range from 0 to \\(2^8 - 1 = 255\\).
-In [the bit depths chapter](filtering/bit_depths.md), we will introduce working in higher bit depth precision for increased accuracy during filtering.
+此外，我们的信息必须以特定的精度存储。
+通常，我们处理每平面 8-bit 的精度。
+但是，对于超高清蓝光，每平面 10-bit 的精度是标准
+这意味着每个平面的可能值范围从 0 到 \\(2^8 - 1 = 255\\)。
+在 [位深章节](filtering/bit_depths.md), 我们将介绍在更高的位深精度下工作，以提高过滤过程中的精度
 
 ## VapourSynth
 
-For loading our clips, removing unwanted black borders, resizing, and combatting unwanted artifacts in our sources, we will employ the VapourSynth framework via Python.
-While using Python might sound intimidating, those with no prior experience need not worry, as we will only be doing extremely basic things.
+为了加载我们的剪辑、移除不需要的黑色边框、调整大小和消除源中不需要的信息，我们将通过 Python 使用 VapourSynth 框架。
+虽然使用 Python 可能听起来很吓人，但那些没有经验的人不必担心，因为我们只会做非常基本的事情。
 
-There are countless resources to setting up VapourSynth, e.g. [the Irrational Encoding Wizardry's guide](https://guide.encode.moe/encoding/preparation.html#the-frameserver) and the [VapourSynth documentation](http://www.vapoursynth.com/doc/index.html).
-As such, this guide will not be covering installation and setup.
+关于 VapourSynth 配置的资料不计其数，例如 [the Irrational Encoding Wizardry's guide](https://guide.encode.moe/encoding/preparation.html#the-frameserver) 和 [VapourSynth documentation](http://www.vapoursynth.com/doc/index.html)。
+因此，本指南不会涵盖安装和配置。
 
-To start with writing scripts, it is important to know that every clip/filter must be given a variable name:
+在开始编写脚本前，知道每个clip/filter都必须有一个变量名是非常重要的:
 
 ```py
 clip_a = source(a)
@@ -52,8 +52,8 @@ filter_x_on_a = filter_x(clip_a)
 filter_y_on_a = filter_y(clip_b)
 ```
 
-Additionally, many functions are in script collections or similar.
-These must be loaded manually and are then found under the given alias:
+此外，许多函数都在脚本集合或类似的集合中。
+这些必须手动加载，然后在给定的别名下找到：
 
 ```py
 import awsmfunc as awf
@@ -66,21 +66,21 @@ grain = kgf.adaptive_grain(...)
 change_depth = depth(...)
 ```
 
-So as to avoid conflicting function names, it is usually not recommended to do `from x import *`.
+为避免函数名冲突，通常不建议这样做 `from x import *`。
 
-While many filters are in such collections, there are also filters that are available as plugins.
-These plugins can be called via `core.namespace.plugin` or alternatively `clip.namespace.plugin`.
-This means the following two are equivalent:
+虽然此类集合中有许多filters，但也有一些filters可用作插件。
+这些插件可以通过 `core.namespace.plugin` 或 替代调用 `clip.namespace.plugin`。
+这意味着以下两个是等效的：
 
 ```py
 via_core = core.std.Crop(clip, ...)
 via_clip = clip.std.Crop(...)
 ```
 
-这对于脚本下的函数是不可能的，这意味着以下是不可能的
+脚本下直接使用函数是不可能的，这意味着以下是不可能的
 
 ```py
 not_possible = clip.awf.bbmod(...)
 ```
 
-In this guide, we will name the source clip to be worked with `src` and set variable names to reflect what their operation does.
+在本指南中，我们将会对要使用的源进行命名并设置变量名为 `src` 以方便之后反复对其操作。
