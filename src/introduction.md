@@ -1,10 +1,10 @@
-# Introduction
+# 介绍
 
 <https://git.concertos.live/Encode_Guide/mdbook-guide>
 
-This guide is meant to be both a starting point for newcomers interested in producing high quality encodes as well as a reference for experienced encoders.
-As such, after most functions are introduced and their uses explained, an in-depth explanation can be found.
-These are meant as simple add-ons for the curious and should in no way be necessary reading to apply the function.
+本指南既可以作为对制作高质量编码作品感兴趣的新手的起点，也可以作为有经验的压制人员的参考。
+因此，在大多数功能介绍完并解释了它们的用途之后，可以找到深入的解释。
+这些只是为好奇的人提供简单扩展，完全不是靠阅读来应用该功能。
 
 # Terminology
 
@@ -13,8 +13,7 @@ These explanations will be heavily simplified, as there should be dozens of web 
 
 ## Video
 
-Consumer video products are usually stored in YCbCr, a term which is commonly used interchangeably with YUV.
-In this guide, we will mostly be using the term YUV, as VapourSynth formats are written as YUV.
+消费类视频产品通常存储在 YCbCr 中，该术语通常与 YUV 互换使用。在本指南中，我们将主要使用术语 YUV，因为 VapourSynth 格式编写也是 YUV。
 
 YUV formatted content has information split into three planes: Y, referred to as luma, which represents the brightness, and U and V, which each represent a chroma plane.
 These chroma planes represent offsets between colors, whereby the middle value of the plane is the neutral point.
@@ -78,7 +77,7 @@ via_core = core.std.Crop(clip, ...)
 via_clip = clip.std.Crop(...)
 ```
 
-This is not possible for functions under scripts, meaning the following is NOT possible:
+这对于脚本下的函数是不可能的，这意味着以下是不可能的
 
 ```py
 not_possible = clip.awf.bbmod(...)

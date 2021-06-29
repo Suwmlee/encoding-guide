@@ -6,7 +6,9 @@
 
 [在线预览](https://suwmlee.github.io/mdbook-guide/)
 
-感谢原作者的撰写，译者水平有限，部分机翻，如有翻译问题请提issue 
+
+感谢原作者的撰写，龟速翻译中...    
+部分机翻后修改，译者水平有限，如有翻译问题请提issue 
 
 #### 其他参考:
 [VCB-Studio教程专栏](https://vcb-s.nmm-hd.org/)

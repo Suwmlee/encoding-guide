@@ -40,7 +40,7 @@
 - [timecube](https://github.com/sekrit-twc/timecube)
 # V
 - [VapourSynth bilateral](https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Bilateral)
-- [VapourSynth Functions](www.vapoursynth.com/doc/functions.html)
+- [VapourSynth Functions](https://www.vapoursynth.com/doc/functions.html)
 - [vs-placebo](https://github.com/Lypheo/vs-placebo)
 - [vsTAAmbk](https://github.com/HomeOfVapourSynthEvolution/vsTAAmbk)
 - [vsutil](https://github.com/Irrational-Encoding-Wizardry/vsutil)
