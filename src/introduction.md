@@ -23,17 +23,17 @@ YUV 格式的内容将信息分为三个平面: Y, 指代 luma, 表示亮度, U 
 [关于色度子采样的Wikipedia](https://en.wikipedia.org/wiki/Chroma_subsampling) 应该足以解释这是如何工作的。
 由于我们通常希望保持 4:2:0 格式，因此我们的框架尺寸受到限制，因为亮度平面的大小必须被 2 整除。
 这意味着我们不能进行不均匀的裁剪或将大小调整为不均匀的分辨率。
-但是，在必要时，我们可以在每个平面中单独处理，这些将会在[过滤章节]()进行解释。
+但是，在必要时，我们可以在每个平面中单独处理，这些将会在 [过滤章节]() 进行解释。
 
 此外，我们的信息必须以特定的精度存储。
 通常，我们处理每平面 8-bit 的精度。
-但是，对于超高清蓝光，每平面 10-bit 的精度是标准
+但是，对于超高清蓝光，每平面标准是 10-bit 的精度。
 这意味着每个平面的可能值范围从 0 到 \\(2^8 - 1 = 255\\)。
 在 [位深章节](filtering/bit_depths.md), 我们将介绍在更高的位深精度下工作，以提高过滤过程中的精度
 
 ## VapourSynth
 
-为了加载我们的剪辑、移除不需要的黑色边框、调整大小和消除源中不需要的信息，我们将通过 Python 使用 VapourSynth 框架。
+我们将通过 Python 使用 VapourSynth 框架来进行裁剪、移除不需要的黑色边框、调整大小和消除源中不需要的信息。
 虽然使用 Python 可能听起来很吓人，但那些没有经验的人不必担心，因为我们只会做非常基本的事情。
 
 关于 VapourSynth 配置的资料不计其数，例如 [the Irrational Encoding Wizardry's guide](https://guide.encode.moe/encoding/preparation.html#the-frameserver) 和 [VapourSynth documentation](http://www.vapoursynth.com/doc/index.html)。

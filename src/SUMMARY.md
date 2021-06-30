@@ -4,7 +4,7 @@
 - [Filtering]()
     - [Loading the Video]()
     - [Cropping]()
-    - [Resizing](filtering/resizing.md)
+    - [调整大小(Resizing)](filtering/resizing.md)
         - [Descaling and Rescaling](filtering/descaling.md)
         - [Chroma Resampling and Shifting](filtering/chroma_res.md)
     - [Bit Depths and Dither Algorithms](filtering/bit_depths.md)

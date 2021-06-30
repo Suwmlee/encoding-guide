@@ -1,31 +1,31 @@
-Resizing is a very complex topic.
-However, for simple downscaled encodes, one doesn't need to know very much information.
-As such, this page will only cover the necessities for downscaling.
-Those interested in knowing more about resampling should refer to the [Irrational Encoding Wizardry's guide's resampling page](https://guide.encode.moe/encoding/resampling.html) for more information.
+调整大小(Resizing)是一个非常复杂的话题。
+然而，对于简单的downscaled压制，人们不需要知道太多信息。
+因此，此页面将仅涵盖必要的downscaling说明。
+那些有兴趣了解有关重采样的更多信息的人应该参考 [Irrational Encoding Wizardry's guide's resampling page](https://guide.encode.moe/encoding/resampling.html) 以获取更多信息。
 
-You can, however, check the later subchapters for some slightly more advanced topics such as [descaling and rescaling](descaling.md) or [chroma resampling and shifting](chroma_res.md), both of which are absolute necessities to know about when encoding anime.
+并且您可以查看后面的子章节以了解一些更高级的主题， 例如 [去缩放(descaling)与重新缩放(rescaling)](descaling.md) 或 [色度重新采样(chroma resampling)和移动(shifting)](chroma_res.md)，这两者都是编码动画时绝对需要了解的。
 
 # Downscaling
 
-For downscaling, the go-to resizer is a spline36 resizer:
+对于downscaling, 首选的 resizer 是 spline36 resizer:
 
 ```py
 resize = src.resize.Spline36(1280, 720, dither_type="error_diffusion")
 ```
 
-The parameters here should be straightforward: simply adjust width and height as necessary.
-Don't worry about `dither_type="error_diffusion"` yet, simply leave this as-is; all it does is make for a nicer looking output.
-The explanation for this parameter can be found in the [dithering](bit_depths.md) chapter.
+这里的参数应该很简单：只需根据需要调整宽度和高度。
+不要担心 `dither_type="error_diffusion"`，只需保持原样即可；它所做的只是让输出看起来更漂亮。
+该参数的解释可以在 [抖动(dithering)](bit_depths.md) 章节中找到。
 
 ## Finding target dimensions
 
-The desired dimensions for standard resolutions should be fairly known for 16:9 content: \\(3840\times2160\\) for 2160p, \\(1920\times1080\\) for 1080p, \\(1280\times720\\) for 720p.
+对于 16:9 内容，标准分辨率所需的尺寸应该是众所周知的： \\(3840\times2160\\) 是 2160p, \\(1920\times1080\\) 是 1080p, \\(1280\times720\\) 是 720p.
 
-However, most films aren't made in this aspect ratio.
-A more common aspect ratio would be 2.39:1, where the video is in \\(2048\times858\\).
-Consumer products are usually in the aforementioned resolutions, so it's more likely to see something like \\(1920\times804\\) after black bars are cropped.
+但是，大多数电影不是以这种纵横比制作的。
+更常见的纵横比是 2.39:1，其中视频是 \\(2048\times858\\).
+消费产品通常采用上述分辨率，因此在裁剪黑条后更有可能看到类似 \\(1920\times804\\) 。
 
-Going from this to 720p gets us exactly \\(1280\times536\\):
+由此我们可以推算720p下的尺寸是 \\(1280\times536\\):
 
 \\[\begin{align}
 w &= \frac{720}{1080}\times1920=1280 \\\\
@@ -33,8 +33,8 @@ h &= \frac{720}{1080}\times804 =536
 \end{align}
 \\]
 
-However, this won't always be the case.
-Let's say your source is in \\(1920\times806\\):
+然而，情况并非总是如此。
+假设您的视频源是 \\(1920\times806\\):
 
 \\[\begin{align}
 w &= \frac{720}{1080}\times1920=1280 \\\\
@@ -42,87 +42,87 @@ h &= \frac{720}{1080}\times806 =537.\overline{3}
 \end{align}
 \\]
 
-Obviously, we can't resize to \\(537.\overline{3}\\), so we need to find the closest height with the lowest aspect ratio error.
-The solution here is to divide by two, round, then multiply by two again:
+显然，我们不能调整大小至 \\(537.\overline{3}\\)，因此我们需要找到具有最低纵横比误差的最接近的高度。
+这里的解决方法是除以二，取整，然后再乘以二：
 
 \\[
 h = \mathrm{round}\left( \frac{720}{1080} \times 806 \times \frac{1}{2} \right) \times 2 = 538
 \\]
 
-In Python:
+在 Python 中：
 
 ```py
 height = round(1280 / src.width / 2 * src.height) * 2
 ```
 
-Now, we feed this to our resize:
+现在，我们将其提供给我们的resize：
 
 ```py
 resize = src.resize.Spline36(1280, height, dither_type="error_diffusion")
 ```
 
-Alternatively, if our source was cropped on the left and right instead of top and bottom, we do:
+或者，如果我们的源被裁剪在左侧和右侧而不是顶部和底部，我们会这样做：
 
 ```py
 width = round(720 / src.height / 2 * src.width) * 2
 ```
 
-If you (understandably) don't want to bother with this, you can use the `zresize` wrapper in [`awsmfunc`](https://git.concertos.live/AHD/awsmfunc/):
+如果您不想为此烦恼， 您可以使用 [`awsmfunc`](https://git.concertos.live/AHD/awsmfunc/) 里封装好的 `zresize` 方法:
 
 ```py
 resize = awf.zresize(src, preset=720)
 ```
 
-With the `preset` option, you don't have to bother calculating anything, just state the target resolution (in height) and it'll determine the correct dimensions for you.
+有了这个 `preset` 选项，您不必费心计算任何事情，只需说明目标分辨率（高度），它就会为您确定正确的尺寸。
 
-## Notes
+## 笔记
 
-For resizing uneven crops, please refer to the [dirty lines](dirty_lines.md) chapter, specifically the [FillBorders](dirty_lines.md#fillborders) section and the [notes](dirty_lines.md#notes).
+如果调整不均匀源的大小， 请参阅 [脏线(dirty lines)](dirty_lines.md) 章节， 特别是 [填充边框(FillBorders)](dirty_lines.md#fillborders) 部分和 [注解](dirty_lines.md#notes).
 
-Additionally, it is worth noting that resizing should not be done at the beginning of your script, as doing so can damage some of the filtering performed and even reintroduce issues.
+此外，值得注意的是，不应在脚本开始时调整大小，因为这样做会损坏执行的某些filtering，甚至重新引入问题。
 
-# Ideal resolutions
+# 理想的分辨率
 
-For digital anime, please refer to the [descaling subchapter](descaling.md) for this.
-It is extremely rare for descaling to be relevant for live action, too, but if your source is especially blurry and clearly a cheap production, it's also worth looking into.
+对于数字动漫，请参阅 [descaling subchapter](descaling.md) 。
+实景拍摄的场景中极少需要进行descaling，但如果您的来源特别模糊且明显是廉价制作，则值得研究。
 
-It's common knowledge that not every source should be encoded in the source's resolution.
-As such, one should know how to determine whether a source warrants e.g. a 1080p encode or if a 720p encode would suffice from a detail-retention standpoint.
+众所周知，并非每个源都应以源的分辨率进行压制。
+因此，人们应该知道来源是否有保证，例如从细节保留的角度来看，1080p 压制或 720p 压制就足够了。
 
-To do this, we simply compare a source downscaling and scaled back up:
+为此，我们只需要将源缩小和放大后进行简单比较：
 
 ```py
 downscale = src.resize.Spline36(1280, 720, dither_type="error_diffusion")
 rescale = downscale.resize.Spline36(src.width, src.height, dither_type="error_diffusion")
 ```
 
-Now, we interleave the two, then go through the video and see if details are blurred:
+现在，我们将两者交错，然后通过视频查看细节是否模糊：
 
 ```py
 out = core.std.Interleave([src, rescale])
 ```
 
-We can also perform all these with the `UpscaleCheck` wrapper from `awsmfunc`:
+我们还可以使用 `awsmfunc` 里封装的所有关于 `UpscaleCheck` 的方法:
 
 ```py
 out = awf.UpscaleCheck(src)
 ```
 
-Let's look at two examples.
-First, Shinjuku Swan II:
+让我们看两个例子。
+第一个，Shinjuku Swan II:
 
 <p align="center">
 <img src='Pictures/swan_0.png' onmouseover="this.src='Pictures/swan_1.png';" onmouseout="this.src='Pictures/swan_0.png';"/>
 </p>
 
-Here, edges get very blurry in the rescale, meaning a 1080p is warranted.
-This is especially noticeable in the plants' leaves.
+在这里，边缘在重新调整后变得非常模糊，这意味着 1080p 是有保证的。
+这在植物的叶子中尤为明显。
 
-Now, The Way of the Dragon:
+第二个，The Way of the Dragon:
 
 <p align="center">
 <img src='Pictures/dragon_0.png' onmouseover="this.src='Pictures/dragon_1.png';" onmouseout="this.src='Pictures/dragon_0.png';"/>
 </p>
 
-Here, we see grain is blurred ever so slightly, and some compression artifacts are warped.
-However, edges and details are not affected, meaning a 720p would do just fine here.
+在这里，我们看到颗粒非常轻微地模糊，并且一些压缩伪像被扭曲了。
+但是，边缘和细节不受影响，这意味着 720p 在这里就可以了。
