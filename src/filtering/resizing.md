@@ -124,5 +124,5 @@ out = awf.UpscaleCheck(src)
 <img src='Pictures/dragon_0.png' onmouseover="this.src='Pictures/dragon_1.png';" onmouseout="this.src='Pictures/dragon_0.png';"/>
 </p>
 
-在这里，我们看到颗粒非常轻微地模糊，并且一些压缩伪像被扭曲了。
+在这里，我们看到颗粒非常轻微地模糊，并且一些压缩产物被扭曲了。
 但是，边缘和细节不受影响，这意味着 720p 在这里就可以了。

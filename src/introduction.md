@@ -2,7 +2,7 @@
 
 <https://git.concertos.live/Encode_Guide/mdbook-guide>
 
-本指南既可以作为对制作高质量编码作品感兴趣的新手的起点，也可以作为有经验的压制人员的参考。
+本指南既可以作为对制作高质量编码作品感兴趣的新手的起点，也可以作为有压制经验人员的参考。
 因此，在大多数功能介绍完并解释了它们的用途之后，可以找到深入的解释资料。
 这些只是为想深入研究的人提供简单扩展，不是只依靠阅读就能运用的。
 
@@ -33,7 +33,7 @@ YUV 格式的内容将信息分为三个平面: Y, 指代 luma, 表示亮度, U 
 
 ## VapourSynth
 
-我们将通过 Python 使用 VapourSynth 框架来进行裁剪、移除不需要的黑色边框、调整大小和消除源中不需要的信息。
+我们将通过 Python 使用 VapourSynth 框架来进行裁剪、移除不需要的黑色边框、调整大小和消除源中不需要的产物。
 虽然使用 Python 可能听起来很吓人，但那些没有经验的人不必担心，因为我们只会做非常基本的事情。
 
 关于 VapourSynth 配置的资料不计其数，例如 [the Irrational Encoding Wizardry's guide](https://guide.encode.moe/encoding/preparation.html#the-frameserver) 和 [VapourSynth documentation](http://www.vapoursynth.com/doc/index.html)。
@@ -52,7 +52,7 @@ filter_x_on_a = filter_x(clip_a)
 filter_y_on_a = filter_y(clip_b)
 ```
 
-此外，许多函数都在脚本集合或类似的集合中。
+此外，许多方法都在脚本模块或类似的集合中。
 这些必须手动加载，然后在给定的别名下找到：
 
 ```py
@@ -66,9 +66,9 @@ grain = kgf.adaptive_grain(...)
 change_depth = depth(...)
 ```
 
-为避免函数名冲突，通常不建议这样做 `from x import *`。
+为避免方法名冲突，通常不建议这样做 `from x import *`。
 
-虽然此类集合中有许多filters，但也有一些filters可用作插件。
+虽然此类模块中有许多filters，但也有一些filters可用作插件。
 这些插件可以通过 `core.namespace.plugin` 或 替代调用 `clip.namespace.plugin`。
 这意味着以下两个是等效的：
 
@@ -77,7 +77,7 @@ via_core = core.std.Crop(clip, ...)
 via_clip = clip.std.Crop(...)
 ```
 
-脚本下直接使用函数是不可能的，这意味着以下是不可能的
+脚本里无法直接使用这些方法，这意味着以下是不可能的
 
 ```py
 not_possible = clip.awf.bbmod(...)
