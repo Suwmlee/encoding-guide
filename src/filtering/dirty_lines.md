@@ -284,13 +284,13 @@ This is then resized back to the input size and merged using <code>MergeDiff</co
 </details>
 
 ## `FillBorders`\
-From [`fb`](https://github.com/Moiman/vapoursynth-fillborders).  This function pretty much just copies the next column/row in line.
+From [`fb`](https://github.com/dubhater/vapoursynth-fillborders).  This function pretty much just copies the next column/row in line.
 While this sounds, silly, it can be quite useful when downscaling
 leads to more rows being at the bottom than at the top, and one
 having to fill one up due to YUV420's mod2 height.
 
 ```py
-fill = core.fb.FillBorders(src=clip, left=0, right=0, bottom=0, top=0, mode="fillmargins")
+fill = core.fb.FillBorders(src=clip, left=0, right=0, bottom=0, top=0, mode="fixborders")
 ```
 
 A very interesting use for this function is one similar to applying
@@ -300,7 +300,7 @@ what luma fix is applied. This can be done with the following
 script:
 
 ```py
-fill = core.fb.FillBorders(src=clip, left=0, right=0, bottom=0, top=0, mode="fillmargins")
+fill = core.fb.FillBorders(src=clip, left=0, right=0, bottom=0, top=0, mode="fixborders")
 merge = core.std.Merge(clipa=clip, clipb=fill, weight=[0,1])
 ```
 
@@ -350,8 +350,7 @@ fil = awf.fb(crp, top=1)
 
 Our source is now fixed. Some people may want to resize the chroma
 to maintain original aspect ratio performing lossy resampling on chroma, but whether
-this is the way to go is not generally agreed upon (personally, I,
-Aicha, disagree with doing this). If you want to go this route:
+this is the way to go is not generally agreed upon. If you want to go this route:
 
 ```py
 top = 1
@@ -362,10 +361,12 @@ out = fil.resize.Spline36(crp.width, new_height, src_height=new_height, src_top=
 ```
 <details>
 <summary>In-depth function explanation</summary>
-<code>FillBorders</code> has three modes, although we only really care about mirror and fillmargins.
+<code>FillBorders</code> has four modes, although we only really care about mirror, fillmargins, and fixborders.
 The mirror mode literally just mirrors the previous pixels.  Contrary to the third mode, repeat, it doesn't just mirror the final row, but the rows after that for fills greater than 1.  This means that, if you only fill one row, these modes are equivalent.  Afterwards, the difference becomes obvious.
 
-In fillmargins mode, it works a bit like a convolution, whereby it does a [2, 3, 2] of the next row's pixels, meaning it takes 2 of the left pixel, 3 of the middle, and 2 of the right, then averages.  For borders, it works slightly differently: the leftmost pixel is just a mirror of the next pixel, while the eight rightmost pixels are also mirrors of the next pixel.  Nothing else happens here.
+In fillmargins mode, it works a bit like a convolution, whereby for rows it does a [2, 3, 2] of the next row's pixels, meaning it takes 2 of the left pixel, 3 of the middle, and 2 of the right, then averages.  For borders, it works slightly differently: the leftmost pixel is just a mirror of the next pixel, while the eight rightmost pixels are also mirrors of the next pixel.  Nothing else happens here.
+
+The fixborders mode is a modified fillmargins that works the same for rows and columns.  It compares fills with emphasis on the left, middle, and right with the next row to decide which one to use.
 </details>
 
 ## `ContinuityFixer`\
@@ -410,6 +411,8 @@ Let's compare this with the bbmod fix (remember to mouse-over to compare):
 <img src='Pictures/dirtfixes2.png' onmouseover="this.src='Pictures/dirtfixes1.png';" onmouseout="this.src='Pictures/dirtfixes2.png';"/>
 </p>
 The result is ever so slightly in favor of <code>ContinuityFixer</code> here.
+This will rarely be the case, as `ContinuityFixer` tends to be more destructive
+than `bbmod` already is.
 
 Just like `bbmod`, `ContinuityFixer` shouldn't be used on more than two rows/columns.  Again, if you're resizing, you can change this maximum accordingly:
 \\[
