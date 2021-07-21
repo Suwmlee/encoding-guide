@@ -323,7 +323,7 @@ might have helped.
 
 In case someone wants to play around with the image used here, it's
 available in this guide's repository:
-<https://git.concertos.live/Encode_Guide/Encode_Guide/src/branch/master/Pictures/lion.png>.
+<https://git.concertos.live/Encode_Guide/mdbook-guide/src/branch/master/src/filtering/Pictures/lion.png>.
 
 Additionally, the following functions can be of help when masking,
 limiting et cetera:
@@ -406,3 +406,6 @@ Encoding Wizardry GitHub group's guide:
 reading through most of your favorite Python functions for VapourSynth.
 Pretty much all of the good ones should use some mask or have developed
 their own mask for their specific use case.
+
+Edge detection is also very thoroughly explained in a lot of digital
+image processing textbooks, e.g. Digital Image Processing by Gonzalez and Woods.
