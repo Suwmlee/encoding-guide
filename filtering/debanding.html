@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>去色带(Debanding)与解块(Deblocking) - 高级编码指南</title>
+        <title>解带(Debanding)与解块(Deblocking) - 高级编码指南</title>
         
         
 
@@ -98,7 +98,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">介绍</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.</strong> 过滤Filtering</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">1.1.</strong> Loading the Video</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.2.</strong> Cropping</div></li><li class="chapter-item expanded "><a href="../filtering/resizing.html"><strong aria-hidden="true">1.3.</strong> 调整大小(Resizing)</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../filtering/descaling.html"><strong aria-hidden="true">1.3.1.</strong> 降尺度与重新缩放(Descaling and Rescaling)</a></li><li class="chapter-item expanded "><a href="../filtering/chroma_res.html"><strong aria-hidden="true">1.3.2.</strong> 色度重采样与偏移(Chroma Resampling and Shifting)</a></li></ol></li><li class="chapter-item expanded "><a href="../filtering/bit_depths.html"><strong aria-hidden="true">1.4.</strong> 位深(Bit Depths)与抖动算法(Dither Algorithms)</a></li><li class="chapter-item expanded "><a href="../filtering/debanding.html" class="active"><strong aria-hidden="true">1.5.</strong> 去色带(Debanding)与解块(Deblocking)</a></li><li class="chapter-item expanded "><a href="../filtering/graining.html"><strong aria-hidden="true">1.6.</strong> 粒化(Graining)</a></li><li class="chapter-item expanded "><a href="../filtering/dirty_lines.html"><strong aria-hidden="true">1.7.</strong> 脏线(Dirty Lines)与边界问题(Border Issues)</a></li><li class="chapter-item expanded "><a href="../filtering/detinting.html"><strong aria-hidden="true">1.8.</strong> 除着色(Detinting)与水平调整(Level Adjustment)</a></li><li class="chapter-item expanded "><a href="../filtering/masking.html"><strong aria-hidden="true">1.9.</strong> 蒙版(Masking)</a></li><li class="chapter-item expanded "><a href="../filtering/anti-aliasing.html"><strong aria-hidden="true">1.10.</strong> 抗锯齿(Anti-Aliasing)</a></li><li class="chapter-item expanded "><a href="../filtering/deringing.html"><strong aria-hidden="true">1.11.</strong> 消除振铃(Deringing)</a></li><li class="chapter-item expanded "><a href="../filtering/dehaloing.html"><strong aria-hidden="true">1.12.</strong> 去晕(Dehaloing)</a></li><li class="chapter-item expanded "><a href="../filtering/denoising.html"><strong aria-hidden="true">1.13.</strong> 降噪(Denoising)</a></li><li class="chapter-item expanded "><a href="../filtering/dehardsubbing.html"><strong aria-hidden="true">1.14.</strong> 剔除硬字幕(Dehardsubbing)与去台标(Delogoing)</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 编码Encoding</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../encoding/testing.html"><strong aria-hidden="true">2.1.</strong> Test Encodes</a></li><li class="chapter-item expanded "><a href="../encoding/x264.html"><strong aria-hidden="true">2.2.</strong> x264 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/x265.html"><strong aria-hidden="true">2.3.</strong> x265 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/screenshots.html"><strong aria-hidden="true">2.4.</strong> Screenshots and Comparisons</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 音频Audio</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> SoX: 抖动和向下混合(Dithering and Down-Mixing)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> 单声道和立体声(Mono and Stereo)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> 环绕声(Surround Sound)</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 附录Appendix</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">4.1.</strong> 线性光处理(Linear Light Processing)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.2.</strong> 使用FT寻找最佳分辨率</div></li><li class="chapter-item expanded "><a href="../appendix/grain_matching.html"><strong aria-hidden="true">4.3.</strong> 颗粒匹配(Grain Matching)</a></li><li class="chapter-item expanded "><a href="../appendix/gray.html"><strong aria-hidden="true">4.4.</strong> 黑白剪辑(Black &amp; White Clips)</a></li></ol></li><li class="chapter-item expanded "><a href="../scriptorium.html"><strong aria-hidden="true">5.</strong> Scriptorium</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">介绍</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.</strong> 过滤Filtering</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">1.1.</strong> Loading the Video</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.2.</strong> Cropping</div></li><li class="chapter-item expanded "><a href="../filtering/resizing.html"><strong aria-hidden="true">1.3.</strong> 调整大小(Resizing)</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../filtering/descaling.html"><strong aria-hidden="true">1.3.1.</strong> 降尺度与重新缩放(Descaling and Rescaling)</a></li><li class="chapter-item expanded "><a href="../filtering/chroma_res.html"><strong aria-hidden="true">1.3.2.</strong> 色度重采样与偏移(Chroma Resampling and Shifting)</a></li></ol></li><li class="chapter-item expanded "><a href="../filtering/bit_depths.html"><strong aria-hidden="true">1.4.</strong> 位深(Bit Depths)与抖动算法(Dither Algorithms)</a></li><li class="chapter-item expanded "><a href="../filtering/debanding.html" class="active"><strong aria-hidden="true">1.5.</strong> 解带(Debanding)与解块(Deblocking)</a></li><li class="chapter-item expanded "><a href="../filtering/graining.html"><strong aria-hidden="true">1.6.</strong> 粒化(Graining)</a></li><li class="chapter-item expanded "><a href="../filtering/dirty_lines.html"><strong aria-hidden="true">1.7.</strong> 脏线(Dirty Lines)与边界问题(Border Issues)</a></li><li class="chapter-item expanded "><a href="../filtering/detinting.html"><strong aria-hidden="true">1.8.</strong> 除着色(Detinting)与水平调整(Level Adjustment)</a></li><li class="chapter-item expanded "><a href="../filtering/masking.html"><strong aria-hidden="true">1.9.</strong> 蒙版(Masking)</a></li><li class="chapter-item expanded "><a href="../filtering/anti-aliasing.html"><strong aria-hidden="true">1.10.</strong> 抗锯齿(Anti-Aliasing)</a></li><li class="chapter-item expanded "><a href="../filtering/deringing.html"><strong aria-hidden="true">1.11.</strong> 消除振铃(Deringing)</a></li><li class="chapter-item expanded "><a href="../filtering/dehaloing.html"><strong aria-hidden="true">1.12.</strong> 去晕(Dehaloing)</a></li><li class="chapter-item expanded "><a href="../filtering/denoising.html"><strong aria-hidden="true">1.13.</strong> 降噪(Denoising)</a></li><li class="chapter-item expanded "><a href="../filtering/dehardsubbing.html"><strong aria-hidden="true">1.14.</strong> 剔除硬字幕(Dehardsubbing)与去台标(Delogoing)</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 编码Encoding</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../encoding/testing.html"><strong aria-hidden="true">2.1.</strong> Test Encodes</a></li><li class="chapter-item expanded "><a href="../encoding/x264.html"><strong aria-hidden="true">2.2.</strong> x264 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/x265.html"><strong aria-hidden="true">2.3.</strong> x265 Settings</a></li><li class="chapter-item expanded "><a href="../encoding/screenshots.html"><strong aria-hidden="true">2.4.</strong> Screenshots and Comparisons</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 音频Audio</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> SoX: 抖动和向下混合(Dithering and Down-Mixing)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.2.</strong> 单声道和立体声(Mono and Stereo)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.3.</strong> 环绕声(Surround Sound)</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 附录Appendix</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">4.1.</strong> 线性光处理(Linear Light Processing)</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.2.</strong> 使用FT寻找最佳分辨率</div></li><li class="chapter-item expanded "><a href="../appendix/grain_matching.html"><strong aria-hidden="true">4.3.</strong> 颗粒匹配(Grain Matching)</a></li><li class="chapter-item expanded "><a href="../appendix/gray.html"><strong aria-hidden="true">4.4.</strong> 黑白剪辑(Black &amp; White Clips)</a></li></ol></li><li class="chapter-item expanded "><a href="../scriptorium.html"><strong aria-hidden="true">5.</strong> Scriptorium</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -168,182 +168,141 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="debanding"><a class="header" href="#debanding">Debanding</a></h1>
-<p>This is the most common issue one will encounter. Banding usually
-happens when bitstarving and poor settings lead to smoother gradients
-becoming abrupt color changes, which obviously ends up looking bad.  These can be fixed by performing blur-like operations and limiting their outputs.</p>
-<p>Note that, as blurring is a very destructive process, it's advised to only apply this to necessary parts of your video and use <a href="masking.html">masks</a> to further limit the changes.</p>
-<p>There are three great tools for VapourSynth that are used to fix
-banding: <a href="https://github.com/HomeOfAviSynthPlusEvolution/neo_f3kdb/"><code>neo_f3kdb</code></a>, <code>fvsfunc</code>'s <code>gradfun3</code>, which has a built-in
-mask, and <code>vs-placebo</code>'s <code>placebo.Deband</code>.</p>
+                        <h1 id="解带-debanding"><a class="header" href="#解带-debanding">解带 Debanding</a></h1>
+<p>这是人们会遇到的最常见的问题。当码率不足(bitstarving)和糟糕的设置导致平滑的渐变变成突然的颜色变化时，通常会产生色带，这显然会让画面看起来很糟糕。这些可以通过执行类似模糊的操作并限制它们的输出来修复。</p>
+<p>请注意，由于模糊是一个非常具有破坏性的过程，因此建议仅将其应用于视频的必要部分并使用 <a href="masking.html">蒙版(masks)</a>来进一步限制更改。</p>
+<p>VapourSynth 有三个很棒的工具可以用来修复色带：<a href="https://github.com/HomeOfAviSynthPlusEvolution/neo_f3kdb/"><code>neo_f3kdb</code></a>, <code>fvsfunc</code>内置的蒙版 <code>gradfun3</code> 和 <code>vs-placebo</code>的 <code>placebo.Deband</code>。</p>
 <p align="center">
 <img src='Pictures/debanding0.png' onmouseover="this.src='Pictures/debanding1.png';" onmouseout="this.src='Pictures/debanding0.png';" />
 </p>
 <p align="center">
-<i>Banding example fixed with f3kdb default settings.</i>
+<i>使用 f3kdb 默认设置修复了色带示例</i>
 </p>
 <h2 id="neo_f3kdb"><a class="header" href="#neo_f3kdb"><code>neo_f3kdb</code></a></h2>
 <pre><code class="language-py">deband = core.neo_f3kdb.deband(src=clip, range=15, y=64, cb=64, cr=64, grainy=64, grainc=64, dynamic_grain=False, sample_mode=2)
 </code></pre>
-<p>These settings may come off as self-explanatory for some, but here's
-what they do:</p>
+<p>这些设置对某些人来说可能不言自明，但它们的作用如下：</p>
 <ul>
 <li>
-<p><code>src</code> This is obviously your source clip.</p>
+<p><code>src</code> 这显然是您的剪辑源。</p>
 </li>
 <li>
-<p><code>range</code> This specifies the range of pixels that are used to
-calculate whether something is banded. A higher range means more
-pixels are used for calculation, meaning it requires more processing
-power. The default of 15 should usually be fine.  Raising this may help make larger gradients with less steps look smoother, while lower values will help catch smaller instances.</p>
+<p><code>range</code> 这指定了用于计算某物是否有条带的像素范围。更大的范围意味着更多的像素用于计算，这意味着它需要更多的处理能力。默认值 15 通常应该没问题。提高此值可能有助于使步长较小的较大梯度看起来更平滑，而较低的值将有助于捕获较小的实例。</p>
 </li>
 <li>
-<p><code>y</code> The most important setting, since most (noticeable) banding
-takes place on the luma plane. It specifies how big the difference
-has to be for something on the luma plane to be considered as
-banded. You should start low and slowly but surely build this up
-until the banding is gone. If it's set too high, lots of details
-will be seen as banding and hence be blurred.
-Depending on your sample mode, y values will either only have an effect
-in steps of 16 (mode 2) or 32 (modes 1, 3, 4). This means that y=20 is
-equivalent to y=30.</p>
+<p><code>y</code> 最重要的设置，因为大多数（明显的）条带发生在亮度平面上。它指定了亮度平面上的某些东西被认为是色带的差异必须有多大。你应该从低而缓慢的开始，但一定要建立这个直到条带消失。如果设置得太高，很多细节会被视为条带，因此会变得模糊。
+根据您的采样模式，值将仅以 16（mode 2）或 32（mode 1、3、4）的步长产生影响。这意味着 y=20 等价于 y=30。</p>
 </li>
 <li>
-<p><code>cb</code> and <code>cr</code> The same as <code>y</code> but for chroma. However, banding on
-the chroma planes is comparatively uncommon, so you can often leave this
-off.</p>
+<p><code>cb</code> 和 <code>cr</code>除了色度外与 <code>y</code> 都是一样的。 但是，色度平面上的色带相对不常见，因此您通常可以将其关闭。</p>
 </li>
 <li>
-<p><code>grainy</code> and <code>grainc</code> In order to keep banding from re-occurring and
-to counteract smoothing, grain is usually added after the debanding
-process. However, as this fake grain is quite noticeable, it's
-recommended to be conservative. Alternatively, you can use a custom
-grainer, which will get you a far nicer output (see <a href="graining.html">the graining section</a> for more on this).</p>
+<p><code>grainy</code> 和 <code>grainc</code> 为了防止色带再次发生并抵消平滑，通常在解带后添加颗粒。但是，由于这种假颗粒非常明显，因此建议保守一些。 或者，您可以使用自定义颗粒生成器，这将为您提供更好的输出 (有关更多信息，请参阅 <a href="graining.html">粒化部分</a>)。</p>
 </li>
 <li>
-<p><code>dynamic_grain</code> By default, grain added by <code>f3kdb</code> is static. This
-compresses better, since there's obviously less variation, but it
-usually looks off with live action content, so it's normally
-recommended to set this to <code>True</code> unless you're working with
-animated content.</p>
+<p><code>dynamic_grain</code> 默认情况下，由<code>f3kdb</code>添加的颗粒是静态的，这压缩得更好，因为显然变化较少，但它通常看起来与实况内容无关，因此通常建议将其设置为 <code>True</code> ，除非您正在处理动画内容。</p>
 </li>
 <li>
-<p><code>sample_mode</code> Is explained in the README.  Consider switching to 4, since it might have less detail loss.</p>
+<p><code>sample_mode</code> 在README中有说明。因为它可能具有较少的细节损失，可以考虑切换到 4。</p>
 </li>
 </ul>
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入讲解</summary>
 TODO
 </details>
 <h2 id="gradfun3"><a class="header" href="#gradfun3"><code>GradFun3</code></a></h2>
-<p>The most popular alternative to <code>f3kdb</code> is <code>gradfun3</code>.  This function is more resource intensive and less straightforward parameters, but can also prove useful in cases where <code>f3kdb</code> struggles:</p>
+<p><code>gradfun3</code>是 <code>f3kdb</code> 的最受欢迎替代品。 这个函数需要更多的资源和不那么直接的参数，但在一些 <code>f3kdb</code> 处理不好的地方表现不错:</p>
 <pre><code class="language-py">import fvsfunc as fvf
 deband = fvf.GradFun3(src, thr=0.35, radius=12, elast=3.0, mask=2, mode=3, ampo=1, ampn=0, pat=32, dyn=False, staticnoise=False, smode=2, thr_det=2 + round(max(thr - 0.35, 0) / 0.3), debug=False, thrc=thr, radiusc=radius, elastc=elast, planes=list(range(src.format.num_planes)), ref=src, bits=src.format.bits_per_sample) # + resizing variables
 </code></pre>
-<p>Lots of these values are for <code>fmtconv</code> bit depth conversion or descaling, both of which aren't relevant here.  The values really of interest here are:</p>
+<p><code>fmtconv</code>中许多设置的值都是给位深转换或去缩放使用的, 这两者在这里都不相关。这里真正感兴趣的值是：</p>
 <ul>
 <li>
-<p><code>thr</code> is equivalent to <code>y</code>, <code>cb</code>, and <code>cr</code> in what it does. You'll
-likely want to raise or lower it.</p>
+<p><code>thr</code> 等价于 <code>y</code>, <code>cb</code>, 和 <code>cr</code> 的作用。您可能想要提高或降低它。</p>
 </li>
 <li>
-<p><code>radius</code> has the same effect as <code>f3kdb</code>'s <code>range</code>.</p>
+<p><code>radius</code> 具有和<code>f3kdb</code>的 <code>range</code> 相同的效果。</p>
 </li>
 <li>
-<p><code>smode</code> sets the smooth mode. It's usually best left at its default,
-or set to 5 if you'd like to use a
-CUDA-enabled GPU instead of your CPU. Uses <code>ref</code> (defaults to input
-clip) as a reference clip.</p>
+<p><code>smode</code> 设置平滑模式。通常最好保留默认值，如果您想使用支持 CUDA 的 GPU 而不是 CPU，则设置为 5。使用 <code>ref</code> (默认为剪辑输入) 作为参考剪辑。</p>
 </li>
 <li>
-<p><code>mask</code> sets the mask strength.  0 to disable.  The default is a sane value.</p>
+<p><code>mask</code> 设置遮罩强度。 0 禁用。 默认值是一个合理的值。</p>
 </li>
 <li>
-<p><code>planes</code> sets which planes should be processed.</p>
+<p><code>planes</code> 置应处理哪些平面。</p>
 </li>
 <li>
-<p><code>debug</code> allows you to view the mask.</p>
+<p><code>debug</code> 允许您查看遮罩。</p>
 </li>
 <li>
-<p><code>elast</code> controls blending between debanded and source clip.  Default is sane.  Higher values prioritize debanded clip more.</p>
+<p><code>elast</code> 控制去色带和剪辑源之间的混合。默认值是一个合理的值。
+较高的值优先考虑去色带。</p>
 </li>
 </ul>
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入讲解</summary>
 TODO
-For a more in-depth explanation of what `thr` and `elast` do, check the
-algorithm explanation in <a href=https://github.com/HomeOfVapourSynthEvolution/mvsfunc/blob/master/mvsfunc.py#L1735><code>mvsfunc</code></a>.
+要更深入地解释 `thr` 和 `elast` 的作用, 请查看 <a href=https://github.com/HomeOfVapourSynthEvolution/mvsfunc/blob/master/mvsfunc.py#L1735><code>mvsfunc</code></a>的算法解释.
 </details>
 <h2 id="placebodeband"><a class="header" href="#placebodeband"><code>placebo.Deband</code></a></h2>
-<p>This debander is quite new to the VapourSynth scene, but it's very good at fixing strong banding.  However, as such, it is also prone to needless detail loss and hence should only be used when necessary and ideally combined with a detail/edge mask.  It's (current) parameters:</p>
+<p>这个 debander 对 VapourSynth 来说很新，但它非常擅长修复强条带。然而，同样地，它也容易出现不必要的细节损失，因此应该只在必要时使用，并且最好与细节/边缘蒙版结合使用。它的（当前）参数：</p>
 <pre><code class="language-py">placebo.Deband(clip clip[, int planes = 1, int iterations = 1, float threshold = 4.0, float radius = 16.0, float grain = 6.0, int dither = True, int dither_algo = 0])
 </code></pre>
-<p>It's not unlikely that this function will see significant change in the future, hence <a href="https://github.com/Lypheo/vs-placebo/blob/master/README.md">the README</a> is also very much worth reading.</p>
-<p>Parameters you'll want to look at:</p>
+<p>这个功能在未来不太可能发生重大变化，因此非常值得读一读 <a href="https://github.com/Lypheo/vs-placebo/blob/master/README.md">the README</a> 。</p>
+<p>您要查看的参数：</p>
 <ul>
 <li>
-<p><code>planes</code> obviously the to-be-processed planes.  The syntax is different here, check the README.  In short, default for luma-only, <code>1 | 2 | 4</code> for luma and chroma.</p>
+<p><code>planes</code> 显然是要加工的平面。此处的语法不同，请查看README。简而言之，默认仅对亮度， <code>1 | 2 | 4</code> 对亮度和色度。</p>
 </li>
 <li>
-<p><code>iterations</code> sets how often the debander is looped.  It's not recommended to change this from the default, although this can be useful in extreme cases.</p>
+<p><code>iterations</code> 设置 debander 循环的频率。 不建议更改默认设置，尽管这在极端情况下很有用。</p>
 </li>
 <li>
-<p><code>threshold</code> sets the debander's strength or rather the threshold when a pixel is changed.  You probably don't want to go much higher than 12.  Go up in steps of 1 and fine-tune if possible.</p>
+<p><code>threshold</code> 设置 debander 的强度或更改像素时的阈值。尽量不要超过 12。如果会，请以 1 为步长进行微调。</p>
 </li>
 <li>
-<p><code>radius</code> does the same as for the previous functions.</p>
+<p><code>radius</code> 与之前的功能相同。</p>
 </li>
 <li>
-<p><code>grain</code> is again the same as <code>f3kdb</code>, although the grain is a lot nicer.</p>
+<p><code>grain</code> 同样与 <code>f3kdb</code> 的一样, 但是颗粒更好。</p>
 </li>
 </ul>
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入讲解</summary>
 TODO
-It uses the
-mpv debander, which just averages pixels within a range and outputs the
-average if the difference is below a threshold.  The algorithm is
-explained in the <a href="https://github.com/haasn/libplacebo/blob/master/src/shaders/sampling.c#L167">source code</a>.
+它使用了 mpv debander，只是平均一个范围内的像素，如果差异低于阈值，则输出平均值。该算法在 <a href="https://github.com/haasn/libplacebo/blob/master/src/shaders/sampling.c#L167">中进行了解释</a>.
 </details>
-<h2 id="banding-detection"><a class="header" href="#banding-detection">Banding detection</a></h2>
-<p>If you want to automate your banding detection, you can use <code>banddtct</code> from <code>awsmfunc</code>. Make sure to
-adjust the values properly and check the full output. Check <a href="https://git.concertos.live/AHD/awsmfunc/wiki/Using-detect.py">this link</a> for an explanation on how to use it. You can also just run <code>adptvgrnMod</code> or <code>adaptive_grain</code> with a high <code>luma_scaling</code> value in hopes that the
-grain covers it up fully. More on this in
-<a href="graining">the graining section</a>.  Note that both of these methods won't be able to pick up/fix every kind of banding.  <code>banddtct</code> can't find banding covered by grain, and graining to fix banding only works for smaller instances.</p>
-<h1 id="deblocking"><a class="header" href="#deblocking">Deblocking</a></h1>
+<h2 id="色带检测-banding-detection"><a class="header" href="#色带检测-banding-detection">色带检测 Banding detection</a></h2>
+<p>如果要自动检测色带，可以使用<code>awsmfunc</code>中的 <code>banddtct</code> 。 确保正确调整值并检查完整输出。查看 <a href="https://git.concertos.live/AHD/awsmfunc/wiki/Using-detect.py">此链接</a> 以获取有关如何使用它的说明。您也可以只运行 <code>adptvgrnMod</code> 或用一个高的<code>luma_scaling</code>值来运行 <code>adaptive_grain</code> 以期望颗粒可以完全覆盖它。更多信息在
+<a href="graining">粒化部分</a>。请注意，这两种方法都无法检测/修复所有类型的色带。 <code>banddtct</code> 找不到被颗粒覆盖的色带，而且用于修复色带的纹理仅适用于较小的实例。</p>
+<h1 id="解块-deblocking"><a class="header" href="#解块-deblocking">解块 Deblocking</a></h1>
 <p align="center">
 <img src='Pictures/deblock1.png' onmouseover="this.src='Pictures/deblock2.png';" onmouseout="this.src='Pictures/deblock1.png';"/>
 </p>
-<p>Deblocking is mostly equivalent to smoothing the source, usually with
-another mask on top. The most popular function here is <code>Deblock_QED</code>
-from <code>havsfunc</code>. The main parameters are</p>
+<p>解块相当于平滑输入源，通常是在画面顶部使用另一个蒙版。 最常用的是<code>havsfunc</code>中的 <code>Deblock_QED</code> 函数。
+主要参数是</p>
 <ul>
 <li>
-<p><code>quant1</code>: Strength of block edge deblocking. Default is 24. You may
-want to raise this value significantly.</p>
+<p><code>quant1</code>: 边缘解块的强度。 默认值为 24。您可能希望显着提高此值。</p>
 </li>
 <li>
-<p><code>quant2</code>: Strength of block internal deblocking. Default is 26.
-Again, raising this value may prove to be beneficial.</p>
+<p><code>quant2</code>: 内部解块的强度。 默认值为 26。同样，提高此值可能会有益。</p>
 </li>
 </ul>
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入讲解</summary>
 TODO
 </details>
-<p>Other popular options are <code>deblock.Deblock</code>, which is quite strong, but
-almost always works,</p>
+<p>其他常用的选项是 <code>deblock.Deblock</code>,它非常强大，几乎总是有效</p>
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入讲解</summary>
 TODO
 </details>
-<p><code>dfttest.DFTTest</code>, which is weaker, but still quite aggressive, and
-<code>fvf.AutoDeblock</code>, which is quite useful for deblocking MPEG-2 sources
-and can be applied on the entire video. Another popular method is to
-simply deband, as deblocking and debanding are very similar. This is a
-decent option for AVC Blu-ray sources.</p>
+<p><code>dfttest.DFTTest</code>, 相对较弱，但非常暴力，还有
+<code>fvf.AutoDeblock</code>, 对于 MPEG-2 源的解块非常有用，并且可以应用于整个视频。另一种流行的方法是简单地解带，因为解块和解带非常相似。这对于 AVC 蓝光源是一个不错的选择。</p>
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入讲解</summary>
 TODO
 </details>
 
