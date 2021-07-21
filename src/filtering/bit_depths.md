@@ -1,12 +1,12 @@
-# Bit Depths: An Introduction
+# 位深 Bit Depths: 简介
 
-When you filter a frame, the results are limited to values available in your bit depth.
-By default, most SDR content comes in 8-bit and HDR content in 10-bit.
-In 8-bit, you're limited to values between 0 and 255.
-However, as most video content is in limited range, this range becomes 16 to 235 for luma and 16 to 240 for chroma.
+过滤帧时，结果仅限于位深度中可用的值。
+默认情况下，大多数 SDR 内容为 8 位，而 HDR 内容为 10 位。
+在 8 位中，您只能使用 0 到 255 之间的值。
+但是，由于大多数视频内容都在有限范围内，因此该范围变为 16 到 235（亮度）和 16 到 240（色度）。
 
-Let's say you want to raise every pixel whose value lies in the rang of 60 to 65 to the power of 0.88.
-Rounding to three decimal places:
+假设您想将值在 60​​ 到 65 范围内的每个像素提高到 0.88 的幂。
+四舍五入到小数点后三位：
 
 | Original | Raised |
 |:--------:|:------:|
@@ -17,26 +17,26 @@ Rounding to three decimal places:
 | 64       | 38.854 |
 | 65       | 39.388 |
 
-As we're limited to integer values between 0 and 255, these round to 37, 37, 38, 38, 39, 39.
-So, while the filter doesn't lead to the same value, we round these all to the same ones.
-This quickly leads to unwanted [banding](debanding.md) artifacts.
-For example, raising to the power of 0.88 in 8-bit vs a higher bit depth of 32-bit:
+由于我们仅限于 0 到 255 之间的整数值，因此将这些四舍五入为 37、37、38、38、39、39。
+因此，虽然过滤器不会导致相同的值，但我们将这些四舍五入为相同的值。
+这会导致生成一些不需要的 [色带(banding)](debanding.md) 。
+例如，提高到 8 位的 0.88 次方与 32 位的更高位深度：
 
 <p align="center"> 
 <img src='Pictures/gamma_lbd.png' onmouseover="this.src='Pictures/gamma_hbd.png';" onmouseout="this.src='Pictures/gamma_lbd.png';" />
 </p>
 
-To mitigate this, we work in higher bit depths and later use so called dither algorithms to add some fluctuation during rounding and prevent banding.
-The usual bit depths are 16-bit and 32-bit.
-While 16-bit sounds worse at first, the difference isn't noticeable and 32-bit, being in float instead of integer format, is not supported by every filter.
+为了缓解这种情况，我们在更高的位深度下工作，然后使用所谓的抖动算法在舍入期间添加一些波动并防止产生色带。
+通常的位深度是 16 位和 32 位。
+虽然 16 位一开始听起来更糟，但差异并不明显，并且 32 位，浮点数而不是整数格式，并不是每个过滤器都支持。
 
-Luckily for those not working in higher bit depth, lots of filters force higher precisions internally and dither the results back properly.
-However, switching between bit depths multiple times is a waste of CPU cycles and, in extreme cases, can alter the image as well.
+幸运的是，对于那些不在更高位深度下工作的人来说，许多过滤器在内部强制更高的精度并正确地抖动结果。
+但是，多次在位深度之间切换会浪费 CPU 周期，并且在极端情况下还会改变图像。
 
-## Changing bit depths
+## 更改位深 Changing bit depths
 
-To work in a higher bit depth, you can use the `depth` function from `vsutil` at the start and end of your filter chain.
-This will use a high quality dither algorithm by default and takes only a few keystrokes:
+要在更高的位深度下工作，您可以在脚本filter部分的开头和结尾使用`vsutil`库中的 `depth` 方法。
+默认情况下，这将使用高质量的抖动算法，并且只需要几次击键：
 
 ```py
 from vsutil import depth
@@ -50,10 +50,10 @@ my_great_filter = ...
 out = depth(my_great_filter, 8)
 ```
 
-When you're working in higher bit depths, it's important to remember that some functions might expect parameter input values in 8-bit, while others expect them in the input bit depth.
-If you mistakenly enter 255 assuming 8-bit in a function expecting 16-bit input, your results will be extremely different, as 255 is the higher value in 8-bit, while in 16-bit, this is roughly equivalent to 1 in 8-bit.
+当您在更高位深度下工作时，重要的是要记住，某些函数可能需要 8 位的参数输入值，而其他函数则需要输入位深度。
+如果您在期望 16 位输入的函数中错误地输入假设为 8 位的 255，您的结果将大不相同，因为 255 是 8 位中较高的值，而在 16 位中，这大致相当于 8位 中的 1。
 
-To convert values, you can use `scale_value` from `vsutil`, which will help handling edge cases etc.:
+要转换值，你可以使用`vsutil`库中的 `scale_value`方法, 这将有助于处理边缘情况等：
 
 ```py
 from vsutil import scale_value
@@ -63,11 +63,11 @@ v_8bit = 128
 v_16bit = scale_value(128, 8, 16)
 ```
 
-This would get you `v_16bit = 32768`, the middle point of 16-bit.
+得到 `v_16bit = 32768`, 16 位的中间点。
 
-This isn't quite as simple for 32-bit float, as you need to specify whether to scale offsets depending on range and whether you're scaling luma or chroma.
-This is because limited range luma values are between 0 and 1, while chroma values are between -0.5 and +0.5.
-Usually, you're going to be dealing with TV range, so set `scale_offsets=True`:
+这对于 32 位浮点数并不那么简单，因为您需要指定是否根据范围缩放偏移量以及缩放亮度还是色度。
+这是因为有限范围的亮度值介于 0 和 1 之间，而色度值介于 -0.5 和 +0.5 之间。
+通常，您将处理电视范围，因此设置 `scale_offsets=True`:
 
 ```py
 from vsutil import scale_value
@@ -78,7 +78,7 @@ v_32bit_luma = scale_value(128, 8, 32, scale_offsets=True)
 v_32bit_chroma = scale_value(128, 8, 32, scale_offsets=True, chroma=True)
 ```
 
-This gets us `v_32bit_luma = 0.5, v_32bit_chroma = 0`.
+得到 `v_32bit_luma = 0.5, v_32bit_chroma = 0`.
 
 # Dither Algorithms
 
