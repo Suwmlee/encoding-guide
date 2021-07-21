@@ -8,7 +8,7 @@
         - [降尺度与重新缩放(Descaling and Rescaling)](filtering/descaling.md)
         - [色度重采样与偏移(Chroma Resampling and Shifting)](filtering/chroma_res.md)
     - [位深(Bit Depths)与抖动算法(Dither Algorithms)](filtering/bit_depths.md)
-    - [去色带(Debanding)与解块(Deblocking)](filtering/debanding.md)
+    - [解带(Debanding)与解块(Deblocking)](filtering/debanding.md)
     - [粒化(Graining)](filtering/graining.md)
     - [脏线(Dirty Lines)与边界问题(Border Issues)](filtering/dirty_lines.md)
     - [除着色(Detinting)与水平调整(Level Adjustment)](filtering/detinting.md)

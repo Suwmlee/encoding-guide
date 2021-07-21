@@ -1,20 +1,16 @@
-# Debanding
+# 解带 Debanding
 
-This is the most common issue one will encounter. Banding usually
-happens when bitstarving and poor settings lead to smoother gradients
-becoming abrupt color changes, which obviously ends up looking bad.  These can be fixed by performing blur-like operations and limiting their outputs.
+这是人们会遇到的最常见的问题。当码率不足(bitstarving)和糟糕的设置导致平滑的渐变变成突然的颜色变化时，通常会产生色带，这显然会让画面看起来很糟糕。这些可以通过执行类似模糊的操作并限制它们的输出来修复。
 
-Note that, as blurring is a very destructive process, it's advised to only apply this to necessary parts of your video and use [masks](masking.md) to further limit the changes.
+请注意，由于模糊是一个非常具有破坏性的过程，因此建议仅将其应用于视频的必要部分并使用 [蒙版(masks)](masking.md)来进一步限制更改。
 
-There are three great tools for VapourSynth that are used to fix
-banding: [`neo_f3kdb`](https://github.com/HomeOfAviSynthPlusEvolution/neo_f3kdb/), `fvsfunc`'s `gradfun3`, which has a built-in
-mask, and `vs-placebo`'s `placebo.Deband`.\
+VapourSynth 有三个很棒的工具可以用来修复色带：[`neo_f3kdb`](https://github.com/HomeOfAviSynthPlusEvolution/neo_f3kdb/), `fvsfunc`内置的蒙版 `gradfun3` 和 `vs-placebo`的 `placebo.Deband`。\
 
 <p align="center">
 <img src='Pictures/debanding0.png' onmouseover="this.src='Pictures/debanding1.png';" onmouseout="this.src='Pictures/debanding0.png';" />
 </p>
 <p align="center">
-<i>Banding example fixed with f3kdb default settings.</i>
+<i>使用 f3kdb 默认设置修复了色带示例</i>
 </p>
 
 ## `neo_f3kdb`
@@ -23,159 +19,122 @@ mask, and `vs-placebo`'s `placebo.Deband`.\
 deband = core.neo_f3kdb.deband(src=clip, range=15, y=64, cb=64, cr=64, grainy=64, grainc=64, dynamic_grain=False, sample_mode=2)
 ```
 
-These settings may come off as self-explanatory for some, but here's
-what they do:
+这些设置对某些人来说可能不言自明，但它们的作用如下：
 
--   `src` This is obviously your source clip.
+-   `src` 这显然是您的剪辑源。
 
--   `range` This specifies the range of pixels that are used to
-    calculate whether something is banded. A higher range means more
-    pixels are used for calculation, meaning it requires more processing
-    power. The default of 15 should usually be fine.  Raising this may help make larger gradients with less steps look smoother, while lower values will help catch smaller instances.
+-   `range` 这指定了用于计算某物是否有条带的像素范围。更大的范围意味着更多的像素用于计算，这意味着它需要更多的处理能力。默认值 15 通常应该没问题。提高此值可能有助于使步长较小的较大梯度看起来更平滑，而较低的值将有助于捕获较小的实例。
 
--   `y` The most important setting, since most (noticeable) banding
-    takes place on the luma plane. It specifies how big the difference
-    has to be for something on the luma plane to be considered as
-    banded. You should start low and slowly but surely build this up
-    until the banding is gone. If it's set too high, lots of details
-    will be seen as banding and hence be blurred.
-    Depending on your sample mode, y values will either only have an effect
-    in steps of 16 (mode 2) or 32 (modes 1, 3, 4). This means that y=20 is
-    equivalent to y=30.
+-   `y` 最重要的设置，因为大多数（明显的）条带发生在亮度平面上。它指定了亮度平面上的某些东西被认为是色带的差异必须有多大。你应该从低而缓慢的开始，但一定要建立这个直到条带消失。如果设置得太高，很多细节会被视为条带，因此会变得模糊。
+    根据您的采样模式，值将仅以 16（mode 2）或 32（mode 1、3、4）的步长产生影响。这意味着 y=20 等价于 y=30。
 
--   `cb` and `cr` The same as `y` but for chroma. However, banding on
-    the chroma planes is comparatively uncommon, so you can often leave this
-    off.
+-   `cb` 和 `cr`除了色度外与 `y` 都是一样的。 但是，色度平面上的色带相对不常见，因此您通常可以将其关闭。
 
--   `grainy` and `grainc` In order to keep banding from re-occurring and
-    to counteract smoothing, grain is usually added after the debanding
-    process. However, as this fake grain is quite noticeable, it's
-    recommended to be conservative. Alternatively, you can use a custom
-    grainer, which will get you a far nicer output (see [the graining section](graining.md) for more on this).
+-   `grainy` 和 `grainc` 为了防止色带再次发生并抵消平滑，通常在解带后添加颗粒。但是，由于这种假颗粒非常明显，因此建议保守一些。 或者，您可以使用自定义颗粒生成器，这将为您提供更好的输出 (有关更多信息，请参阅 [粒化部分](graining.md))。
 
--   `dynamic_grain` By default, grain added by `f3kdb` is static. This
-    compresses better, since there's obviously less variation, but it
-    usually looks off with live action content, so it's normally
-    recommended to set this to `True` unless you're working with
-    animated content.
+-   `dynamic_grain` 默认情况下，由`f3kdb`添加的颗粒是静态的，这压缩得更好，因为显然变化较少，但它通常看起来与实况内容无关，因此通常建议将其设置为 `True` ，除非您正在处理动画内容。
 
--   `sample_mode` Is explained in the README.  Consider switching to 4, since it might have less detail loss.
+-   `sample_mode` 在README中有说明。因为它可能具有较少的细节损失，可以考虑切换到 4。
 
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入讲解</summary>
 TODO
 </details>
 
 ## `GradFun3`
 
-The most popular alternative to `f3kdb` is `gradfun3`.  This function is more resource intensive and less straightforward parameters, but can also prove useful in cases where `f3kdb` struggles:
+`gradfun3`是 `f3kdb` 的最受欢迎替代品。 这个函数需要更多的资源和不那么直接的参数，但在一些 `f3kdb` 处理不好的地方表现不错:
 
 ```py
 import fvsfunc as fvf
 deband = fvf.GradFun3(src, thr=0.35, radius=12, elast=3.0, mask=2, mode=3, ampo=1, ampn=0, pat=32, dyn=False, staticnoise=False, smode=2, thr_det=2 + round(max(thr - 0.35, 0) / 0.3), debug=False, thrc=thr, radiusc=radius, elastc=elast, planes=list(range(src.format.num_planes)), ref=src, bits=src.format.bits_per_sample) # + resizing variables
 ```
 
-Lots of these values are for `fmtconv` bit depth conversion or descaling, both of which aren't relevant here.  The values really of interest here are:
+`fmtconv`中许多设置的值都是给位深转换或去缩放使用的, 这两者在这里都不相关。这里真正感兴趣的值是：
 
--   `thr` is equivalent to `y`, `cb`, and `cr` in what it does. You'll
-    likely want to raise or lower it.
+-   `thr` 等价于 `y`, `cb`, 和 `cr` 的作用。您可能想要提高或降低它。
 
--   `radius` has the same effect as `f3kdb`'s `range`.
+-   `radius` 具有和`f3kdb`的 `range` 相同的效果。
 
--   `smode` sets the smooth mode. It's usually best left at its default,
-     or set to 5 if you'd like to use a
-    CUDA-enabled GPU instead of your CPU. Uses `ref` (defaults to input
-    clip) as a reference clip.
+-   `smode` 设置平滑模式。通常最好保留默认值，如果您想使用支持 CUDA 的 GPU 而不是 CPU，则设置为 5。使用 `ref` (默认为剪辑输入) 作为参考剪辑。
 
--   `mask` sets the mask strength.  0 to disable.  The default is a sane value.
+-   `mask` 设置遮罩强度。 0 禁用。 默认值是一个合理的值。
 
--   `planes` sets which planes should be processed.
+-   `planes` 置应处理哪些平面。
 
--   `debug` allows you to view the mask.
+-   `debug` 允许您查看遮罩。
 
--   `elast` controls blending between debanded and source clip.  Default is sane.  Higher values prioritize debanded clip more.
+-   `elast` 控制去色带和剪辑源之间的混合。默认值是一个合理的值。
+较高的值优先考虑去色带。
 
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入讲解</summary>
 TODO
-For a more in-depth explanation of what `thr` and `elast` do, check the
-algorithm explanation in <a href=https://github.com/HomeOfVapourSynthEvolution/mvsfunc/blob/master/mvsfunc.py#L1735><code>mvsfunc</code></a>.
+要更深入地解释 `thr` 和 `elast` 的作用, 请查看 <a href=https://github.com/HomeOfVapourSynthEvolution/mvsfunc/blob/master/mvsfunc.py#L1735><code>mvsfunc</code></a>的算法解释.
 </details>
 
 ## `placebo.Deband`
 
-This debander is quite new to the VapourSynth scene, but it's very good at fixing strong banding.  However, as such, it is also prone to needless detail loss and hence should only be used when necessary and ideally combined with a detail/edge mask.  It's (current) parameters:
+这个 debander 对 VapourSynth 来说很新，但它非常擅长修复强条带。然而，同样地，它也容易出现不必要的细节损失，因此应该只在必要时使用，并且最好与细节/边缘蒙版结合使用。它的（当前）参数：
 
 ```py
 placebo.Deband(clip clip[, int planes = 1, int iterations = 1, float threshold = 4.0, float radius = 16.0, float grain = 6.0, int dither = True, int dither_algo = 0])
 ```
 
-It's not unlikely that this function will see significant change in the future, hence [the README](https://github.com/Lypheo/vs-placebo/blob/master/README.md) is also very much worth reading.
+这个功能在未来不太可能发生重大变化，因此非常值得读一读 [the README](https://github.com/Lypheo/vs-placebo/blob/master/README.md) 。
 
-Parameters you'll want to look at:
+您要查看的参数：
 
--   `planes` obviously the to-be-processed planes.  The syntax is different here, check the README.  In short, default for luma-only, `1 | 2 | 4` for luma and chroma.
+-   `planes` 显然是要加工的平面。此处的语法不同，请查看README。简而言之，默认仅对亮度， `1 | 2 | 4` 对亮度和色度。
 
--   `iterations` sets how often the debander is looped.  It's not recommended to change this from the default, although this can be useful in extreme cases.
+-   `iterations` 设置 debander 循环的频率。 不建议更改默认设置，尽管这在极端情况下很有用。
 
--   `threshold` sets the debander's strength or rather the threshold when a pixel is changed.  You probably don't want to go much higher than 12.  Go up in steps of 1 and fine-tune if possible.
+-   `threshold` 设置 debander 的强度或更改像素时的阈值。尽量不要超过 12。如果会，请以 1 为步长进行微调。
 
--   `radius` does the same as for the previous functions.
+-   `radius` 与之前的功能相同。
 
--   `grain` is again the same as `f3kdb`, although the grain is a lot nicer.
+-   `grain` 同样与 `f3kdb` 的一样, 但是颗粒更好。
 
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入讲解</summary>
 TODO
-It uses the
-mpv debander, which just averages pixels within a range and outputs the
-average if the difference is below a threshold.  The algorithm is
-explained in the <a href="https://github.com/haasn/libplacebo/blob/master/src/shaders/sampling.c#L167">source code</a>.
+它使用了 mpv debander，只是平均一个范围内的像素，如果差异低于阈值，则输出平均值。该算法在 <a href="https://github.com/haasn/libplacebo/blob/master/src/shaders/sampling.c#L167">中进行了解释</a>.
 </details>
 
-## Banding detection
+## 色带检测 Banding detection
 
-If you want to automate your banding detection, you can use `banddtct` from `awsmfunc`. Make sure to
-adjust the values properly and check the full output. Check [this link](https://git.concertos.live/AHD/awsmfunc/wiki/Using-detect.py) for an explanation on how to use it. You can also just run `adptvgrnMod` or `adaptive_grain` with a high `luma_scaling` value in hopes that the
-grain covers it up fully. More on this in
-[the graining section](graining).  Note that both of these methods won't be able to pick up/fix every kind of banding.  `banddtct` can't find banding covered by grain, and graining to fix banding only works for smaller instances.
+如果要自动检测色带，可以使用`awsmfunc`中的 `banddtct` 。 确保正确调整值并检查完整输出。查看 [此链接](https://git.concertos.live/AHD/awsmfunc/wiki/Using-detect.py) 以获取有关如何使用它的说明。您也可以只运行 `adptvgrnMod` 或用一个高的`luma_scaling`值来运行 `adaptive_grain` 以期望颗粒可以完全覆盖它。更多信息在
+[粒化部分](graining)。请注意，这两种方法都无法检测/修复所有类型的色带。 `banddtct` 找不到被颗粒覆盖的色带，而且用于修复色带的纹理仅适用于较小的实例。
 
-# Deblocking
+# 解块 Deblocking
 
 <p align="center">
 <img src='Pictures/deblock1.png' onmouseover="this.src='Pictures/deblock2.png';" onmouseout="this.src='Pictures/deblock1.png';"/>
 </p>
 
-Deblocking is mostly equivalent to smoothing the source, usually with
-another mask on top. The most popular function here is `Deblock_QED`
-from `havsfunc`. The main parameters are
+解块相当于平滑输入源，通常是在画面顶部使用另一个蒙版。 最常用的是`havsfunc`中的 `Deblock_QED` 函数。
+ 主要参数是
 
--   `quant1`: Strength of block edge deblocking. Default is 24. You may
-    want to raise this value significantly.
+-   `quant1`: 边缘解块的强度。 默认值为 24。您可能希望显着提高此值。
 
--   `quant2`: Strength of block internal deblocking. Default is 26.
-    Again, raising this value may prove to be beneficial.
+-   `quant2`: 内部解块的强度。 默认值为 26。同样，提高此值可能会有益。
 
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入讲解</summary>
 TODO
 </details>
 
-Other popular options are `deblock.Deblock`, which is quite strong, but
-almost always works,\
+其他常用的选项是 `deblock.Deblock`,它非常强大，几乎总是有效
 
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入讲解</summary>
 TODO
 </details>
 
-`dfttest.DFTTest`, which is weaker, but still quite aggressive, and
-`fvf.AutoDeblock`, which is quite useful for deblocking MPEG-2 sources
-and can be applied on the entire video. Another popular method is to
-simply deband, as deblocking and debanding are very similar. This is a
-decent option for AVC Blu-ray sources.
+`dfttest.DFTTest`, 相对较弱，但非常暴力，还有
+`fvf.AutoDeblock`, 对于 MPEG-2 源的解块非常有用，并且可以应用于整个视频。另一种流行的方法是简单地解带，因为解块和解带非常相似。这对于 AVC 蓝光源是一个不错的选择。
 
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入讲解</summary>
 TODO
 </details>
