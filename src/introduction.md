@@ -57,12 +57,15 @@ Additionally, many functions are in script collections or similar.
 These must be loaded manually and are then found under the given alias:
 
 ```py
+import vapoursynth as vs
+core = vs.core
 import awsmfunc as awf
 import kagefunc as kgf
 from vsutil import *
 
 bbmod = awf.bbmod(...)
 grain = kgf.adaptive_grain(...)
+deband = core.f3kdb.Deband(...)
 
 change_depth = depth(...)
 ```

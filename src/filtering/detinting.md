@@ -79,10 +79,10 @@ out = src.std.Levels(min_in=x, min_out=16, max_in=y, max_out=235)
 However, this usually won't be possible.  Instead, one can do the following math to figure out the correct adjustment values:
 
 \\[
-v = \frac{v_\mathrm{new} + min_\mathrm{out}}{max_\mathrm{out} - min_\mathrm{out}} \times (max_\mathrm{in} - min_\mathrm{in}) + min_\mathrm{in}
+v = \frac{v_\mathrm{new} - min_\mathrm{out}}{max_\mathrm{out} - min_\mathrm{out}} \times (max_\mathrm{in} - min_\mathrm{in}) + min_\mathrm{in}
 \\]
 
-Whereby one can just choose any low value from the to-be-adjusted source, set that as \\(min_\mathrm{in}\\), choose the value for that same pixel in the reference source as \\(min_\mathrm{out}\\).  One does the same for high values and maximums.  Then, one calculates this for 16 and 235 (again, preferably in high bit depths - 4096 and 60160 for 16-bit, 0 and 1 in 32-bit float etc.) and the output values will be our \\(x\\) and \\(y\\) in the VapourSynth code above.
+Whereby one can just choose any low value from the to-be-adjusted source, set that as \\(min_\mathrm{in}\\), choose the value for that same pixel in the reference source as \\(min_\mathrm{out}\\).  One does the same for high values and maximums.  Then, one calculates this using 16 and 235 (again, preferably in high bit depths - 4096 and 60160 for 16-bit, 0 and 1 in 32-bit float etc.) for \\(v_\mathrm{new}\\) and the output values will be our \\(x\\) and \\(y\\) in the VapourSynth code above.
 
 To illustrate this, let's use the German and American Blu-rays of Burning (2018).  The USA Blu-ray has correct levels, while GER has incorrect ones:
 
@@ -90,10 +90,10 @@ To illustrate this, let's use the German and American Blu-rays of Burning (2018)
 <img src='Pictures/burning_usa0.png' onmouseover="this.src='Pictures/burning_ger0.png';" onmouseout="this.src='Pictures/burning_usa0.png';" />
 </p>
 
-A high value in GER here would be 208, while the same pixel is 216 in USA.  For lows, one can find 25 and 28.  With these, we get 19.5 and 225.9.  Doing these for a couple more pixels and different frames, then averaging the values we get 19 and 224.  We adjust using these and a significantly closer image[^1]:
+A high value in GER here would be 199, while the same pixel is 207 in USA.  For lows, one can find 29 and 27.  With these, we get 18.6 and 225.4.  Doing these for a couple more pixels and different frames, then averaging the values we get 19 and 224.  Adjusting the luma with these values gets us closer to the reference video's[^1]:
 
 <p align="center">
-<img src='Pictures/burning_ger_fixed0.png' onmouseover="this.src='Pictures/burning_usa0.png';" onmouseout="this.src='Pictures/burning_ger_fixed0.png';" />
+<img src='Pictures/burning_ger_fixed0.png' onmouseover="this.src='Pictures/burning_usa_fixed0.png';" onmouseout="this.src='Pictures/burning_ger_fixed0.png';" />
 </p>
 
 <details>

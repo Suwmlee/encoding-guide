@@ -1,9 +1,9 @@
 # Summary
 
 [Introduction](./introduction.md)
-- [Filtering]()
+- [Filtering](filtering/filtering.md)
     - [Loading the Video]()
-    - [Cropping]()
+    - [Cropping](filtering/cropping.md)
     - [Resizing](filtering/resizing.md)
         - [Descaling and Rescaling](filtering/descaling.md)
         - [Chroma Resampling and Shifting](filtering/chroma_res.md)
