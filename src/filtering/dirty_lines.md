@@ -438,12 +438,16 @@ fix = core.edgefixer.Reference(src, ref, left=0, right=0, top=0, bottom=0, radiu
 
 ## Notes
 
+### Too many rows/columns
+
 One thing that shouldn't be ignored is that applying these fixes (other
 than `rektlvls`) to too many rows/columns may lead to these looking
 blurry on the end result. Because of this, it's recommended to use
 `rektlvls` whenever possible or carefully apply light fixes to only the
 necessary rows. If this fails, it's better to try `bbmod` before using
 `ContinuityFixer`.
+
+### Resizing
 
 It's important to note that you should *always* fix dirty lines before
 resizing, as not doing so will introduce even more dirty lines. However,
@@ -465,6 +469,8 @@ fix = core.fb.FillBorders(crop, top=top_fill, bottom=bot_fill, mode="fillmargins
 resize = core.resize.Spline36(1280, 536, src_top=top_fill, src_height=src_height)
 ```
 
+### Diagonal borders
+
 If you're dealing with diagonal borders, the proper approach here is to
 mask the border area and merge the source with a `FillBorders` call. An
 example of this (from the Your Name (2016)):
@@ -483,6 +489,8 @@ Code used (note that this was detinted after):
 mask = core.std.ShufflePlanes(src, 0, vs.GRAY).std.Binarize(43500)
 cf = core.fb.FillBorders(src, top=6, mode="mirror").std.MaskedMerge(src, mask)
 ```
+
+### Finding dirty lines
 
 Dirty lines can be quite difficult to spot. If you don't immediately
 spot any upon examining borders on random frames, chances are you'll be
@@ -511,6 +519,8 @@ the video for you.
 
 Other kinds of variable dirty lines are a bitch to fix and require
 checking scenes manually.
+
+### Variable borders
 
 An issue very similar to dirty lines is unwanted borders. During scenes with
 different crops (e.g. IMAX or 4:3), the black borders may sometimes not

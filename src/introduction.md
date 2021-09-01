@@ -56,12 +56,15 @@ filter_y_on_a = filter_y(clip_b)
 这些必须手动加载，然后在给定的别名下找到：
 
 ```py
+import vapoursynth as vs
+core = vs.core
 import awsmfunc as awf
 import kagefunc as kgf
 from vsutil import *
 
 bbmod = awf.bbmod(...)
 grain = kgf.adaptive_grain(...)
+deband = core.f3kdb.Deband(...)
 
 change_depth = depth(...)
 ```
