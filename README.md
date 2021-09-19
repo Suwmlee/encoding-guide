@@ -7,4 +7,5 @@
 感谢原作者，龟速翻译中...    
 
 #### 其他参考:
-[VCB-Studio教程专栏](https://vcb-s.nmm-hd.org/)
+- [旧版 Encoding Guide](https://suwmlee.github.io/docs/AHD_encode_guide.pdf)
+- [VCB-Studio教程专栏](https://vcb-s.nmm-hd.org/)
