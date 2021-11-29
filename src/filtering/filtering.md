@@ -1,22 +1,14 @@
-While working on a video,
-one will usually encounter some visual artifacts,
-such as banding, darkened borders, etc.
-As these are not visually pleasant,
-and for the most part aren't intended by the original creator,
-it's prefered to use video filters to fix them.
+在处理视频的过程中，通常会遇到一些视觉上的问题，如带状物、变暗的边框等。
+由于这些东西在视觉上并不讨人喜欢，而且大多数情况下并不是原创作者的本意，所以最好使用视频过滤器来修复它们。
 
-## Scene-filtering
+## 场景过滤
 
-As every filter is destructive in some way,
-it is desirable to only apply them whenever necessary.
-This is usually done using `ReplaceFramesSimple`,
-which is in the [`RemapFrames`](https://github.com/Irrational-Encoding-Wizardry/Vapoursynth-RemapFrames) plugin.
-`RemapFramesSimple` can also be called with `Rfs`.
-Alternatively, one can use a Python solution, e.g. std.Trim and addition.
-However, `RemapFrames` tends to be faster,
-especially for larger sets of replacement mappings.
+由于每个过滤器都有一定的破坏性，所以最好只在必要时应用它们。这通常是通过`ReplaceFramesSimple`完成的，它在[`RemapFrames`](https://github.com/Irrational-Encoding-Wizardry/Vapoursynth-RemapFrames)插件中。
+`RemapFramesSimple`也可以用`Rfs`调用。
+另外，可以使用Python解决方案，例如std.Trim和addition。
+然而，`RemapFrames`往往更快，特别是对于较大的替换映射集。
 
-Let's look at an example of applying the [`f3kdb`](filtering/debanding##neo_f3kdb) debanding filter to frames 100 through 200 and 500 through 750:
+让我们看一个对100到200帧和500到750帧应用[`f3kdb`](filtering/debanding##neo_f3kdb)解带过滤的例子:
 
 ```py
 src = core.ffms2.Source("video.mkv")
@@ -25,31 +17,27 @@ deband = source.neo_f3kdb.Deband(src)
 replaced = core.remap.Rfs(src, deband, mappings="[100 200] [500 750]")
 ```
 
-There are various wrappers around both the plugin and the Python method, notably [`awsmfunc.rfs`](https://git.concertos.live/AHD/awsmfunc) for the former and [`lvsfunc.util.replace_frames`](https://lvsfunc.encode.moe/en/latest/#lvsfunc.util.replace_ranges) for the latter.
+在插件和Python方法里有各种封装好的库，特别是前者的[`awsmfunc.rfs`](https://git.concertos.live/AHD/awsmfunc)和后者的[`lvsfunc.util.replace_frames`](https://lvsfunc.encode.moe/en/latest/#lvsfunc.util.replace_ranges) 。
 
-## Filter order
+## 过滤顺序
 
-In order for filters to work correctly and not be counterproductive,
-it is important to apply them in the proper order.
-This is especially important for filters like debanders and grainers,
-as putting these before a resize can completely negate their effect.
+为了让滤镜正常工作，不至于产生反效果，按正确的顺序应用它们是很重要的。
+这一点对于像debanders和graners这样的滤镜尤其重要，因为把它们放在调整大小之前会完全否定它们的效果。
 
-A generally acceptable order would be:
-1. Load the source
-2. Crop
-3. Raise bit depth
-4. Detint
-5. Fix dirty lines
-6. Deblock
-7. Resize
-8. Denoise
-9. Anti-aliasing
-10. Dering (dehalo)
-11. Deband
-12. Grain
-13. Dither to output bit depth
+一般可接受的顺序是:
+1. 载入视频 Load the source
+2. 裁剪 Crop
+3. 提高位深 Raise bit depth
+4. 除着色 Detint
+5. 修复脏线 Fix dirty lines
+6. 解块 Deblock
+7. 调整大小 Resize
+8. 降噪 Denoise
+9. 抗锯齿 Anti-aliasing
+10. 去晕 Dering (dehalo)
+11. 解带 Deband
+12. 颗粒 Grain
+13. 抖动到输出位深度 Dither to output bit depth
 
-Keep in mind that this is just a general recommendation.
-There can always be a case where you might want to deviate,
-e.g. if you're using a fast denoiser like KNLMeansCL,
-you can do this before resizing.
+请记住，这只是一个一般的建议。
+在某些情况下，你可能想偏离这个建议，例如，如果你使用的是KNLMeansCL这样的快速去噪器，你可以在调整大小之前做这个。
