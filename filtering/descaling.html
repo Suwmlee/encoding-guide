@@ -168,16 +168,16 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="descaling"><a class="header" href="#descaling">Descaling</a></h1>
-<p>If you've read a bit about anime encoding, you've probably heard the term &quot;descaling&quot; before; this is the process of &quot;reversing&quot; an upscale by finding the native resolution and resize kernel used.
-When done correctly, this is a near-lossless process and produces a sharper output than standard spline36 resizing with less haloing artifacts.
-However, when done incorrectly, this will only add to the already existing issues that come with upscaling, such as haloing, ringing etc.</p>
-<p>The most commonly used plugin to reverse upscales is <a href="https://github.com/Irrational-Encoding-Wizardry/vapoursynth-descale">Descale</a>, which is most easily called via <a href="https://github.com/Irrational-Encoding-Wizardry/fvsfunc"><code>fvsfunc</code></a>, which has an alias for each kernel, e.g. <code>fvf.Debilinear</code>.
-This supports bicubic, bilinear, lanczos, and spline upscales.</p>
-<p>Most digitally produced anime content, especially TV shows, will be a bilinear or bicubic upscale from 720p, 810p, 864p, 900p, or anything in-between.
-While not something that can only be done with anime, it is far more prevalent with such content, so we will focus on anime accordingly.</p>
-<p>As our example, we'll look at Nichijou, which is a bilinear upscale from 720p.</p>
-<p>To showcase how nice a descale can look, let's compare with a standard spline resize:</p>
+                        <h1 id="降尺度-descaling"><a class="header" href="#降尺度-descaling">降尺度 Descaling</a></h1>
+<p>如果你读过一些关于动漫编码的文章，你可能听说过 &quot;降尺度&quot;这个词；这是一个通过找到原始分辨率和使用的调整内核来 &quot;逆转 &quot;升频的过程。
+如果操作正确，这是一个近乎无损的过程，并产生比标准花键36调整大小更清晰的输出，并减少光晕伪影。
+然而，如果做得不对，这只会增加已经存在的问题，如光晕、振铃等。</p>
+<p>最常用的反比例插件是<a href="https://github.com/Irrational-Encoding-Wizardry/vapoursynth-descale">Descale</a>，它最容易通过<a href="https://github.com/Irrational-Encoding-Wizardry/fvsfunc"><code>fvsfunc</code></a>调用，它对每个内核都有一个别名，例如<code>fvf.Debilinear</code>。
+这支持双曲线、双线性、兰佐斯和样条曲线的升尺度。</p>
+<p>大多数数字制作的动漫内容，特别是电视节目，都是由720p、810p、864p、900p或介于两者之间的双线性或双立方体升格而成。
+虽然不是只有动漫可以做，但它在此类内容中更为普遍，所以我们将相应地关注动漫。</p>
+<p>作为我们的例子，我们将看看Nichijou，它是一个从720p的双线升级。</p>
+<p>为了展示降尺度的效果，让我们把它与标准的样条调整尺寸进行比较:</p>
 <pre><code class="language-py">descale = fvf.Debilinear(src, 1280, 720)
 spline = src.resize.Spline36(1280, 720)
 out = core.std.Interleave([descale, spline])
@@ -185,37 +185,37 @@ out = core.std.Interleave([descale, spline])
 <p align="center"> 
 <img src='Pictures/descale0.png' onmouseover="this.src='Pictures/descale1.png';" onmouseout="this.src='Pictures/descale0.png';" />
 </p>
-<h2 id="native-resolutions-and-kernels"><a class="header" href="#native-resolutions-and-kernels">Native resolutions and kernels</a></h2>
-<p>Now, the first thing you need to do when you want to descale is figure out what was used to resize the video and from which resolution the resize was done.
-The most popular tool for this is <a href="https://github.com/Infiziert90/getnative">getnative</a>, which allows you to feed it an image, which it will then descale, resize, and calculate the difference from the source, then plot the result so you can find the native resolution.</p>
-<p>For this to work best, you'll want to find a bright frame with very little blurring, VFX, grain etc.</p>
-<p>Once you've found one, you can run the script as follows:</p>
+<h2 id="原生分辨率和内核"><a class="header" href="#原生分辨率和内核">原生分辨率和内核</a></h2>
+<p>现在，当你想降级时，你需要做的第一件事是弄清楚用什么来调整视频的大小，以及从哪个分辨率来调整大小。
+这方面最流行的工具是<a href="https://github.com/Infiziert90/getnative">getnative</a>，它允许你给它提供一张图片，然后它将对其进行降级、调整大小，并计算出与来源的差异，然后绘制出结果，这样你就可以找到原始分辨率。</p>
+<p>为了使其发挥最大的作用，你要找到一个明亮的画面，并有非常少的模糊、视觉效果、纹理等。</p>
+<p>一旦你找到了一个，你就可以按以下方式运行脚本:</p>
 <pre><code class="language-sh">python getnative.py image.png -k bilinear
 </code></pre>
-<p>This will output a graph in a <code>Results</code> directory and guess the resolution.
-It's based to take a look at the graph yourself, though.
-In our example, these are the correct parameters, so we get the following:</p>
+<p>这将在<code>Results</code>目录下输出一个图形，并猜测其分辨率。
+不过，自己看一下这个图是很有必要的。
+在我们的例子中，这些是正确的参数，所以我们得到以下结果。</p>
 <p><img src="Pictures/descalebilinear.svg" alt="alt text" title="getnative bilinear graph" /></p>
-<p>There is a clear dip at 720p.
-We can also test other kernels:</p>
+<p>在720p时有一个明显的下降。
+我们还可以测试其他内核:</p>
 <pre><code class="language-sh">python getnative.py image.png -k bicubic -b 0 -c 1
 </code></pre>
-<p>The graph then looks as follows:</p>
+<p>然后，该图看起来如下:</p>
 <p><img src="Pictures/descalesharpbicubic.svg" alt="alt text" title="getnative sharp bicubic graph" /></p>
-<p>If you'd like to test all likely kernels, you can use <code>--mode &quot;all&quot;</code>.</p>
-<p>To double check this, we compare the input frame with a descale upscaled back with the same kernel:</p>
+<p>如果你想测试所有可能的内核，你可以使用<code>--mode &quot;all&quot;</code>。</p>
+<p>为了仔细检查，我们将输入的帧与用相同内核放大的降尺度进行比较:</p>
 <pre><code class="language-py">descale = fvf.Debilinear(src, 1280, 720)
 rescale = descale.resize.Bilinear(src, src.width, src.height)
 merge_chroma = rescale.std.Merge(src, [0, 1])
 out = core.std.Interleave([src, merge_chroma])
 </code></pre>
-<p>Here, we've merged the chroma from the source with our rescale, as chroma is a lower resolution than the source resolution, so we can't descale it.
-The result:</p>
+<p>在这里，我们将源头的色度与我们的重新缩放合并起来，因为色度的分辨率比源头的分辨率低，所以我们不能降低它的比例。
+结果:</p>
 <p align="center"> 
 <img src='Pictures/resize0.png' onmouseover="this.src='Pictures/resize1.png';" onmouseout="this.src='Pictures/resize0.png';" />
 </p>
-<p>As you can see, lineart is practically identical and no extra haloing or aliasing was introduced.</p>
-<p>On the other hand, if we try an incorrect kernel and resolution, we see lots more artifacts in the rescaled image:</p>
+<p>正如你所看到的，线性图实际上是相同的，没有引入额外的光晕或混叠。</p>
+<p>另一方面，如果我们尝试一个不正确的内核和分辨率，我们会在重新缩放的图像中看到更多的伪影:</p>
 <pre><code class="language-py">b, c = 0, 1
 descale = fvf.Debicubic(src, 1440, 810, b=b, c=c)
 rescale = descale.resize.Bicubic(src, src.width, src.height, filter_param_a=b, filter_param_b=c)
@@ -225,27 +225,27 @@ out = core.std.Interleave([src, merge_chroma])
 <p align="center"> 
 <img src='Pictures/resize0.png' onmouseover="this.src='Pictures/resize2.png';" onmouseout="this.src='Pictures/resize0.png';" />
 </p>
-<h1 id="mixed-resolutions"><a class="header" href="#mixed-resolutions">Mixed Resolutions</a></h1>
-<p>The example above of incorrect kernel and height should make it obvious that descaling incorrectly is quite destructive.
-Unfortunately, most video that can be descaled has elements in other resolutions.
-Sometimes, different elements in a frame will have different resolutions, e.g. the background is in 900p, character A is in 810p, and character B is in 720p.
-In cases like this, it's usually safer to do a simple spline36 resize.
-One can technically do a lot of masking to fix this, but that's a lot of effort and masks failing is going to be likely.</p>
-<p>A more common situation in which one will encounter mixed resolutions is credits and overlays, which are usually in 1080p.
-Let's look at what happens if we add some text to the above frame and descale that compared to a spline36 resize on it.
-To make comparing easier, these images are zoomed in by a factor of 3:</p>
+<h1 id="混合分辨率"><a class="header" href="#混合分辨率">混合分辨率</a></h1>
+<p>上面关于不正确的内核和高度的例子应该很明显，不正确的降尺度是相当有破坏性的。
+不幸的是，大多数可以被降级的视频都有其他分辨率的元素。
+有时，一帧中的不同元素会有不同的分辨率，例如，背景是900p的，人物A是810p的，人物B是720p的。
+在这样的情况下，通常做一个简单的 spline36 resize 是比较安全的。
+从技术上讲，人们可以做大量的遮罩来解决这个问题，但这是一个很大的努力，而且遮罩很可能会失败。</p>
+<p>一个更常见的会遇到混合分辨率的情况是片头和叠加，这通常是1080p的。
+让我们来看看，如果我们在上面的画面中添加一些文字，并将其与 spline36 resize 进行对比，会发生什么。
+为了便于比较，这些图片被放大了3倍:</p>
 <p align="center"> 
 <img src='Pictures/descalesub0.png' onmouseover="this.src='Pictures/descalesub1.png';" onmouseout="this.src='Pictures/descalesub0.png';" />
 </p>
-<p>The debilinear resize clearly adds stronger haloing artifacts here.</p>
-<p>To deal with this, we can use the <code>DescaleM</code> functions from <code>fvsfunc</code>, which mask these elements and scale them via a spline36 resize:</p>
+<p>去线性调整在这里明显增加了更强的光晕伪影。</p>
+<p>为了处理这个问题，我们可以使用<code>fvsfunc</code>中的<code>DescaleM</code>函数，它掩盖了这些元素，并通过 spline36 调整它们的大小。</p>
 <pre><code class="language-py">descale = fvf.DebilinearM(src, 1280, 720)
 </code></pre>
-<p>As these functions are comparatively slow, you might want to consider finding these elements beforehand and applying the function only to those frames.
-If you aren't certain that your frame doesn't have 1080p elements, though, stick with these functions.</p>
-<p>Alternatively, in very rare cases, the resolution and/or kernel will change scene-by-scene, or even worse, frame-by-frame.
-You can consider trying <code>lvsfunc.scale.descale</code>, which tries to find the ideal height for each frame.
-Ideally, however, you should do this manually.</p>
+<p>由于这些函数相对较慢，你可能要考虑事先找到这些元素，并只对这些帧应用该函数。
+如果你不确定你的帧没有1080p元素，但还是坚持使用这些函数。</p>
+<p>另外，在非常罕见的情况下，分辨率和/或内核会逐个场景变化，甚至更糟，逐个帧变化。
+你可以考虑试试<code>lvsfunc.scale.descale</code>，它试图为每一帧找到理想的高度。
+然而，理想的情况是，你应该手动完成这个工作。</p>
 <h2 id="444-and-420"><a class="header" href="#444-and-420">4:4:4 and 4:2:0</a></h2>
 <h1 id="upscaling-and-rescaling"><a class="header" href="#upscaling-and-rescaling">Upscaling and Rescaling</a></h1>
 <h2 id="upscaling"><a class="header" href="#upscaling">Upscaling</a></h2>
