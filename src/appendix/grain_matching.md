@@ -1,13 +1,6 @@
-If your debanded clip had very little grain compared to parts with no
-banding, you should consider using a separate function to add matched
-grain so the scenes blend together easier. If there was lots of grain,
-you might want to consider `adptvgrnMod`, `adaptive_grain` or
-`GrainFactory3`; for less obvious grain or simply for brighter scenes
-where there'd usually be very little grain, you can also use 
-`grain.Add`. The topic of grainers will be further elaborated later in
-[the graining section](graining).\
+如果你的去带片段与没有带子的部分相比颗粒很小，你应该考虑使用一个单独的函数来添加匹配的颗粒，这样场景就更容易融合在一起。如果有很多颗粒，你可能要考虑`adptvgrnMod`、adaptive_grain`或`GrainFactory3`；对于不那么明显的颗粒，或者只是对于通常会有很少颗粒的明亮场景，你也可以使用`grain.Add`。颗粒器的主题将在后面的[粒化部分](filtering/graining.md)中进一步阐述。
 
-Here's an example from Mirai:
+下面是Mirai的一个例子:
 
 <p align="center">
 <img src='Pictures/banding_graining_before.png' onmouseover="this.src='Pictures/banding_graining_after.png';" onmouseout="this.src='Pictures/banding_graining_before.png';"/>
