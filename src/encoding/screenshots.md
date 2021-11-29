@@ -1,15 +1,14 @@
 # Taking Screenshots
 
-Taking simple screenshots in VapourSynth is very easy.
-If you're using a previewer, you can likely use that instead, but it might still be useful to know how to take screenshots via VapourSynth directly.
+在VapourSynth中拍摄简单的屏幕截图是非常容易的。如果你使用的是预览器，你可以用它来代替，但知道如何直接通过VapourSynth进行截图可能还是很有用的。
 
-We recommend using `awsmfunc.ScreenGen`.
-This has two advantages:
+我们推荐使用 `awsmfunc.ScreenGen`.
+它有两个优势:
 
-1. You save frame numbers and can easily reference these again, e.g. if you want to redo your screenshots.
-2. It takes care of proper conversion and compression for you, which might not be the case with some previewers (e.g. VSEdit).
+1. 你保存了帧数，可以很容易地再次参考这些，例如，如果你想重新做你的截图。
+2. 它为你处理适当的转换和压缩，而有些预览器（如VSEdit）可能不是这样。
 
-To use `ScreenGen`, create a new folder you want your screenshots in, e.g. "Screenshots", and a file called "screens.txt" with the frame numbers you'd like to screenshot, e.g.
+要使用 "ScreenGen"，创建一个你想要截图的新文件夹，例如 "Screenshots"，和一个名为 "screen.txt "的文件，其中包含你想要截图的帧数。, 例如：
 
 ```
 26765
@@ -19,42 +18,41 @@ To use `ScreenGen`, create a new folder you want your screenshots in, e.g. "Scre
 127245
 ```
 
-Then, at the bottom of your VapourSynth script, put
+然后，在你的VapourSynth脚本的底部，写上
 
 ```
 awf.ScreenGen(src, "Screenshots", "a")
 ```
 
-`a` is what is put after the frame number.
-This is useful for staying organized and sorting screenshots, as well as preventing unnecessary overwriting of screenshots.
+`a'是放在帧号后面的东西。这对于保持组织性和对截图进行分类是很有用的，同时也可以防止不必要的截图被覆盖。
 
-Now, run your script in the command line (or reload in a previewer):
+现在，在命令行中运行你的脚本（或在预览器中重新加载）。
 
 ```sh
 python vapoursynth_script.vpy
 ```
 
-Done!
-Your screenshots should now be in the given folder.
+完成!
+你的截图现在应该在给定的文件夹中。
 
 # Comparing Source vs. Encode
 
-Comparing the source against your encode allows potential downloaders to judge the quality of your encode easily.
-When taking these, it is important to include the frame types you are comparing, as e.g. comparing two `I` frames will lead to extremely favorable results.
-You can do this using `awsmfunc.FrameInfo`:
+将源码与你的编码进行比较，可以让潜在的下载者轻松判断你的编码质量。
+当采取这些时，重要的是包括你要比较的框架类型，例如比较两个`I'框架将导致极其有利的结果。
+你可以使用`awsmfunc.FrameInfo`来做这个。
 
 ```py
 src = awf.FrameInfo(src, "Source")
 encode = awf.FrameInfo(encode, "Encode")
 ```
 
-If you'd like to compare these in your previewer, it's recommended to interleave them:
+如果你想在你的预览器中比较这些，建议将它们交错排列。
 
 ```py
 out = core.std.Interleave([src, encode])
 ```
 
-However, if you're taking your screenshots with `ScreenGen`, it's easier not to do that and just run two `ScreenGen` calls:
+然而，如果你是用`ScreenGen`进行截图，不这样做更容易，只需运行两个`ScreenGen`调用。
 
 ```py
 src = awf.FrameInfo(src, "Source")
@@ -63,65 +61,65 @@ encode = awf.FrameInfo(encode, "Encode")
 awf.ScreenGen(encode, "Screenshots", "b")
 ```
 
-Note that `"a"` was substituted for `"b"` in the encode's `ScreenGen`.
-This will allow you to sort your folder by name and have every source screenshot followed by an encode screenshot, making uploading easier.
+注意，在编码的`ScreenGen`中，`"a"`被替换成了`"b"`。
+这将允许你按名字对文件夹进行排序，并且每张源截图后面都有一个编码截图，使上传更容易。
 
 ### HDR comparisons
 
-For comparing an HDR source to an HDR encode, it's recommended to tonemap.
-This process is destructive, but you should still be able to tell what's warped, smoothed etc.
+对于比较HDR源和HDR编码，建议使用色调图。
+这个过程是破坏性的，但你仍然能够分辨出哪些地方被扭曲了，哪些地方被平滑了等等。
 
-The recommended function for this is `awsmfunc.DynamicTonemap`:
+为此推荐的函数是`awsmfunc.DynamicTonemap`:
 
 ```py
 src = awf.DynamicTonemap(src, src_fmt=False, libplacebo=False)
 encode = awf.DynamicTonemap(encode, src_fmt=False, libplacebo=False)
 ```
 
-Note that we've disabled `src_fmt` and `libplacebo` here.
-Setting the former to `True` will output 10-bit 4:2:0, which is suboptimal, as screenshots are usually presented in 8-bit RGB (no chroma subsampling).
-The latter is recommended for comparisons because using libplacebo makes your tonemaps more likely to differ in brightness, making comparing more difficult.
+注意，我们在这里禁用了`src_fmt`和`libplacebo`。
+将前者设置为`True`会输出10位4:2:0，这是次优的，因为屏幕截图通常是以8位RGB（没有色度子采样）呈现。
+后者被推荐用于比较，因为使用libplacebo会使你的色调图在亮度上更有可能不同，使比较更加困难。
 
 ## Choosing frames
 
-When taking screenshots, it is important to not make your encode look deceptively transparent.
-To do so, you need to make sure you're screenshotting the proper frame types as well as content-wise differing kinds of frames.
+在进行截图时，重要的是不要让你的编码看起来有欺骗性的透明。
+要做到这一点，你需要确保你截图的是适当的框架类型，以及内容上不同的框架。
 
-Luckily, there's not a lot to remember here:
+幸运的是，这里没有太多需要记住的东西:
 
-* Your encode's screenshots should *always* be *B* type frames.
-* Your source's screenshots should *never* be *I* type frames.
-* Your comparisons should include dark scenes, bright scenes, close-up shots, long-range shots, static scenes, high action scenes, and whatever you have in-between.
+* 你的编码的截图应该*永远*是*B*类型帧。
+* 你的源的截图*不应该*是*I*类型帧。
+* 你的比较应该包括黑暗场景、明亮场景、特写镜头、远景镜头、静态场景、高度动作场景，以及你在这两者之间的任何内容。
 
 # Comparing Different Sources
 
-When comparing different sources, you should proceed similarly to comparing source vs. encode.
-However, you'll likely encounter differing crops, resolutions or tints, all of which get in the way of comparing.
+当比较不同的来源时，你应该进行类似于比较来源与编码的工作。
+然而，你可能会遇到不同的裁剪、分辨率或色调，所有这些都会妨碍比较的进行。
 
-For differing crops, simply add borders back:
+对于不同的裁剪，只需将边框加回去:
 
 ```py
 src_b = src_b.std.AddBorders(left=X, right=Y, top=Z, bottom=A)
 ```
 
-If doing this leads to an offset of the image content, you should resize to 4:4:4 so you can add uneven borders.
-For example, if you want to add 1 pixel tall black bars to the top and bottom:
+如果这样做会导致图像内容的偏移，你应该调整大小为4:4:4，这样你就可以添加不均匀的边框。
+例如，如果你想在顶部和底部添加1像素高的黑条:
 
 ```py
 src_b = src_b.resize.Spline36(format=vs.YUV444P8, dither_type="error_diffusion")
 src_b = src_b.std.AddBorders(top=1, bottom=1)
 ```
 
-For differing resolutions, it's recommended to use a simple spline resize:
+对于不同的分辨率，建议使用一个简单的花键调整大小:
 
 ```py
 src_b = src_b.resize.Spline36(src_a.width, src_a.height, dither_type="error_diffusion")
 ```
 
-If one source is HDR and the other one is SDR, you can use `awsmfunc.DynamicTonemap`:
+如果一个源是HDR，另一个是SDR，你可以使用`awsmfunc.DynamicTonemap`:
 
 ```py
 src_b = awf.DynamicTonemap(src_b, src_fmt=False)
 ```
 
-For different tints, refer to the [tinting chapter](../filtering/detinting.md).
+关于不同的色调，请参考[色调篇](../filtering/detinting.md).
