@@ -9,7 +9,7 @@ crop = src.std.Crop(top=2, bottom=2, left=2, right=2)
 然而，当情况不是这样时，事情就变得有点复杂了。
 无论怎样，你都必须在继续操作前尽可能多地裁剪掉。
 
-如果你使用的是完全黑白的影片，请阅读[关于这些的附录条目]（appendix/gray.html）。
+如果你使用的是完全黑白的影片，请阅读[关于这些的附录条目](appendix/gray.html)。
 下面的内容只适用于有颜色的视频。
 
 然后，阅读本指南中脏线分章的[`FillBorders`](dirty_lines.html#fillborders)解释。
