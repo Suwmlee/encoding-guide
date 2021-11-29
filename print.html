@@ -233,53 +233,41 @@ via_clip = clip.std.Crop(...)
 <pre><code class="language-py">not_possible = clip.awf.bbmod(...)
 </code></pre>
 <p>在本指南中，我们将会对要使用的源进行命名并设置变量名为 <code>src</code> 以方便之后反复对其操作。</p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><p>While working on a video,
-one will usually encounter some visual artifacts,
-such as banding, darkened borders, etc.
-As these are not visually pleasant,
-and for the most part aren't intended by the original creator,
-it's prefered to use video filters to fix them.</p>
-<h2 id="scene-filtering"><a class="header" href="#scene-filtering">Scene-filtering</a></h2>
-<p>As every filter is destructive in some way,
-it is desirable to only apply them whenever necessary.
-This is usually done using <code>ReplaceFramesSimple</code>,
-which is in the <a href="https://github.com/Irrational-Encoding-Wizardry/Vapoursynth-RemapFrames"><code>RemapFrames</code></a> plugin.
-<code>RemapFramesSimple</code> can also be called with <code>Rfs</code>.
-Alternatively, one can use a Python solution, e.g. std.Trim and addition.
-However, <code>RemapFrames</code> tends to be faster,
-especially for larger sets of replacement mappings.</p>
-<p>Let's look at an example of applying the <a href="filtering/filtering/debanding##neo_f3kdb"><code>f3kdb</code></a> debanding filter to frames 100 through 200 and 500 through 750:</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><p>在处理视频的过程中，通常会遇到一些视觉上的问题，如带状物、变暗的边框等。
+由于这些东西在视觉上并不讨人喜欢，而且大多数情况下并不是原创作者的本意，所以最好使用视频过滤器来修复它们。</p>
+<h2 id="场景过滤"><a class="header" href="#场景过滤">场景过滤</a></h2>
+<p>由于每个过滤器都有一定的破坏性，所以最好只在必要时应用它们。这通常是通过<code>ReplaceFramesSimple</code>完成的，它在<a href="https://github.com/Irrational-Encoding-Wizardry/Vapoursynth-RemapFrames"><code>RemapFrames</code></a>插件中。
+<code>RemapFramesSimple</code>也可以用<code>Rfs</code>调用。
+另外，可以使用Python解决方案，例如std.Trim和addition。
+然而，<code>RemapFrames</code>往往更快，特别是对于较大的替换映射集。</p>
+<p>让我们看一个对100到200帧和500到750帧应用<a href="filtering/filtering/debanding##neo_f3kdb"><code>f3kdb</code></a>解带过滤的例子:</p>
 <pre><code class="language-py">src = core.ffms2.Source(&quot;video.mkv&quot;)
 deband = source.neo_f3kdb.Deband(src)
 
 replaced = core.remap.Rfs(src, deband, mappings=&quot;[100 200] [500 750]&quot;)
 </code></pre>
-<p>There are various wrappers around both the plugin and the Python method, notably <a href="https://git.concertos.live/AHD/awsmfunc"><code>awsmfunc.rfs</code></a> for the former and <a href="https://lvsfunc.encode.moe/en/latest/#lvsfunc.util.replace_ranges"><code>lvsfunc.util.replace_frames</code></a> for the latter.</p>
-<h2 id="filter-order"><a class="header" href="#filter-order">Filter order</a></h2>
-<p>In order for filters to work correctly and not be counterproductive,
-it is important to apply them in the proper order.
-This is especially important for filters like debanders and grainers,
-as putting these before a resize can completely negate their effect.</p>
-<p>A generally acceptable order would be:</p>
+<p>在插件和Python方法里有各种封装好的库，特别是前者的<a href="https://git.concertos.live/AHD/awsmfunc"><code>awsmfunc.rfs</code></a>和后者的<a href="https://lvsfunc.encode.moe/en/latest/#lvsfunc.util.replace_ranges"><code>lvsfunc.util.replace_frames</code></a> 。</p>
+<h2 id="过滤顺序"><a class="header" href="#过滤顺序">过滤顺序</a></h2>
+<p>为了让滤镜正常工作，不至于产生反效果，按正确的顺序应用它们是很重要的。
+这一点对于像debanders和graners这样的滤镜尤其重要，因为把它们放在调整大小之前会完全否定它们的效果。</p>
+<p>一般可接受的顺序是:</p>
 <ol>
-<li>Load the source</li>
-<li>Crop</li>
-<li>Raise bit depth</li>
-<li>Detint</li>
-<li>Fix dirty lines</li>
-<li>Deblock</li>
-<li>Resize</li>
-<li>Denoise</li>
-<li>Anti-aliasing</li>
-<li>Dering (dehalo)</li>
-<li>Deband</li>
-<li>Grain</li>
-<li>Dither to output bit depth</li>
+<li>载入视频 Load the source</li>
+<li>裁剪 Crop</li>
+<li>提高位深 Raise bit depth</li>
+<li>除着色 Detint</li>
+<li>修复脏线 Fix dirty lines</li>
+<li>解块 Deblock</li>
+<li>调整大小 Resize</li>
+<li>降噪 Denoise</li>
+<li>抗锯齿 Anti-aliasing</li>
+<li>去晕 Dering (dehalo)</li>
+<li>解带 Deband</li>
+<li>颗粒 Grain</li>
+<li>抖动到输出位深度 Dither to output bit depth</li>
 </ol>
-<p>Keep in mind that this is just a general recommendation.
-There can always be a case where you might want to deviate,
-e.g. if you're using a fast denoiser like KNLMeansCL,
-you can do this before resizing.</p>
+<p>请记住，这只是一个一般的建议。
+在某些情况下，你可能想偏离这个建议，例如，如果你使用的是KNLMeansCL这样的快速去噪器，你可以在调整大小之前做这个。</p>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><p>对于实拍内容来说，剪裁几乎总是必要的，因为黑条几乎总是应用于16:9的框架。</p>
 <p>如果要裁剪的内容在每个方向上的分辨率都是2的倍数，这就是一个非常直接的过程。</p>
 <pre><code class="language-py">crop = src.std.Crop(top=2, bottom=2, left=2, right=2)
