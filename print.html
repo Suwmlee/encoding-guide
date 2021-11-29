@@ -2183,86 +2183,83 @@ prevent banding.</p>
 </li>
 </ul>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="taking-screenshots"><a class="header" href="#taking-screenshots">Taking Screenshots</a></h1>
-<p>Taking simple screenshots in VapourSynth is very easy.
-If you're using a previewer, you can likely use that instead, but it might still be useful to know how to take screenshots via VapourSynth directly.</p>
-<p>We recommend using <code>awsmfunc.ScreenGen</code>.
-This has two advantages:</p>
+<p>在VapourSynth中拍摄简单的屏幕截图是非常容易的。如果你使用的是预览器，你可以用它来代替，但知道如何直接通过VapourSynth进行截图可能还是很有用的。</p>
+<p>我们推荐使用 <code>awsmfunc.ScreenGen</code>.
+它有两个优势:</p>
 <ol>
-<li>You save frame numbers and can easily reference these again, e.g. if you want to redo your screenshots.</li>
-<li>It takes care of proper conversion and compression for you, which might not be the case with some previewers (e.g. VSEdit).</li>
+<li>你保存了帧数，可以很容易地再次参考这些，例如，如果你想重新做你的截图。</li>
+<li>它为你处理适当的转换和压缩，而有些预览器（如VSEdit）可能不是这样。</li>
 </ol>
-<p>To use <code>ScreenGen</code>, create a new folder you want your screenshots in, e.g. &quot;Screenshots&quot;, and a file called &quot;screens.txt&quot; with the frame numbers you'd like to screenshot, e.g.</p>
+<p>要使用 &quot;ScreenGen&quot;，创建一个你想要截图的新文件夹，例如 &quot;Screenshots&quot;，和一个名为 &quot;screen.txt &quot;的文件，其中包含你想要截图的帧数。, 例如：</p>
 <pre><code>26765
 76960
 82945
 92742
 127245
 </code></pre>
-<p>Then, at the bottom of your VapourSynth script, put</p>
+<p>然后，在你的VapourSynth脚本的底部，写上</p>
 <pre><code>awf.ScreenGen(src, &quot;Screenshots&quot;, &quot;a&quot;)
 </code></pre>
-<p><code>a</code> is what is put after the frame number.
-This is useful for staying organized and sorting screenshots, as well as preventing unnecessary overwriting of screenshots.</p>
-<p>Now, run your script in the command line (or reload in a previewer):</p>
+<p>`a'是放在帧号后面的东西。这对于保持组织性和对截图进行分类是很有用的，同时也可以防止不必要的截图被覆盖。</p>
+<p>现在，在命令行中运行你的脚本（或在预览器中重新加载）。</p>
 <pre><code class="language-sh">python vapoursynth_script.vpy
 </code></pre>
-<p>Done!
-Your screenshots should now be in the given folder.</p>
+<p>完成!
+你的截图现在应该在给定的文件夹中。</p>
 <h1 id="comparing-source-vs-encode"><a class="header" href="#comparing-source-vs-encode">Comparing Source vs. Encode</a></h1>
-<p>Comparing the source against your encode allows potential downloaders to judge the quality of your encode easily.
-When taking these, it is important to include the frame types you are comparing, as e.g. comparing two <code>I</code> frames will lead to extremely favorable results.
-You can do this using <code>awsmfunc.FrameInfo</code>:</p>
+<p>将源码与你的编码进行比较，可以让潜在的下载者轻松判断你的编码质量。
+当采取这些时，重要的是包括你要比较的框架类型，例如比较两个<code>I'框架将导致极其有利的结果。 你可以使用</code>awsmfunc.FrameInfo`来做这个。</p>
 <pre><code class="language-py">src = awf.FrameInfo(src, &quot;Source&quot;)
 encode = awf.FrameInfo(encode, &quot;Encode&quot;)
 </code></pre>
-<p>If you'd like to compare these in your previewer, it's recommended to interleave them:</p>
+<p>如果你想在你的预览器中比较这些，建议将它们交错排列。</p>
 <pre><code class="language-py">out = core.std.Interleave([src, encode])
 </code></pre>
-<p>However, if you're taking your screenshots with <code>ScreenGen</code>, it's easier not to do that and just run two <code>ScreenGen</code> calls:</p>
+<p>然而，如果你是用<code>ScreenGen</code>进行截图，不这样做更容易，只需运行两个<code>ScreenGen</code>调用。</p>
 <pre><code class="language-py">src = awf.FrameInfo(src, &quot;Source&quot;)
 awf.ScreenGen(src, &quot;Screenshots&quot;, &quot;a&quot;)
 encode = awf.FrameInfo(encode, &quot;Encode&quot;)
 awf.ScreenGen(encode, &quot;Screenshots&quot;, &quot;b&quot;)
 </code></pre>
-<p>Note that <code>&quot;a&quot;</code> was substituted for <code>&quot;b&quot;</code> in the encode's <code>ScreenGen</code>.
-This will allow you to sort your folder by name and have every source screenshot followed by an encode screenshot, making uploading easier.</p>
+<p>注意，在编码的<code>ScreenGen</code>中，<code>&quot;a&quot;</code>被替换成了<code>&quot;b&quot;</code>。
+这将允许你按名字对文件夹进行排序，并且每张源截图后面都有一个编码截图，使上传更容易。</p>
 <h3 id="hdr-comparisons"><a class="header" href="#hdr-comparisons">HDR comparisons</a></h3>
-<p>For comparing an HDR source to an HDR encode, it's recommended to tonemap.
-This process is destructive, but you should still be able to tell what's warped, smoothed etc.</p>
-<p>The recommended function for this is <code>awsmfunc.DynamicTonemap</code>:</p>
+<p>对于比较HDR源和HDR编码，建议使用色调图。
+这个过程是破坏性的，但你仍然能够分辨出哪些地方被扭曲了，哪些地方被平滑了等等。</p>
+<p>为此推荐的函数是<code>awsmfunc.DynamicTonemap</code>:</p>
 <pre><code class="language-py">src = awf.DynamicTonemap(src, src_fmt=False, libplacebo=False)
 encode = awf.DynamicTonemap(encode, src_fmt=False, libplacebo=False)
 </code></pre>
-<p>Note that we've disabled <code>src_fmt</code> and <code>libplacebo</code> here.
-Setting the former to <code>True</code> will output 10-bit 4:2:0, which is suboptimal, as screenshots are usually presented in 8-bit RGB (no chroma subsampling).
-The latter is recommended for comparisons because using libplacebo makes your tonemaps more likely to differ in brightness, making comparing more difficult.</p>
+<p>注意，我们在这里禁用了<code>src_fmt</code>和<code>libplacebo</code>。
+将前者设置为<code>True</code>会输出10位4:2:0，这是次优的，因为屏幕截图通常是以8位RGB（没有色度子采样）呈现。
+后者被推荐用于比较，因为使用libplacebo会使你的色调图在亮度上更有可能不同，使比较更加困难。</p>
 <h2 id="choosing-frames"><a class="header" href="#choosing-frames">Choosing frames</a></h2>
-<p>When taking screenshots, it is important to not make your encode look deceptively transparent.
-To do so, you need to make sure you're screenshotting the proper frame types as well as content-wise differing kinds of frames.</p>
-<p>Luckily, there's not a lot to remember here:</p>
+<p>在进行截图时，重要的是不要让你的编码看起来有欺骗性的透明。
+要做到这一点，你需要确保你截图的是适当的框架类型，以及内容上不同的框架。</p>
+<p>幸运的是，这里没有太多需要记住的东西:</p>
 <ul>
-<li>Your encode's screenshots should <em>always</em> be <em>B</em> type frames.</li>
-<li>Your source's screenshots should <em>never</em> be <em>I</em> type frames.</li>
-<li>Your comparisons should include dark scenes, bright scenes, close-up shots, long-range shots, static scenes, high action scenes, and whatever you have in-between.</li>
+<li>你的编码的截图应该<em>永远</em>是<em>B</em>类型帧。</li>
+<li>你的源的截图<em>不应该</em>是<em>I</em>类型帧。</li>
+<li>你的比较应该包括黑暗场景、明亮场景、特写镜头、远景镜头、静态场景、高度动作场景，以及你在这两者之间的任何内容。</li>
 </ul>
 <h1 id="comparing-different-sources"><a class="header" href="#comparing-different-sources">Comparing Different Sources</a></h1>
-<p>When comparing different sources, you should proceed similarly to comparing source vs. encode.
-However, you'll likely encounter differing crops, resolutions or tints, all of which get in the way of comparing.</p>
-<p>For differing crops, simply add borders back:</p>
+<p>当比较不同的来源时，你应该进行类似于比较来源与编码的工作。
+然而，你可能会遇到不同的裁剪、分辨率或色调，所有这些都会妨碍比较的进行。</p>
+<p>对于不同的裁剪，只需将边框加回去:</p>
 <pre><code class="language-py">src_b = src_b.std.AddBorders(left=X, right=Y, top=Z, bottom=A)
 </code></pre>
-<p>If doing this leads to an offset of the image content, you should resize to 4:4:4 so you can add uneven borders.
-For example, if you want to add 1 pixel tall black bars to the top and bottom:</p>
+<p>如果这样做会导致图像内容的偏移，你应该调整大小为4:4:4，这样你就可以添加不均匀的边框。
+例如，如果你想在顶部和底部添加1像素高的黑条:</p>
 <pre><code class="language-py">src_b = src_b.resize.Spline36(format=vs.YUV444P8, dither_type=&quot;error_diffusion&quot;)
 src_b = src_b.std.AddBorders(top=1, bottom=1)
 </code></pre>
-<p>For differing resolutions, it's recommended to use a simple spline resize:</p>
+<p>对于不同的分辨率，建议使用一个简单的花键调整大小:</p>
 <pre><code class="language-py">src_b = src_b.resize.Spline36(src_a.width, src_a.height, dither_type=&quot;error_diffusion&quot;)
 </code></pre>
-<p>If one source is HDR and the other one is SDR, you can use <code>awsmfunc.DynamicTonemap</code>:</p>
+<p>如果一个源是HDR，另一个是SDR，你可以使用<code>awsmfunc.DynamicTonemap</code>:</p>
 <pre><code class="language-py">src_b = awf.DynamicTonemap(src_b, src_fmt=False)
 </code></pre>
-<p>For different tints, refer to the <a href="encoding/../filtering/detinting.html">tinting chapter</a>.</p>
+<p>关于不同的色调，请参考<a href="encoding/../filtering/detinting.html">色调篇</a>.</p>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><p>If your debanded clip had very little grain compared to parts with no
 banding, you should consider using a separate function to add matched
 grain so the scenes blend together easier. If there was lots of grain,
