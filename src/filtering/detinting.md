@@ -1,7 +1,7 @@
-## The 0.88 gamma bug
+## 0.88伽马的错误
 
-If you have two sources of which one is noticeably brighter than the other, chances are your brighter source is suffering from what's known as the gamma bug.
-If this is the case, do the following (for 16-bit) and see if it fixes the issue:
+如果你有两个信号源，其中一个明显比另一个亮，那么你的亮的信号源有可能是受到了所谓的伽马缺陷的影响。
+如果是这种情况，请执行以下操作（针对16位），看看是否能解决这个问题:
 
 ```py
 out = core.std.Levels(src, gamma=0.88, min_in=4096, max_in=60160, min_out=4096, max_out=60160, planes=0)
@@ -11,34 +11,34 @@ out = core.std.Levels(src, gamma=0.88, min_in=4096, max_in=60160, min_out=4096, 
 <img src='Pictures/gamma_before.png' onmouseover="this.src='Pictures/gamma_after.png';" onmouseout="this.src='Pictures/gamma_before.png';" />
 </p>
 
-Do not perform this operation in low bit depth. Lower bit depths can and will lead to banding:
+不要在低位深度下执行这一操作。较低的比特深度可能并将导致色带。
 <p align="center">
 <img src='Pictures/gamma_lbd.png' onmouseover="this.src='Pictures/gamma_hbd.png';" onmouseout="this.src='Pictures/gamma_lbd.png';" />
 </p>
 
 <details>
-<summary>In-depth explanation</summary>
-This error seems to stem from Apple software.  <a href="https://vitrolite.wordpress.com/2010/12/31/quicktime_gamma_bug/">This blog post</a> is one of the few mentions of this blug one can find online.
+<summary>深入解释</summary>
+这个错误似乎源于苹果软件。 <a href="https://vitrolite.wordpress.com/2010/12/31/quicktime_gamma_bug/">这篇博文</a>是人们在网上可以找到的关于这个错误的少数提及之一。
 
-The reason for this is likely that the software unnecessarily tries to convert between NTSC gamma (2.2) and PC gamma (2.5), as \\(\frac{2.2}{2.5}=0.88\\).
+其原因可能是软件不必要地试图在NTSC伽马（2.2）和PC伽马（2.5）之间进行转换，因为 \\(\frac{2.2}{2.5}=0.88\\).
 
-To undo this, every value just has to be raised to the power of 0.88, although TV range normalization has to be done:
+为了解决这个问题，每个值都必须提高到0.88的幂，尽管必须进行电视范围标准化:
 
 \\[
 v_\mathrm{new} = \left( \frac{v - min_\mathrm{in}}{max_\mathrm{in} - min_\mathrm{in}} \right) ^ {0.88} \times (max_\mathrm{out} - min_\mathrm{out}) + min_\mathrm{out}
 \\]
 
-For those curious on how the gamma bug source and source will differ: all values other than 16, 232, 233, 234, and 235 are different, with the largest and most common difference being 10, lasting from 63 until 125.
-As an equal number of values can be hit and the operation is usually performed in high bit depth, significant detail loss is unlikely.
-However, do note that, no matter the bit depth, this is a lossy process.
+对于那些好奇伽马虫源和源会有什么不同的人来说：除了16、232、233、234和235以外的所有数值都是不同的，最大和最常见的差异是10，从63持续到125。
+由于可以打出同等数量的数值，而且该操作通常是在高比特深度下进行的，因此显著的细节损失是不太可能的。
+然而，请注意，无论比特深度如何，这都是一个有损失的过程。
 
 </details>
 
-You can also use the `fixlvls` wrapper in `awsmfunc` to easily do this in 32-bit precision.
+你也可以使用`awsmfunc`中的`fixlvls`封装库，在32位精度下轻松完成这个任务。
 
-## Double range compression
+## 双重范围压缩
 
-A similar issue is double range compression.  When this occurs, luma values will range between 30 and 218.  This can easily be fixed with the following:
+一个类似的问题是双范围压缩。 当这种情况发生时，luma值会在30和218之间。 这可以通过以下方法轻松解决:
 
 ```py
 out = src.resize.Point(range_in=0, range=1, dither_type="error_diffusion")
@@ -50,80 +50,76 @@ out = out.std.SetFrameProp(prop="_ColorRange", intval=1)
 </p>
 
 <details>
-<summary>In-depth explanation</summary>
-This issue means something or someone during the encoding pipeline assumed the input to be full range despite it already being in limited range.  As the end result usually has to be limited range, this perceived issue is "fixed".
+<summary>深入解释</summary>
+这个问题意味着在编码过程中，某些东西或某些人假定输入是全范围的，尽管它已经是有限范围的。 由于最终的结果通常是有限的范围，这个感知的问题被 "修复 "了。
 
-One can also do the exact same in <code>std.Levels</code> actually.  The following math is applied for changing range:
+实际上，我们也可以在<code>std.Levels</code>中做完全相同的事情。 以下是应用于改变范围的数学方法:
 
 \\[
 v_\mathrm{new} = \left( \frac{v - min_\mathrm{in}}{max_\mathrm{in} - min_\mathrm{in}} \right) \times (max_\mathrm{out} - min_\mathrm{out}) + min_\mathrm{out}
 \\]
 
-For range compression, the following values are used:
+对于范围压缩，使用以下数值:
 \\[
 min_\mathrm{in} = 0 \qquad max_\mathrm{in} = 255 \qquad min_\mathrm{out} = 16 \qquad max_\mathrm{out} = 235
 \\]
 
-As the zlib resizers use 32-bit precision to perform this internally, it's easiest to just use those.  However, these will change the file's <code>_ColorRange</code> property, hence the need for <code>std.SetFrameProp</code>. 
+由于zlib调整器在内部使用32位精度来执行这个，所以最简单的就是使用这些。 然而，这些将改变文件的<code>_ColorRange</code>属性，因此需要使用<code>std.SetFrameProp</code>:
 
 </details>
 
-## Other incorrect levels
+## 其他不正确的层级
 
-A closely related issue is otherwise incorrect levels.  To fix this, one ideally uses a reference source with correct levels, finds the equivalent values to 16 and 235, then adjusts from there (in 8-bit for clarity, do this in higher bit depths):
+一个密切相关的问题是其他不正确的层级。要解决这个问题，最好是使用一个具有正确层级的参考源，找到与16和235相当的值，然后从那里进行调整（为了清楚起见，在更高的比特深度中这样做）:
 
 ```py
 out = src.std.Levels(min_in=x, min_out=16, max_in=y, max_out=235)
 ```
 
-However, this usually won't be possible.  Instead, one can do the following math to figure out the correct adjustment values:
-
+然而，这通常是不可能的。 相反，我们可以做以下数学运算来计算出正确的调整值:
 \\[
 v = \frac{v_\mathrm{new} - min_\mathrm{out}}{max_\mathrm{out} - min_\mathrm{out}} \times (max_\mathrm{in} - min_\mathrm{in}) + min_\mathrm{in}
 \\]
 
-Whereby one can just choose any low value from the to-be-adjusted source, set that as \\(min_\mathrm{in}\\), choose the value for that same pixel in the reference source as \\(min_\mathrm{out}\\).  One does the same for high values and maximums.  Then, one calculates this using 16 and 235 (again, preferably in high bit depths - 4096 and 60160 for 16-bit, 0 and 1 in 32-bit float etc.) for \\(v_\mathrm{new}\\) and the output values will be our \\(x\\) and \\(y\\) in the VapourSynth code above.
+因此，我们可以从要调整的源中选择任何低值，将其设置为 \\(min_\mathrm{in}\\)，在参考源中选择同一像素的值作为 \\(min_\mathrm{out}\\)。对于高值和最大值，我们也是这样做的。然后, 我们用16和235来计算 (再次，最好是高位深度--16位的4096和60160，32位浮动的0和1等等。) 这个 \\(v_\mathrm{new}\\) ，输出值将是上面VapourSynth代码中我们的 \\(x\\) 和 \\(y\\)。
 
-To illustrate this, let's use the German and American Blu-rays of Burning (2018).  The USA Blu-ray has correct levels, while GER has incorrect ones:
+为了说明这一点，让我们使用《燃烧》（2018）的德国和美国蓝光片。 美国的蓝光有正确的水平，而德国的蓝光有不正确的水平。
 
 <p align="center">
 <img src='Pictures/burning_usa0.png' onmouseover="this.src='Pictures/burning_ger0.png';" onmouseout="this.src='Pictures/burning_usa0.png';" />
 </p>
 
-A high value in GER here would be 199, while the same pixel is 207 in USA.  For lows, one can find 29 and 27.  With these, we get 18.6 and 225.4.  Doing these for a couple more pixels and different frames, then averaging the values we get 19 and 224.  Adjusting the luma with these values gets us closer to the reference video's[^1]:
+这里德国的高值是199，而美国的相同像素是207。 对于低值，我们可以找到29和27。 通过这些，我们得到18.6和225.4。 对更多的像素和不同的帧进行这些操作，然后取其平均值，我们得到19和224。 用这些值来调整luma，使我们更接近参考视频的[^1]。
 
 <p align="center">
 <img src='Pictures/burning_ger_fixed0.png' onmouseover="this.src='Pictures/burning_usa_fixed0.png';" onmouseout="this.src='Pictures/burning_ger_fixed0.png';" />
 </p>
 
 <details>
-<summary>In-depth explanation</summary>
-Those who have read the previous explanations should recognize this function, as it is the inverse of the function used for level adjustment.  We simply reverse it, set our desired values as \(v_\mathrm{new}\) and calculate.
+<summary>深入解释</summary>
+看过前面解释的人应该认识到这个函数，因为它是用于水平调整的函数的逆向函数。 我们只需把它反过来，把我们的期望值设为 \(v_\mathrm{new}\)并进行计算。
 </details>
 
-## Improper color matrix
+## 不恰当的颜色矩阵
 
-If you have a source with an improper color matrix, you can fix this
-with the following:
+如果你有一个不恰当的颜色矩阵的信号源，你可以用以下方法解决这个问题
+用以下方法解决。
 
 ```py
 out = core.resize.Point(src, matrix_in_s='470bg', matrix_s='709')
 ```
 
-The `’470bg’` is what's also known as 601. To know if you should be
-doing this, you'll need some reference sources, preferably not web
-sources. Technically, you can identify bad colors and realize that it's
-necessary to change the matrix, but one should be extremely certain in such cases.
+`'470bg'`也就是被称为601的东西。要知道你是否应该这样做，你需要一些参考来源，最好不是网络来源。从技术上讲，你可以识别坏的颜色，并意识到有必要改变矩阵，但在这种情况下，人们应该非常确定。
 
 <p align="center">
 <img src='Pictures/burning_matrix_before.png' onmouseover="this.src='Pictures/burning_matrix_after.png';" onmouseout="this.src='Pictures/burning_matrix_before.png';" />
 </p>
 
 <details>
-<summary>In-depth explanation</summary>
-Color matrices define how conversion between YCbCr and RGB takes place.  As RGB naturally doesn't have any subsampling, the clip is first converted from 4:2:0 to 4:4:4, then from YCbCr to RGB, then the process is reverted.  During the YCbCr to RGB conversion, we assume Rec.601 matrix coefficients, while during the conversion back, we specify Rec.709.
+<summary>深入解释</summary>
+颜色矩阵定义了YCbCr和RGB之间的转换是如何进行的。 由于RGB自然没有任何子采样，剪辑首先从4:2:0转换为4:4:4，然后从YCbCr转换为RGB，然后再进行还原。 在YCbCr到RGB的转换过程中，我们假设是Rec.601矩阵系数，而在转换回来的过程中，我们指定是Rec.709。
 
-The reason why it's difficult to know whether the incorrect standard was assumed is because the two cover a similar range of CIE 1931.  The chromaticity diagrams should make this obvious (Rec.2020 included as a reference):
+之所以很难知道是否假设了不正确的标准，是因为两者涵盖了CIE 1931的类似范围。 色度图应使这一点很明显（包括Rec.2020作为参考）:
 
 <p align="center">
 <img src='Pictures/colorspaces.svg'/>
@@ -131,10 +127,10 @@ The reason why it's difficult to know whether the incorrect standard was assumed
 
 </details>
 
-## Rounding error
+## 四舍五入错误
 
-A slight green tint may be indicative of a rounding error having occured.
-To fix this, we need to add a half step in a higher bit depth than the source's:
+一个轻微的绿色色调可能表明发生了舍入错误。
+为了解决这个问题，我们需要在比源文件更高的比特深度上增加半步。
 
 ```py
 high_depth = vsutil.depth(src, 16)
@@ -146,23 +142,20 @@ out = vsutil.depth(half_step, 8)
 <img src='Pictures/rounding_0.png' onmouseover="this.src='Pictures/rounding_1.png';" onmouseout="this.src='Pictures/rounding_0.png';" />
 </p>
 
-Alternatively, one can use [`lvsfunc.misc.fix_cr_tint`](https://github.com/Irrational-Encoding-Wizardry/lvsfunc) instead.
-Its defaults are equivalent to the above.
+另外，可以使用[`lvsfunc.misc.fix_cr_tint`](https://github.com/Irrational-Encoding-Wizardry/lvsfunc)代替。
+它的默认值与上述内容相当。
 
 <details>
-<summary>In-depth explanation</summary>
-When the studio went from their 10-bit master to 8-bit, their software may have always rounded down (e.g. 1.9 would be rounded to 1).
-Our way of solving this simply adds an 8-bit half step, as \(0.5 \times 2 ^ {16 - 8} = 128\).
+<summary>深入解释</summary>
+当工作室从他们的10位母版变成8位时，他们的软件可能总是向下四舍五入（例如1.9会被四舍五入为1）。
+我们解决这个问题的方法只是增加了一个8位的半步，如（0.5乘以2 ^ {16 - 8} = 128\）
 </details>
 
-## Detinting
+## 除着色
 
-Please note that you should only resort to this method if all others fail.
+请注意，只有在其他方法都失败的情况下，你才应该采用这种方法。
 
-If you've got a better source with a tint and a worse source without a
-tint, and you'd like to remove it, you can do so via [`timecube`](https://github.com/sekrit-twc/timecube) and
-[DrDre's Color Matching Tool](https://valeyard.net/2017/03/drdres-color-matching-tool-v1-2.php)[^2]. First, add two reference screenshots
-to the tool, export the LUT, save it, and add it via something like:
+如果你有一个较好的带色调的源，和一个较差的不带色调的源，你想把它去掉，你可以通过[`timecube`](https://github.com/sekrit-twc/timecube)和[DrDre's Color Matching Tool](https://valeyard.net/2017/03/drdres-color-matching-tool-v1-2.php)[^2]来实现。首先，在该工具中添加两张参考截图，导出LUT，保存它，并通过类似的方式添加它:
 
 ```py
 clip = core.resize.Point(src, matrix_in_s="709", format=vs.RGBS)
@@ -174,6 +167,6 @@ out = core.resize.Point(detint, matrix=1, format=vs.YUV420P16, dither_type="erro
 <img src='Pictures/detint_before2.png' onmouseover="this.src='Pictures/detint_after2.png';" onmouseout="this.src='Pictures/detint_before2.png';" />
 </p>
 
-[^1]: For simplicity's sake, chroma planes weren't touched here.  These require far more work than luma planes, as it's harder to find very vibrant colors, especially with screenshots like this.
+[^1]: 为了简单起见，这里没有触及色度平面。 这些需要做的工作远远多于luma平面，因为很难找到非常鲜艳的颜色，尤其是像这样的截图。
 
-[^2]: This program is sadly closed source.  I don't know of any alternatives for this.
+[^2]: 令人遗憾的是，这个程序是闭源的。 我不知道有什么替代品。
