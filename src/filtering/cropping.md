@@ -1,23 +1,19 @@
-Cropping will almost always be necessary with live action content,
-as black bars are almost always applied to fit a 16:9 frame.
+对于实拍内容来说，剪裁几乎总是必要的，因为黑条几乎总是应用于16:9的框架。
 
-If the to-be-cropped content has a resolution that is a multiple of 2 in each direction,
-this is a very straightforward process:
+如果要裁剪的内容在每个方向上的分辨率都是2的倍数，这就是一个非常直接的过程。
 
 ```py
 crop = src.std.Crop(top=2, bottom=2, left=2, right=2)
 ```
 
-However, when this is not the case,
-things get a little bit more complicated.
-No matter what,
-you must always crop away as much as you can before proceeding.
+然而，当情况不是这样时，事情就变得有点复杂了。
+无论怎样，你都必须在继续操作前尽可能多地裁剪掉。
 
-If you're working with a completely black-and-white film, read [the appendix entry on these](appendix/gray.html).
-The following only applies to videos with colors.
+如果你使用的是完全黑白的影片，请阅读[关于这些的附录条目]（appendix/gray.html）。
+下面的内容只适用于有颜色的视频。
 
-Then, read through this guide's [`FillBorders`](dirty_lines.html#fillborders) explanation from the dirty lines subchapter.
-This will explain what to do if you do not plan on resizing.
+然后，阅读本指南中脏线分章的[`FillBorders`](dirty_lines.html#fillborders)解释。
+这将解释如果你不打算调整大小，该怎么做。
 
-If you do plan on resizing,
-proceed according to the [resizing note](dirty_lines.html#resizing) from the dirty lines subchapter.
+如果你打算调整大小。
+根据 dirty lines 分章中的 [调整大小说明](dirty_lines.html#resizing) 进行操作。

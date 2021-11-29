@@ -83,13 +83,13 @@ resize = awf.zresize(src, preset=720)
 
 # 理想的分辨率
 
-对于数字动漫，请参阅 [descaling subchapter](descaling.md) 。
-实景拍摄的场景中极少需要进行descaling，但如果您的来源特别模糊且明显是廉价制作，则值得研究。
+对于动漫作品，请参阅 [descaling subchapter](descaling.md) 。
+实拍场景中极少需要进行descaling，但如果您的来源特别模糊且明显是廉价制作，则值得研究。
 
 众所周知，并非每个源都应以源的分辨率进行压制。
 因此，人们应该知道来源是否有保证，例如从细节保留的角度来看，1080p 压制或 720p 压制就足够了。
 
-为此，我们只需要将源缩小和放大后进行简单比较：
+为此，我们只需要先将源缩小再放大后进行简单比较：
 
 ```py
 downscale = src.resize.Spline36(1280, 720, dither_type="error_diffusion")
