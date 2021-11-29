@@ -3,11 +3,11 @@
 因此，此页面将仅涵盖必要的downscaling说明。
 那些有兴趣了解有关重采样的更多信息的人应该参考 [Irrational Encoding Wizardry's guide's resampling page](https://guide.encode.moe/encoding/resampling.html) 以获取更多信息。
 
-并且您可以查看后面的子章节以了解一些更高级的主题， 例如 [去缩放(descaling)与重新缩放(rescaling)](descaling.md) 或 [色度重新采样(chroma resampling)和移动(shifting)](chroma_res.md)，这两者都是编码动画时绝对需要了解的。
+并且您可以查看后面的子章节以了解一些更高级的主题， 例如 [解放缩(descaling)与重新缩放(rescaling)](descaling.md) 或 [色度重新采样(chroma resampling)和移动(shifting)](chroma_res.md)，这两者都是编码动画时绝对需要了解的。
 
 # Downscaling
 
-对于downscaling, 首选的 resizer 是 spline36 resizer:
+对于downscaling, 首选的调整器是 spline36 调整器:
 
 ```py
 resize = src.resize.Spline36(1280, 720, dither_type="error_diffusion")

@@ -2,59 +2,48 @@
 <img src='Pictures/dirt_source.png' onmouseover="this.src='Pictures/dirt_filtered.png';" onmouseout="this.src='Pictures/dirt_source.png';"/>
 </p>
 <p align="center">
-<i>Dirty lines from A Silent Voice (2016)'s intro.  On mouseover: fixed with ContinuityFixer and FillBorders.</i>
+<i>来自 A Silent Voice (2016)的前奏的脏线。鼠标移上去: 用ContinuityFixer和FillBorders修复。</i>
 </p>
 
-One of the more common issues you may encounter are 'dirty lines', these are usually found on the borders of video where a row or column of pixels exhibits inconsistent luma values comparative to its surroundings. Oftentimes, this is the due to improper downscaling, for example downscaling after applying borders. Dirty lines can also occur because the compressionist doesn't consider that whilst they're working with 4:2:2 chroma subsampling (meaning their height doesn't have to be mod2), consumer video will be 4:2:0, leading to extra black rows that you can't get rid of during cropping if the main clip isn't placed properly. Another form of dirty lines is exhibited when the chroma planes are present on black bars. Usually, these should be cropped out. The opposite can also occur, however, where the planes with legitimate luma information lack chroma information.
+你可能会遇到的一个更常见的问题是 "脏线"，这通常是在视频的边界上发现的，其中一排或一列的像素表现出与周围环境不一致的亮度值。通常情况下，这是由于不当的downscaling，例如在添加边框后downscaling。脏线也可能发生，因为压缩者没有考虑到他们在使用4:2:2色度子采样时（意味着他们的高度不必是mod2），消费者的视频将是4:2:0，导致额外的黑行，如果主片段没有正确放置，你就无法在裁剪时摆脱。另一种形式的脏线是在黑条上出现色度平面时表现出来的。通常情况下，这些应该被裁剪掉。然而，相反的情况也可能发生，即具有合法的 luma 信息的平面缺乏色度信息。
 
-It's important to remember that sometimes your source will have fake lines (often referred to as 'dead' lines), meaning ones without legitimate information. These will usually just mirror the next row/column. Do not bother fixing these, just crop them instead. An example:
+重要的是要记住，有时你的来源会有假行（通常被称为 "死"行），也就是没有合法信息的行。这些通常只是镜像下一行/一列。不要麻烦地修复这些，只需裁剪它们。一个例子:
 
 <p align="center">
 <img src='Pictures/dead_lines.png'/>
 </p>
 
-Similarly, when attempting to fix dirty lines you should thoroughly check that your fix has not caused unwanted problems, such as smearing (common with overzealous ContinuityFixer values) or flickering (especially on credits, it is advisable to omit credit reels from your fix in most cases). If you cannot figure out a proper fix it is completely reasonable to either crop off the dirty line(s) or leave them unfixed. A bad fix is worse than no fix!
+同样，当你试图修复脏线时，你应该彻底检查你的修复没有引起不必要的问题，如涂抹（常见于过度热心的ContinuityFixer值）或闪烁（特别是在片头，在大多数情况下，建议从你的修复中省略片头卷）。如果你不能找出适当的修复方法，完全可以裁剪掉脏线或不修复。糟糕的修复比没有修复更糟糕
 
-Here are five commonly used methods for fixing dirty lines:
+这里有五种常用的修复脏线的方法:
 
 ## `rektlvls`\
-From [`rekt`](https://gitlab.com/Ututu/rekt).  This is basically `FixBrightnessProtect3` and `FixBrightness` from AviSynth in one, although unlike `FixBrightness`, not the entire frame is processed. Its
-values are quite straightforward. Raise the adjustment values to
-brighten, lower to darken. Set `prot_val` to `None` and it will
-function like `FixBrightness`, meaning the adjustment values will
-need to be changed.
+来自[`rekt`](https://gitlab.com/Ututu/rekt)。这基本上是AviSynth的 `FixBrightnessProtect3` 和 `FixBrightness` 的合二为一，尽管与  `FixBrightness` 不同，不是对整个画面进行处理。它的数值很直接。提高调整值是为了变亮，降低是为了变暗。将`prot_val`设置为`None`，它的功能就像`FixBrightness`，意味着调整值需要改变。
 ```py
 from rekt import rektlvls
 fix = rektlvls(src, rownum=None, rowval=None, colnum=None, colval=None, prot_val=[16, 235])
 ```
 
-If you'd like to process multiple rows at a time, you can enter a
-list (e.g. `rownum=[0, 1, 2]`).\
+如果你想一次处理多行，你可以输入一个列表 (例如 `rownum=[0, 1, 2]`).\
 
-To illustrate this, let's look at the dirty lines in the black and
-white Blu-ray of Parasite (2019)'s bottom rows:
+为了说明这一点，让我们看看《寄生虫》（2017）的黑白蓝光中的脏线。寄生虫（2019）的底层行的黑白蓝光:
 
 <p align="center">
 <img src='Pictures/rektlvls_src.png';"/>
 </p>
 
-In this example, the bottom four rows have alternating brightness
-offsets from the next two rows. So, we can use `rektlvls` to raise
-luma in the first and third row from the bottom, and again to lower
-it in the second and fourth:
+在这个例子中，最下面的四行有交替的亮度 与下两行的偏移量。所以，我们可以用`rektlvls`来提高 提高第一行和第三行的luma，然后再降低第二行和第四行的luma。在第二和第四行中降低。
+
 ```py
 fix = rektlvls(src, rownum=[803, 802, 801, 800], rowval=[27, -10, 3, -3])
 ```
 
-In this case, we are in `FixBrightnessProtect3` mode. We aren't
-taking advantage of `prot_val` here, but people usually use this
-mode regardless, as there's always a chance it might help. The
-result:
+在这种情况下，我们处于`FixBrightnessProtect3`模式。我们在这里没有利用`prot_val`的优势，但人们通常会使用这种模式，因为总有机会帮助我们。结果是:
 <p align="center">
 <img src='Pictures/rektlvls_fix.png' onmouseover="this.src='Pictures/rektlvls_src.png';" onmouseout="this.src='Pictures/rektlvls_fix.png';"/>
 </p>
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入功能讲解</summary>
 In <code>FixBrightness</code> mode, this will perform an adjustment with
 <a href="www.vapoursynth.com/doc/functions/levels.html"><code>std.Levels</code></a> on the desired row. This means that, in 8-bit,
 every possible value \(v\) is mapped to a new value according to the
@@ -110,15 +99,7 @@ $$\begin{aligned}
 </details>
 
 ## `bbmod`\
-From `awsmfunc`.  This is a mod of the original BalanceBorders function. While it
-doesn't preserve original data nearly as well as `rektlvls`, it will
-lead to decent results with high `blur` and `thresh` values and is
-easy to use for multiple rows, especially ones with varying
-brightness, where `rektlvls` is no longer useful. If it doesn't
-produce decent results, these can be changed, but the function will
-get more destructive the lower you set them. It's also
-significantly faster than the versions in `havsfunc` and `sgvsfunc`,
-as only necessary pixels are processed.\
+来自`awsmfunc`。 这是原BalanceBorders函数的一个模子。虽然它不能像`rektlvls'那样保留原始数据，但在高`blur'和`thresh'值的情况下，它可以产生很好的结果，而且很容易用于多行，特别是具有不同亮度的行，`rektlvls'就不再有用。如果它不能产生像样的结果，可以改变这些值，但是你设置得越低，这个函数的破坏性就越大。它也比`havsfunc`和`sgvsfunc`中的版本快得多，因为只有必要的像素被处理。\
 
 ```py
 import awsmfunc as awf

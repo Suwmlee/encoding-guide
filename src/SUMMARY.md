@@ -5,7 +5,7 @@
     - [载入视频Loading the Video]()
     - [裁剪Cropping](filtering/cropping.md)
     - [调整大小(Resizing)](filtering/resizing.md)
-        - [降尺度与重新缩放(Descaling and Rescaling)](filtering/descaling.md)
+        - [解放缩(descaling)与重新缩放(rescaling)](filtering/descaling.md)
         - [色度重采样与偏移(Chroma Resampling and Shifting)](filtering/chroma_res.md)
     - [位深(Bit Depths)与抖动算法(Dither Algorithms)](filtering/bit_depths.md)
     - [解带(Debanding)与解块(Deblocking)](filtering/debanding.md)

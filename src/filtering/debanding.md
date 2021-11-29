@@ -50,7 +50,7 @@ import fvsfunc as fvf
 deband = fvf.GradFun3(src, thr=0.35, radius=12, elast=3.0, mask=2, mode=3, ampo=1, ampn=0, pat=32, dyn=False, staticnoise=False, smode=2, thr_det=2 + round(max(thr - 0.35, 0) / 0.3), debug=False, thrc=thr, radiusc=radius, elastc=elast, planes=list(range(src.format.num_planes)), ref=src, bits=src.format.bits_per_sample) # + resizing variables
 ```
 
-`fmtconv`中许多设置的值都是给位深转换或去缩放使用的, 这两者在这里都不相关。这里真正感兴趣的值是：
+`fmtconv`中许多设置的值都是给位深转换或解放缩使用的, 这两者在这里都不相关。这里真正感兴趣的值是：
 
 -   `thr` 等价于 `y`, `cb`, 和 `cr` 的作用。您可能想要提高或降低它。
 
