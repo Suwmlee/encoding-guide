@@ -2253,15 +2253,8 @@ src_b = src_b.std.AddBorders(top=1, bottom=1)
 <pre><code class="language-py">src_b = awf.DynamicTonemap(src_b, src_fmt=False)
 </code></pre>
 <p>关于不同的色调，请参考<a href="encoding/../filtering/detinting.html">色调篇</a>.</p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><p>If your debanded clip had very little grain compared to parts with no
-banding, you should consider using a separate function to add matched
-grain so the scenes blend together easier. If there was lots of grain,
-you might want to consider <code>adptvgrnMod</code>, <code>adaptive_grain</code> or
-<code>GrainFactory3</code>; for less obvious grain or simply for brighter scenes
-where there'd usually be very little grain, you can also use 
-<code>grain.Add</code>. The topic of grainers will be further elaborated later in
-<a href="appendix/graining">the graining section</a>.</p>
-<p>Here's an example from Mirai:</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><p>如果你的去带片段与没有带子的部分相比颗粒很小，你应该考虑使用一个单独的函数来添加匹配的颗粒，这样场景就更容易融合在一起。如果有很多颗粒，你可能要考虑<code>adptvgrnMod</code>、adaptive_grain<code>或</code>GrainFactory3<code>；对于不那么明显的颗粒，或者只是对于通常会有很少颗粒的明亮场景，你也可以使用</code>grain.Add`。颗粒器的主题将在后面的<a href="appendix/filtering/graining.html">粒化部分</a>中进一步阐述。</p>
+<p>下面是Mirai的一个例子:</p>
 <p align="center">
 <img src='Pictures/banding_graining_before.png' onmouseover="this.src='Pictures/banding_graining_after.png';" onmouseout="this.src='Pictures/banding_graining_before.png';"/>
 </p>
