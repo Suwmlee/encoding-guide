@@ -169,42 +169,42 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="black--white-clips-working-in-gray"><a class="header" href="#black--white-clips-working-in-gray">Black &amp; White Clips: Working in GRAY</a></h1>
-<p>Because of the YUV format saving luma in a separate plane, working with black and white movies makes our lives a lot easier when filtering, as we can extract the luma plane and work solely on that:</p>
+<p>由于YUV格式将luma保存在一个单独的平面内，在处理黑白电影时，我们会变得更加轻松，因为我们可以提取luma平面并只在该平面上工作。</p>
 <pre><code class="language-py">y = src.std.ShufflePlanes(0, vs.GRAY)
 </code></pre>
-<p>The <code>get_y</code> function in <code>vsutil</code> does the same thing.
-With our <code>y</code> clip, we can perform functions without mod2 limitations.
-For example, we can perform odd crops:</p>
+<p><code>vsutil</code>中的<code>get_y</code>函数做了同样的事情。
+有了我们的<code>y</code>片段，我们可以执行没有mod2限制的功能。
+例如，我们可以进行奇数裁剪:</p>
 <pre><code class="language-py">crop = y.std.Crop(left=1)
 </code></pre>
-<p>Additionally, as filters are only applied on one plane, this can speed up our script.
-We also don't have to worry about filters like <code>f3kdb</code> altering our chroma planes in unwanted ways, such as graining them.</p>
-<p>However, when we're done with our clip, we usually want to export the clip as YUV.
-There are two options here:</p>
-<h3 id="1-using-fake-chroma"><a class="header" href="#1-using-fake-chroma">1. Using fake chroma</a></h3>
-<p>Using fake chroma is quick and easy and has the advantage that any accidental chroma offsets in the source (e.g. chroma grain) will be removed.
-All this requires is constant chroma (meaning no tint changes) and mod2 luma.</p>
-<p>The simplest option is for <code>u = v = 128</code> (8-bit):</p>
+<p>此外，由于滤镜只应用在一个平面上，这可以加快我们的脚本速度。
+我们也不必担心像<code>f3kdb</code>这样的滤镜会以不需要的方式改变我们的色度平面，例如使它们产生颗粒。</p>
+<p>然而，当我们完成我们的剪辑后，我们通常想把剪辑导出为YUV。
+这里有两个选项:</p>
+<h3 id="1-使用假色度"><a class="header" href="#1-使用假色度">1. 使用假色度</a></h3>
+<p>使用假的色度是快速和简单的，其优点是在源中任何意外的色度偏移（例如色度颗粒）将被删除。
+所有这一切都需要恒定的色度（意味着没有色调变化）和mod2 luma。</p>
+<p>最简单的选项是<code>u = v = 128</code>（8位）:</p>
 <pre><code class="language-py">out = y.resize.Point(format=vs.YUV420P8)
 </code></pre>
-<p>If you have an uneven luma, just pad it with <code>awsmfunc.fb</code>.
-Assuming you want to pad the left:</p>
+<p>如果你有一个不均匀的luma，只需用<code>awsmfunc.fb</code>来填充它。
+假设你想对左边进行填充:</p>
 <pre><code class="language-py">y = core.std.StackHorizontal([y.std.BlankClip(width=1), y])
 y = awf.fb(y, left=1)
 out = y.resize.Point(format=vs.YUV420P8)
 </code></pre>
-<p>Alternatively, if your source's chroma isn't a neutral gray, use <code>std.BlankClip</code>:</p>
+<p>另外，如果你的源的色度不是中性灰色，可以使用<code>std.BlankClip</code>:</p>
 <pre><code class="language-py">blank = y.std.BlankClip(color=[0, 132, 124])
 out = core.std.ShufflePlanes([y, blank], [0, 1, 2], vs.YUV)
 </code></pre>
-<h3 id="2-using-original-chroma-resized-if-necessary"><a class="header" href="#2-using-original-chroma-resized-if-necessary">2. Using original chroma (resized if necessary).</a></h3>
-<p>This has the advantage that, if there is actual important chroma information (e.g. slight sepia tints), this will be preserved.
-Just use <code>ShufflePlanes</code> on your clips:</p>
+<h3 id="2-使用原始色度必要时调整大小"><a class="header" href="#2-使用原始色度必要时调整大小">2. 使用原始色度（必要时调整大小）</a></h3>
+<p>这样做的好处是，如果有实际重要的色度信息（例如轻微的棕褐色色调），这将被保留下来。
+只要在你的素材上使用<code>ShufflePlanes</code>就可以了:</p>
 <pre><code class="language-py">out = core.std.ShufflePlanes([y, src], [0, 1, 2], vs.YUV)
 </code></pre>
-<p>However, if you've resized or cropped, this becomes a bit more difficult.
-You might have to shift or resize the chroma appropriately (see <a href="../filtering/chroma_rs.html">the chroma resampling chapter</a> for explanations).</p>
-<p>If you've cropped, extract and shift accordingly. We will use <code>split</code> and <code>join</code> from <code>vsutil</code> to extract and merge planes:</p>
+<p>然而，如果你已经调整了尺寸或裁剪，这就变得有点困难了。
+你可能必须适当地移动或调整色度（见<a href=".../filtering/chroma_rs.html">色度重采样章节</a>的解释）。</p>
+<p>如果你已经裁剪了，就提取并相应地移位。我们将使用<code>vsutil</code>的<code>split</code>和<code>join</code>来提取和合并平面:</p>
 <pre><code class="language-py">y, u, v = split(src)
 crop_left = 1
 y = y.std.Crop(left=crop_left)
@@ -212,7 +212,7 @@ u = u.resize.Spline36(src_left=crop_left / 2)
 v = v.resize.Spline36(src_left=crop_left / 2)
 out = join([y, u, v])
 </code></pre>
-<p>If you've resized, you need to shift and resize chroma:</p>
+<p>如果你已经调整了尺寸，你需要转移和调整色度的大小:</p>
 <pre><code class="language-py">y, u, v = split(src)
 w, h = 1280, 720
 y = y.resize.Spline36(w, h)
@@ -220,7 +220,7 @@ u = u.resize.Spline36(w / 2, h / 2, src_left=.25 - .25 * src.width / w)
 v = v.resize.Spline36(w / 2, h / 2, src_left=.25 - .25 * src.width / w)
 out = join([y, u, v])
 </code></pre>
-<p>Combining cropping and shifting, whereby we pad the crop and use <code>awsmfunc.fb</code> to create a fake line:</p>
+<p>结合裁剪和移位，据此我们垫高裁剪并使用<code>awsmfunc.fb</code>来创建一个假线:</p>
 <pre><code class="language-py">y, u, v = split(src)
 w, h = 1280, 720
 crop_left, crop_bottom = 1, 1
@@ -236,7 +236,7 @@ v = v.resize.Spline36(w / 2, h / 2, src_left=crop_left / 2 + (.25 - .25 * src.wi
 
 out = join([y, u, v])
 </code></pre>
-<p>If you don't understand exactly what's going on here and you encounter a situation like this, ask someone more experienced for help.</p>
+<p>如果你不明白这里到底发生了什么，遇到这样的情况，请向更有经验的人求助。</p>
 
                     </main>
 
