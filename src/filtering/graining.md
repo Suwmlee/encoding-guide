@@ -1,159 +1,159 @@
-# Graining
+# 颗粒化
 
-TODO: explain why we love grain so much and static vs. dynamic grain.  Also, images.
+TODO: 解释为什么我们这么喜欢颗粒，以及静态与动态颗粒。 还有，图像。
 
-# Graining Filters
+# 颗粒过滤器
 
-There are a couple different filters you can use to grain.
-As lots of functions work similarly, we will only cover AddGrain and libplacebo graining.
+你可以用几个不同的过滤器来颗粒化。
+由于很多函数的工作原理类似，我们将只介绍AddGrain和libplacebo颗粒。
 
 ## AddGrain
 
-This plugin allows you to add grain to the luma and chroma grains in differing strengths and grain patterns:
+这个插件允许你以不同的强度和颗粒模式在luma和chroma颗粒中添加颗粒。
 
 ```py
 grain = src.grain.Add(var=1.0, uvar=0.0, seed=-1, constant=False)
 ```
 
-Here, `var` controls the grain strength for the luma plane, and `uvar` controls the strength for the chroma plane.
-`seed` allows you to specify a custom grain pattern, which is useful if you'd like to reproduce a grain pattern multiple times, e.g. for comparing encodes.
-`constant` allows you to choose between static and dynamic grain.
+这里，`var`设置luma面的颗粒强度，`uvar`设置chroma面的强度。
+`seed`允许你指定一个自定义的颗粒模式，如果你想多次复制一个颗粒模式，例如用于比较编码，这很有用。
+`constant`允许你在静态和动态纹理之间进行选择。
 
-Raising the strength increases both the amount of grain added as well as the offset a grained pixel will have from the original pixel.
-For example, `var=1` will lead to values being up to 3 8-bit steps away from the input values.
+提高强度既可以增加颗粒的数量，也可以增加颗粒像素与原始像素的偏移。
+例如，`var=1'会导致数值与输入值相差3个8位数。
 
-There's no real point in using this function directly, but it's good to know what it does, as it's considered the go-to grainer.
+直接使用这个函数没有实际意义，但知道它的作用是很好的，因为它被认为是常用的颗粒器。
 
 <details>
-<summary>In-depth function explanation</summary>
-This plugin uses a normal distribution to find the values it changes the input by.
-The `var` parameter is the standard deviation (usually noted as \(\sigma\)) of the normal distribution.
+<summary>深入解释</summary>
+这个插件使用正态分布来寻找它改变输入的值。
+参数 `var` 是正态分布的标准差 (通常记做 \(\sigma\)) 。
 
-This means that (these are approximations):
-* \\(68.27\\%\\) of output pixel values are within \\(\pm1\times\mathtt{var}\\) of the input value
-* \\(95.45\\%\\) of output pixel values are within \\(\pm2\times\mathtt{var}\\) of the input value
-* \\(99.73\\%\\) of output pixel values are within \\(\pm3\times\mathtt{var}\\) of the input value
-* \\(50\\%\\) of output pixel values are within \\(\pm0.675\times\mathtt{var}\\) of the input value
-* \\(90\\%\\) of output pixel values are within \\(\pm1.645\times\mathtt{var}\\) of the input value
-* \\(95\\%\\) of output pixel values are within \\(\pm1.960\times\mathtt{var}\\) of the input value
-* \\(99\\%\\) of output pixel values are within \\(\pm2.576\times\mathtt{var}\\) of the input value
+这意味着 (这些都是近似值):
+* \\(68.27\\%\\) 的输出像素值在输入值的 \\(\pm1\times\mathtt{var}\\) 倍以内
+* \\(95.45\\%\\) 的输出像素值在输入值的 \\(\pm2\times\mathtt{var}\\) 倍以内
+* \\(99.73\\%\\) 的输出像素值在输入值的 \\(\pm3\times\mathtt{var}\\) 倍以内
+* \\(50\\%\\) 的输出像素值在输入值的 \\(\pm0.675\times\mathtt{var}\\) 倍以内
+* \\(90\\%\\) 的输出像素值在输入值的 \\(\pm1.645\times\mathtt{var}\\) 倍以内
+* \\(95\\%\\) 的输出像素值在输入值的 \\(\pm1.960\times\mathtt{var}\\) 倍以内
+* \\(99\\%\\) 的输出像素值在输入值的 \\(\pm2.576\times\mathtt{var}\\) 倍以内
 </details>
 
 ## placebo.Deband as a grainer
 
-Alternatively, using `placebo.Deband` solely as a grainer can also lead to some nice results:
+另外，只用`placebo.Deband`作为一个颗粒器，也能带来一些不错的结果。
 
 ```py
 grain = placebo.Deband(iterations=0, grain=6.0)
 ```
 
-The main advantage here is it runs on your GPU, so if your GPU isn't already busy with other filters, using this can get you a slight speed-up.
+这里的主要优势是它在你的GPU上运行，所以如果你的GPU还没有忙于其他的过滤器，使用这个可以让你的速度略有提高。
 
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入解释</summary>
 TODO
 </details>
 
 ## adaptive_grain
 
-This function from [`kagefunc`](https://github.com/Irrational-Encoding-Wizardry/kagefunc) applies AddGrain according to overall frame brightness and individual pixel brightness.
-This is very useful for covering up minor banding and/or helping x264 distribute more bits to darks.
+这个函数来自[`kagefunc`](https://github.com/Irrational-Encoding-Wizardry/kagefunc)，根据整体帧亮度和单个像素亮度应用AddGrain。
+这对于掩盖小的条带和/或帮助x264将更多的比特分配给暗部非常有用。
 
 ```py
 grain = kgf.adaptive_grain(src, strength=.25, static=True, luma_scaling=12, show_mask=False)
 ```
 
-`strength` here is `var` from AddGrain.
-The default or slightly lower is usually fine.
-You likely don't want to go above 0.75.
+这里的`强度`是AddGrain的`var`。
+默认值或稍低的值通常是好的。
+你可能不希望超过0.75。
 
-The `luma_scaling` parameter is used to control how strong it should favor darker frames over brighter frames, whereby lower `luma_scaling` will apply more grain to bright frames.
-You can use extremely low or extremely high values here depending on what you want.
-For example, if you want to grain all frames significantly, you might use `luma_scaling=5`, while if you just want to apply grain to darker parts of darker frames to cover up minor banding, you might use `luma_scaling=100`.
+`luma_scaling`参数用于控制它对暗色帧的偏爱程度，即较低的`luma_scaling`将对亮色帧应用更多的纹理。
+你可以在这里使用极低或极高的值，这取决于你想要什么。
+例如，如果你想对所有的帧进行明显的纹理处理，你可以使用`luma_scaling=5`，而如果你只想对较暗的帧的暗部进行纹理处理以掩盖轻微的带状物，你可以使用`luma_scaling=100`。
 
-`show_mask` shows you the mask that's used to apply the grain, with whiter meaning more grain is applied.
-It's recommended to switch this on when tuning `luma_scaling`.
+`show_mask`显示用于应用纹理的遮罩，越白意味着应用的纹理越多。
+建议在调整`luma_scaling`时打开它。
 
 <details>
-<summary>In-depth function explanation</summary>
-The author of the function wrote a <a href="https://blog.kageru.moe/legacy/adaptivegrain.html">fantastic blog post explaining the function and how it works</a>.
+<summary>深入解释</summary>
+该方法的作者写了一篇<a href="https://blog.kageru.moe/legacy/adaptivegrain.html">精彩的博文，解释了该函数和它的工作原理</a>。
 </details>
 
 ## GrainFactory3
 
-TODO: rewrite this or just remove it.
+TODO：重写或直接删除它。
 
-An older alternative to `kgf.adaptive_grain`, [`havsfunc`](https://github.com/HomeOfVapourSynthEvolution/havsfunc)'s `GrainFactory3` is still quite interesting.
-It splits pixel values into four groups based on their brightness and applies differently sized grain at different strengths via AddGrain to these groups.
+作为`kgf.adaptive_grain`的一个较早的替代品，[`havsfunc`](https://github.com/HomeOfVapourSynthEvolution/havsfunc)的`GrainFactory3`仍然相当有趣。
+它根据像素值的亮度将其分成四组，并通过AddGrain将不同大小的颗粒以不同的强度应用于这些组。
 
 ```py
 grain = haf.GrainFactory3(src, g1str=7.0, g2str=5.0, g3str=3.0, g1shrp=60, g2shrp=66, g3shrp=80, g1size=1.5, g2size=1.2, g3size=0.9, temp_avg=0, ontop_grain=0.0, th1=24, th2=56, th3=128, th4=160)
 ```
 
-The parameters are explained [above the source code](https://github.com/HomeOfVapourSynthEvolution/havsfunc/blob/master/havsfunc.py#L3720).
+参数的解释[在源代码上面](https://github.com/HomeOfVapourSynthEvolution/havsfunc/blob/master/havsfunc.py#L3720)。
 
-This function is mainly useful if you want to apply grain to specific frames only, as overall frame brightness should be taken into account if grain is applied to the whole video.
+这个函数主要是在你想只对特定的帧应用颗粒时有用，因为如果对整个视频应用颗粒，应该考虑整体的帧亮度。
 
-For example, `GrainFactory3` to make up for missing grain on left and right borders:
+例如，`GrainFactory3` 可以弥补左右边框的颗粒缺失:
 
 <p align="center"> 
 <img src='Pictures/grain0.png' onmouseover="this.src='Pictures/grain1.png';" onmouseout="this.src='Pictures/grain0.png';" />
 </p>
 
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入解释</summary>
 TODO
 
-In short: Create a mask for each brightness group, use bicubic resizing with sharpness controlling b and c to resize the grain, then apply that.
-Temporal averaging just averages the grain for the current frame and its direct neighbors using misc.AverageFrames.
+简而言之：为每个亮度组创建一个蒙版，使用双曲线调整大小，用锐度控制b和c来调整纹理的大小，然后应用这个。
+时间平均法只是使用misc.AverageFrames对当前帧和其直接邻接的纹理进行平均。
 </details>
 
 ## adptvgrnMod
 
-This function resizes grain in the same way `GrainFactory3` does, then applies it using the method from `adaptive_grain`.
-It also has some protection for darks and brights to maintain average frame brightness:
+这个函数以`GrainFactory3`的方式调整颗粒大小，然后使用`adaptive_grain`的方法进行应用。
+它还对暗部和亮部进行了一些保护，以保持平均帧亮度。
 
 ```py
 grain = agm.adptvgrnMod(strength=0.25, cstrength=None, size=1, sharp=50, static=False, luma_scaling=12, seed=-1, show_mask=False)
 ```
 
-Grain strength is controlled by `strength` for luma and `cstrength` for chroma.
-`cstrength` defaults to half of `strength`.
-Just like `adaptive_grain`, the default or slightly lower is usually fine, but you shouldn't go too high.
-If you're using a `size` greater than the default, you can get away with higher values, e.g. `strength=1`, but it's still advised to stay conservative with grain application.
+颗粒强度由luam的`strength`和chroma的`cstrength`控制。
+`cstrength`默认为`strength`的一半。
+就像`adaptive_grain`一样，默认值或稍低的值通常是好的，但你不应该太高。
+如果你使用的`size`大于默认值，你可以用更高的值，例如`strength=1`，但还是建议对颗粒应用保持保守。
 
-The `size` and `sharp` parameters allow you to make the applied grain look a bit more like the rest of the film's.
-It's recommended to play around with these so that fake grain isn't too obvious.
-In most cases, you will want to raise both of them ever so slightly, e.g. `size=1.2, sharp=60`.
+`size` and `sharp` 参数允许你使应用的颗粒看起来更像电影的其他部分。
+建议对这些参数进行调整，以便使假的颗粒不会太明显。
+在大多数情况下，你会想稍微提高这两个参数，例如：`size=1.2, sharp=60`。
 
-`static`, `luma_scaling`, and `show_mask` are equivalent to `adaptive_grain`, so scroll up for explanations.
-`seed` is the same as AddGrain's; again, scroll up.
+`static`、`luma_scaling`和`show_mask`等同于`adaptive_grain`，所以看上面的解释。
+`seed`与AddGrain的相同；同样，向上面解释。
 
-By default, `adptvgrnMod` will fade grain around extremes (16 or 235) and shades of gray.
-These features can be turned off by setting `fade_edges=False` and `protect_neutral=False` respectively.
+默认情况下，`adptvgrnMod`会淡化极值（16或235）附近的纹理和灰色的阴影。
+这些功能可以通过设置`fade_edges=False`和`protect_neutral=False`分别关闭。
 
-It's recently become common practice to remove graining entirely from one's debander and grain debanded areas entirely with this function.
+最近，用这个功能从一个人的磨光机中完全去除颗粒，并将磨光的区域完全磨光，这已成为普遍的做法。
 
 ### sizedgrn
 
-If one wants to disable the brightness-based application, one can use `sizedgrn`, which is the internal graining function in `adptvgrnMod`.
+如果想禁用基于亮度的应用，可以使用`sizedgrn`，它是`adptvgrnMod`中的内部粒度函数。
 
 <details>
-<summary>Some examples of <code>adptvgrnMod</code> compared with <code>sizedgrn</code> for those curious</summary>
+<summary>一些 <code>adptvgrnMod</code> 与 <code>sizedgrn</code> 对比的例子，供好奇的人参考</summary>
 
-A bright scene, where the brightness-based application makes a large difference:
+一个明亮的场景，基于亮度的应用产生了很大的差异:
 
 <p align="center"> 
 <img src='Pictures/graining4.png' onmouseover="this.src='Pictures/graining7.png';" onmouseout="this.src='Pictures/graining4.png';" />
 </p>
 
-An overall darker scene, where the difference is a lot smaller:
+一个整体较暗的场景，其中的差异要小得多:
 
 <p align="center"> 
 <img src='Pictures/graining3.png' onmouseover="this.src='Pictures/graining6.png';" onmouseout="this.src='Pictures/graining3.png';" />
 </p>
 
-A dark scene, where grain is applied evenly (almost) everywhere in the frame:
+一个黑暗的场景，在画面中的每一个地方都均匀地（几乎）应用了颗粒:
 
 <p align="center"> 
 <img src='Pictures/graining5.png' onmouseover="this.src='Pictures/graining8.png';" onmouseout="this.src='Pictures/graining5.png';" />
@@ -161,27 +161,27 @@ A dark scene, where grain is applied evenly (almost) everywhere in the frame:
 </details>
 
 <details>
-<summary>In-depth function explanation</summary>
-(Old write-up from the function's author.)
+<summary>深入解释</summary>
+(该功能的作者的旧文。)
 
 ### Size and Sharpness
 
-The graining part of adptvgrnMod is the same as GrainFactory3's; it creates a "blank" (midway point of bit depth) clip at a resolution defined by the size parameter, then scales that via a bicubic kernel that uses b and c values determined by sharp:
+adptvgrnMod的颗粒化部分与GrainFactory3的相同；它在尺寸参数定义的分辨率下创建一个 "空白"（比特深度的中间点）剪辑，然后通过一个使用由sharp决定的b和c值的二次方内核进行扩展:
 
 $$\mathrm{grain\ width} = \mathrm{mod}4 \left( \frac{\mathrm{clip\ width}}{\mathrm{size}} \right)$$
 
-For example, with a 1920x1080 clip and a size value of 1.5:
+例如，一个1920x1080的片段，尺寸值为1.5:
 
 $$ \mathrm{mod}4 \left( \frac{1920}{1.5} \right) = 1280 $$
 
-This determines the size of the frame the grainer operates on.
+这决定了颗粒器所操作的帧的大小。
 
-Now, the bicubic kernel's parameters are determined:
+现在，决定使用bicubic kernel的参数:
 
 $$ b = \frac{\mathrm{sharp}}{-50} + 1 $$
 $$ c = \frac{1 - b}{2} $$
 
-This means that for the default sharp of 50, a Catmull-Rom filter is used:
+这意味着，对于默认的50的锐度，使用的是Catmull-Rom过滤器:
 
 $$ b = 0, \qquad c = 0.5 $$
 
