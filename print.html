@@ -2056,15 +2056,15 @@ this on for blurry content, as it's an additional blur that'll help
 prevent banding.</p>
 </li>
 </ul>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="taking-screenshots"><a class="header" href="#taking-screenshots">Taking Screenshots</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="进行截图-taking-screenshots"><a class="header" href="#进行截图-taking-screenshots">进行截图 Taking Screenshots</a></h1>
 <p>在VapourSynth中拍摄简单的屏幕截图是非常容易的。如果你使用的是预览器，你可以用它来代替，但知道如何直接通过VapourSynth进行截图可能还是很有用的。</p>
 <p>我们推荐使用 <code>awsmfunc.ScreenGen</code>.
 它有两个优势:</p>
 <ol>
-<li>保存了帧数信息，可以很容易地再次参考这些，例如，如果你想重新做你的截图。</li>
-<li>它为你处理适当的转换和压缩，而有些预览器（如VSEdit）可能不是这样。</li>
+<li>保存了帧数编号，可以很容易地再次参考，例如，如果你想重新做你的截图。</li>
+<li>为你处理适当的转换和压缩，而有些预览器（如VSEdit）可能不是这样的。</li>
 </ol>
-<p>要使用 &quot;ScreenGen&quot;，创建一个你想要截图的新文件夹，例如 &quot;Screenshots&quot;，和一个名为 &quot;screen.txt &quot;的文件，其中包含你想要截图的帧数。, 例如：</p>
+<p>要使用<code>ScreenGen</code>，创建一个你想要截图的新文件夹，例如 &quot;Screenshots&quot;，和一个名为 &quot;screen.txt &quot;的文件，其中包含你想要截图的帧数,例如:</p>
 <pre><code>26765
 76960
 82945
@@ -2074,15 +2074,16 @@ prevent banding.</p>
 <p>然后，在你的VapourSynth脚本的底部，写上</p>
 <pre><code>awf.ScreenGen(src, &quot;Screenshots&quot;, &quot;a&quot;)
 </code></pre>
-<p>`a'是放在帧号后面的东西。这对于保持组织性和对截图进行分类是很有用的，同时也可以防止不必要的截图被覆盖。</p>
+<p><code>a</code>是放在帧编号后面的东西。这对于保持组织性和对截图进行分类是很有用的，同时也可以防止不必要的截图被覆盖。</p>
 <p>现在，在命令行中运行你的脚本（或在预览器中重新加载）。</p>
 <pre><code class="language-sh">python vapoursynth_script.vpy
 </code></pre>
 <p>完成!
 你的截图现在应该在给定的文件夹中。</p>
-<h1 id="comparing-source-vs-encode"><a class="header" href="#comparing-source-vs-encode">Comparing Source vs. Encode</a></h1>
-<p>将源码与你的编码进行比较，可以让潜在的下载者轻松判断你的编码质量。
-当采取这些时，重要的是包括你要比较的框架类型，例如比较两个<code>I'框架将导致极其有利的结果。 你可以使用</code>awsmfunc.FrameInfo`来做这个。</p>
+<h1 id="对比源与压制-comparing-source-vs-encode"><a class="header" href="#对比源与压制-comparing-source-vs-encode">对比源与压制 Comparing Source vs. Encode</a></h1>
+<p>将source与你的压制进行比较，可以让潜在的下载者轻松判断你的压制质量。
+当采取这些时，重要的是包括你要比较的帧类型，例如比较两个<code>I</code>帧将导致极其有利的结果。
+你可以使用<code>awsmfunc.FrameInfo</code>来做这个。</p>
 <pre><code class="language-py">src = awf.FrameInfo(src, &quot;Source&quot;)
 encode = awf.FrameInfo(encode, &quot;Encode&quot;)
 </code></pre>
@@ -2095,10 +2096,10 @@ awf.ScreenGen(src, &quot;Screenshots&quot;, &quot;a&quot;)
 encode = awf.FrameInfo(encode, &quot;Encode&quot;)
 awf.ScreenGen(encode, &quot;Screenshots&quot;, &quot;b&quot;)
 </code></pre>
-<p>注意，在编码的<code>ScreenGen</code>中，<code>&quot;a&quot;</code>被替换成了<code>&quot;b&quot;</code>。
-这将允许你按名字对文件夹进行排序，并且每张源截图后面都有一个编码截图，使上传更容易。</p>
-<h3 id="hdr-comparisons"><a class="header" href="#hdr-comparisons">HDR comparisons</a></h3>
-<p>对于比较HDR源和HDR编码，建议使用色调图。
+<p>注意，在压制的<code>ScreenGen</code>中，<code>&quot;a&quot;</code>被替换成了<code>&quot;b&quot;</code>。
+这将允许你按名字对文件夹进行排序，并且每张源截图后面都有一个压制截图，使上传更容易。</p>
+<h3 id="hdr对比-hdr-comparisons"><a class="header" href="#hdr对比-hdr-comparisons">HDR对比 HDR comparisons</a></h3>
+<p>对于比较HDR源和HDR压制，建议使用色调图。
 这个过程是破坏性的，但你仍然能够分辨出哪些地方被扭曲了，哪些地方被平滑了等等。</p>
 <p>为此推荐的函数是<code>awsmfunc.DynamicTonemap</code>:</p>
 <pre><code class="language-py">src = awf.DynamicTonemap(src, src_fmt=False, libplacebo=False)
@@ -2107,17 +2108,17 @@ encode = awf.DynamicTonemap(encode, src_fmt=False, libplacebo=False)
 <p>注意，我们在这里禁用了<code>src_fmt</code>和<code>libplacebo</code>。
 将前者设置为<code>True</code>会输出10位4:2:0，这是次优的，因为屏幕截图通常是以8位RGB（没有色度子采样）呈现。
 后者被推荐用于比较，因为使用libplacebo会使你的色调图在亮度上更有可能不同，使比较更加困难。</p>
-<h2 id="choosing-frames"><a class="header" href="#choosing-frames">Choosing frames</a></h2>
-<p>在进行截图时，重要的是不要让你的编码看起来有欺骗性的透明。
-要做到这一点，你需要确保你截图的是适当的框架类型，以及内容上不同的框架。</p>
+<h2 id="选择帧-choosing-frames"><a class="header" href="#选择帧-choosing-frames">选择帧 Choosing frames</a></h2>
+<p>在进行截图时，重要的是不要让你的压制看起来有欺骗性的透明。
+要做到这一点，你需要确保你截图的是适当的帧类型，以及内容上不同的帧。</p>
 <p>幸运的是，这里没有太多需要记住的东西:</p>
 <ul>
-<li>你的编码的截图应该<em>永远</em>是<em>B</em>类型帧。</li>
+<li>你的压制的截图应该<em>永远</em>是<em>B</em>类型帧。</li>
 <li>你的源的截图<em>不应该</em>是<em>I</em>类型帧。</li>
 <li>你的比较应该包括黑暗场景、明亮场景、特写镜头、远景镜头、静态场景、高度动作场景，以及你在这两者之间的任何内容。</li>
 </ul>
-<h1 id="comparing-different-sources"><a class="header" href="#comparing-different-sources">Comparing Different Sources</a></h1>
-<p>当比较不同的来源时，你应该进行类似于比较来源与编码的工作。
+<h1 id="比较不同的源-comparing-different-sources"><a class="header" href="#比较不同的源-comparing-different-sources">比较不同的源 Comparing Different Sources</a></h1>
+<p>当比较不同的源时，你应该进行类似于比较源与压制的工作。
 然而，你可能会遇到不同的裁剪、分辨率或色调，所有这些都会妨碍比较的进行。</p>
 <p>对于不同的裁剪，只需将边框加回去:</p>
 <pre><code class="language-py">src_b = src_b.std.AddBorders(left=X, right=Y, top=Z, bottom=A)
@@ -2127,7 +2128,7 @@ encode = awf.DynamicTonemap(encode, src_fmt=False, libplacebo=False)
 <pre><code class="language-py">src_b = src_b.resize.Spline36(format=vs.YUV444P8, dither_type=&quot;error_diffusion&quot;)
 src_b = src_b.std.AddBorders(top=1, bottom=1)
 </code></pre>
-<p>对于不同的分辨率，建议使用一个简单的花键调整大小:</p>
+<p>对于不同的分辨率，建议使用一个简单的Spline36调整大小:</p>
 <pre><code class="language-py">src_b = src_b.resize.Spline36(src_a.width, src_a.height, dither_type=&quot;error_diffusion&quot;)
 </code></pre>
 <p>如果一个源是HDR，另一个是SDR，你可以使用<code>awsmfunc.DynamicTonemap</code>:</p>
