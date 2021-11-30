@@ -35,8 +35,8 @@
     clip_B.set_output(1)
 
 通常情况下，你会想先测试一下比特率。只要在几个不同的CRF下进行编码，并与源文件进行比较，找到与源文件无法区分的最高CRF值。
-现在，对数值进行四舍五入，最好是向下，并切换到2-pass。对于标准测试，测试qcomp（间隔为0.05），大内部的aq强度的aq模式（例如，对于一个aq模式做测试，aq强度从0.6到1.0，间隔为0.2），aq强度（间隔为0.05），merange（32，48和64），psy-rd（间隔为0.05），ipratio/bratio（间隔为0.05，距离保持为0.10），然后deblock（间隔为1）。
-如果你认为 mbtree 有所帮助（即你正在对动画进行编码），请在打开 mbtree 的情况下重做这个过程。你可能不会想怎么改变顺序，但肯定可以这样做。
+现在，对数值进行四舍五入，最好是向下，并切换到2-pass。对于标准测试，测试qcomp（间隔为0.05），有大跨度 aq-strengths 的 aq-modes（例如，对于一个aq-mode做测试，aq-strengths 从0.6到1.0，间隔为0.2），aq-strengths（间隔为0.05），merange（32，48和64），psy-rd（间隔为0.05），ipratio/bratio（间隔为0.05，距离保持为0.10），然后deblock（间隔为1）。
+如果你认为 mbtree 有所帮助（即你正在进行动画压制），请在打开 mbtree 的情况下重做这个过程。您可能不想对顺序进行太多更改，但当然可以这样做。
 
 对于x265，顺序应该是qcomp、aq-mode、aq-strength、psy-rd、psy-rdoq、ipratio和pbratio，然后是deblock。
 
