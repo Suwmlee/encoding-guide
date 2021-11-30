@@ -43,7 +43,7 @@ fix = rektlvls(src, rownum=[803, 802, 801, 800], rowval=[27, -10, 3, -3])
 <img src='Pictures/rektlvls_fix.png' onmouseover="this.src='Pictures/rektlvls_src.png';" onmouseout="this.src='Pictures/rektlvls_fix.png';"/>
 </p>
 <details>
-<summary>深入功能讲解</summary>
+<summary>深入解释</summary>
 In <code>FixBrightness</code> mode, this will perform an adjustment with
 <a href="www.vapoursynth.com/doc/functions/video/levels.html"><code>std.Levels</code></a> on the desired row. This means that, in 8-bit,
 every possible value \(v\) is mapped to a new value according to the
@@ -99,33 +99,25 @@ $$\begin{aligned}
 </details>
 
 ## `bbmod`\
-来自`awsmfunc`。 这是原BalanceBorders函数的一个模子。虽然它不能像`rektlvls'那样保留原始数据，但在高`blur'和`thresh'值的情况下，它可以产生很好的结果，而且很容易用于多行，特别是具有不同亮度的行，`rektlvls'就不再有用。如果它不能产生像样的结果，可以改变这些值，但是你设置得越低，这个函数的破坏性就越大。它也比`havsfunc`和`sgvsfunc`中的版本快得多，因为只有必要的像素被处理。\
+来自`awsmfunc`。 这是原BalanceBorders函数的一个模子。虽然它不能像`rektlvls`那样保留原始数据，但在高`blur`和`thresh`值的情况下，它可以产生很好的结果，而且很容易用于多行，特别是具有不同亮度的行，`rektlvls`就不再有用。如果它不能产生像样的结果，可以改变这些值，但是你设置得越低，这个函数的破坏性就越大。它也比`havsfunc`和`sgvsfunc`中的版本快得多，因为只有必要的像素被处理。\
 
 ```py
 import awsmfunc as awf
 bb = awf.bbmod(src=clip, left=0, right=0, top=0, bottom=0, thresh=[128, 128, 128], blur=[20, 20, 20], planes=[0, 1, 2], scale_thresh=False, cpass2=False)
 ```
 
-The arrays for `thresh` and `blur` are again y, u, and v values.
-It's recommended to try `blur=999` first, then lowering that and
-`thresh` until you get decent values.\
-`thresh` specifies how far the result can vary from the input. This
-means that the lower this is, the better. `blur` is the strength of
-the filter, with lower values being stronger, and larger values
-being less aggressive. If you set `blur=1`, you're basically copying
-rows. If you're having trouble with chroma, you can try activating
-`cpass2`, but note that this requires a very low `thresh` to be set,
-as this changes the chroma processing significantly, making it quite
-aggressive.\
+`thresh`和`blur`的数组同样是y、u和v值。
+建议首先尝试 `blur=999`，然后降低它和 `thresh`，直到你得到合适的值。
+`thresh` 指定了结果与输入值的差异程度。这意味着这个值越低越好。`blur`是过滤器的强度，数值越低越强，数值越大越不积极。如果你设置`blur=1`，你基本上是在复制行。如果你在色度方面有问题，你可以尝试激活`cpass2`，但要注意这需要设置一个非常低的`thresh`，因为这大大改变了色度处理，使其相当激进。
 
-For our example, I've created fake dirty lines, which we will fix:
+对于我们的例子，我已经创建了假的脏线，我们将修复它:
 
 <p align="center">
 <img src='Pictures/dirtfixes0.png';"/>
 </p>
 
-To fix this, we can apply `bbmod` with a low blur and a high thresh,
-meaning pixel values can change significantly:
+为了解决这个问题，我们可以应用`bbmod`，用低模糊度和高阈值。
+这意味着像素值会有很大的变化:
 
 ```py
 fix = awf.bbmod(src, top=6, thresh=90, blur=20)
@@ -134,18 +126,14 @@ fix = awf.bbmod(src, top=6, thresh=90, blur=20)
 <img src='Pictures/dirtfixes1.png' onmouseover="this.src='Pictures/dirtfixes0.png';" onmouseout="this.src='Pictures/dirtfixes1.png';"/>
 </p>
 
-Our output is already a lot closer to what we assume the source
-should look like. Unlike `rektlvls`, this function is quite quick to
-use, so lazy people (i.e. everyone) can use this to fix dirty lines
-before resizing, as the difference won't be noticeable after
-resizing.
+我们的输出已经非常接近于我们假设的源文件的样子了。与`rektlvls`不同，这个函数使用起来相当快，所以懒人（即每个人）可以在调整大小之前用它来修复脏线，因为在调整大小之后，差别不会很明显。
 
-While you can use `rektlvls` on as many rows/columns as necessary, the same doesn't hold true for `bbmod`.  Unless you are resizing after, you should only use `bbmod` on two rows/pixels for low `blur` values (\\(\approx 20\\)) or three for higher `blur` values.  If you are resizing after, you can change the maximum value according to:
+虽然你可以根据需要在许多行/列上使用`rektlvls`，但对`bbmod`来说却不是如此。 除非你之后调整大小，否则对于低的 `blur` 值(\\(\approx 20\\))，你应该只在两行/像素上使用`bbmod`，对于高的 `blur` 值，你应该使用三行/像素。如果你是之后调整大小，你可以根据以下情况改变最大值:
 \\[
 max_\mathrm{resize} = max \times \frac{resolution_\mathrm{source}}{resolution_\mathrm{resized}}
 \\]
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入解释</summary>
 <code>bbmod</code> works by blurring the desired rows, input rows, and
 reference rows within the image using a blurred bicubic kernel,
 whereby the blur amount determines the resolution scaled to accord
@@ -265,39 +253,25 @@ This is then resized back to the input size and merged using <code>MergeDiff</co
 </details>
 
 ## `FillBorders`\
-From [`fb`](https://github.com/dubhater/vapoursynth-fillborders).  This function pretty much just copies the next column/row in line.
-While this sounds, silly, it can be quite useful when downscaling
-leads to more rows being at the bottom than at the top, and one
-having to fill one up due to YUV420's mod2 height.
+来自[`fb`](https://github.com/dubhater/vapoursynth-fillborders)。 这个函数几乎就是复制下一列/行的内容。
+虽然这听起来很傻，但当降频导致更多的行在底部而不是顶部，并且由于YUV420的mod2高度，我们必须填补一个行时，它就会非常有用。
 
 ```py
 fill = core.fb.FillBorders(src=clip, left=0, right=0, bottom=0, top=0, mode="fixborders")
 ```
 
-A very interesting use for this function is one similar to applying
-`ContinuityFixer` only to chroma planes, which can be used on gray
-borders or borders that don't match their surroundings no matter
-what luma fix is applied. This can be done with the following
-script:
+这个函数的一个非常有趣的用途是类似于只对色度平面应用`ContinuityFixer`，它可以用于灰色边界或无论应用什么luma修复都与周围环境不匹配的边界。这可以用下面的脚本来完成:
 
 ```py
 fill = core.fb.FillBorders(src=clip, left=0, right=0, bottom=0, top=0, mode="fixborders")
 merge = core.std.Merge(clipa=clip, clipb=fill, weight=[0,1])
 ```
 
-You can also split the planes and process the chroma planes
-individually, although this is only slightly faster. A wrapper that
-allows you to specify per-plane values for `fb` is `FillBorders` in
-`awsmfunc`.\
+你也可以分割平面，单独处理色度平面，尽管这样做只是稍微快一点。在`awsmfunc`中重新封装了`FillBorders`，它允许你为`fb`指定每个平面的值。
 
-Note that you should only ever fill single columns/rows with `FillBorders`.  If you have more black lines, crop them!  If there are frames requiring different crops in the video, don't fill these up.  More on this at the end of this chapter.
+注意，你应该只用`FillBorders`来填充单列/行。 如果你有更多的黑线，请裁剪它们  如果视频中存在需要不同裁剪的帧，不要把这些填满。 本章末尾会有更多这方面的内容。
 
-To illustrate what a source requiring `FillBorders` might look like,
-let's look at Parasite (2019)'s SDR UHD once again, which requires
-an uneven crop of 277. However, we can't crop this due to chroma
-subsampling, so we need to fill one row. To illustrate this, we'll
-only be looking at the top rows. Cropping with respect to chroma
-subsampling nets us:
+为了说明需要`FillBorders`的片源可能是什么样子，让我们再次看看Parasite (2019)的SDR UHD，它需要不均匀地裁剪277。然而，由于色度子采样，我们不能裁剪，所以我们需要填补一行。为了说明这一点，我们将只看最上面的几行。根据色度子采样进行裁剪，我们可以得到:
 
 ```py
 crp = src.std.Crop(top=276)
@@ -307,8 +281,7 @@ crp = src.std.Crop(top=276)
 <img src='Pictures/fb_src.png';"/>
 </p>
 
-Obviously, we want to get rid of the black line at the top, so let's
-use `FillBorders` on it:
+很明显，我们想去掉顶部的黑线，所以让我们对它使用`FillBorders`:
 
 ```py
 fil = crp.fb.FillBorders(top=1, mode="fillmargins")
@@ -317,10 +290,8 @@ fil = crp.fb.FillBorders(top=1, mode="fillmargins")
 <img src='Pictures/fb_luma.png' onmouseover="this.src='Pictures/fb_src.png';" onmouseout="this.src='Pictures/fb_luma.png';"/>
 </p>
 
-This already looks better, but the orange tones look washed out.
-This is because `FillBorders` only fills one chroma if **two** luma
-are fixed. So, we need to fill chroma as well. To make this easier
-to write, let's use the `awsmfunc` wrapper:
+这看起来已经比较好了，但是橙色的色调看起来被洗掉了。
+这是因为`FillBorders`在**两个**的luma被固定的情况下只能填充一个chroma。所以，我们也需要填充色度。为了使这个更容易写，让我们使用`awsmfunc`内封装的。
 
 ```py
 fil = awf.fb(crp, top=1)
@@ -329,9 +300,7 @@ fil = awf.fb(crp, top=1)
 <img src='Pictures/fb_lumachroma.png' onmouseover="this.src='Pictures/fb_luma.png';" onmouseout="this.src='Pictures/fb_lumachroma.png';"/>
 </p>
 
-Our source is now fixed. Some people may want to resize the chroma
-to maintain original aspect ratio performing lossy resampling on chroma, but whether
-this is the way to go is not generally agreed upon. If you want to go this route:
+我们的来源现在已经固定了。有些人可能想调整色度的大小，以保持原来的长宽比，对色度进行有损重采样，但这是否是一种方式，一般没有共识。如果你想走这条路:
 
 ```py
 top = 1
@@ -341,7 +310,7 @@ fil = awf.fb(crp, top=top, bottom=bot)
 out = fil.resize.Spline36(crp.width, new_height, src_height=new_height, src_top=top) 
 ```
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入解释</summary>
 <code>FillBorders</code> has four modes, although we only really care about mirror, fillmargins, and fixborders.
 The mirror mode literally just mirrors the previous pixels.  Contrary to the third mode, repeat, it doesn't just mirror the final row, but the rows after that for fills greater than 1.  This means that, if you only fill one row, these modes are equivalent.  Afterwards, the difference becomes obvious.
 
@@ -351,33 +320,17 @@ The fixborders mode is a modified fillmargins that works the same for rows and c
 </details>
 
 ## `ContinuityFixer`\
-From [`cf`](https://gitlab.com/Ututu/VS-ContinuityFixer).  `ContinuityFixer` works by comparing the rows/columns specified to
-the amount of rows/columns specified by `range` around it and
-finding new values via least squares regression. Results are similar
-to `bbmod`, but it creates entirely fake data, so it's preferable to
-use `rektlvls` or `bbmod` with a high blur instead. Its settings
-look as follows:
+来自[`cf`](https://gitlab.com/Ututu/VS-ContinuityFixer)。 `ContinuityFixer`的工作方式是将指定的行/列与周围`range`指定的行/列数量进行比较，通过最小二乘法回归找到新的数值。结果与`bbmod`相似，但它创建的数据完全是假的，所以最好使用`rektlvls`或`bbmod`来代替高模糊度。它的设置看起来如下:
 
 ```py
 fix = core.cf.ContinuityFixer(src=clip, left=[0, 0, 0], right=[0, 0, 0], top=[0, 0, 0], bottom=[0, 0, 0], radius=1920)
 ```
 
-This is assuming you're working with 1080p footage, as `radius`'s
-value is set to the longest set possible as defined by the source's
-resolution. I'd recommend a lower value, although not going much
-lower than 3, as at that point, you may as well be copying pixels
-(see `FillBorders` below for that). What will probably throw off
-most newcomers is the array I've entered as the values for
-rows/columns to be fixed. These denote the values to be applied to
-the three planes. Usually, dirty lines will only occur on the luma
-plane, so you can often leave the other two at a value of 0. Do note
-an array is not necessary, so you can also just enter the amount of
-rows/columns you'd like the fix to be applied to, and all planes
-will be processed.\
+这是假设你使用的是1080p的素材，因为`radius`的值被设置为源的分辨率所定义的最长的一组。我推荐一个更低的值，但不要低于3，因为在这一点上，你可能是在复制像素（见下面的`FillBorders`）。可能会让大多数新手感到困惑的是我所输入的行/列固定值的数组。这些值表示要应用于三个平面的值。通常情况下，脏线只发生在luma平面上，所以你可以把其他两个平面的值保持为0。请注意，数组不是必须的，所以你也可以直接输入你想要修复的行/列的数量，所有平面都会被处理。
 
-As `ContinuityFixer` is less likely to keep original data in tact, it's recommended to prioritize `bbmod` over it.
+由于`ContinuityFixer`不太可能保持原始数据，建议优先使用`bbmod`而不是它。
 
-Let's look at the `bbmod` example again and apply `ContinuityFixer`:
+让我们再看一下`bbmod`的例子，并应用`ContinuityFixer`:
 
 ```py
 fix = src.cf.ContinuityFixer(top=[6, 6, 6], radius=10)
@@ -386,58 +339,43 @@ fix = src.cf.ContinuityFixer(top=[6, 6, 6], radius=10)
 <img src='Pictures/dirtfixes2.png' onmouseover="this.src='Pictures/dirtfixes0.png';" onmouseout="this.src='Pictures/dirtfixes2.png';"/>
 </p>
 
-Let's compare this with the bbmod fix (remember to mouse-over to compare):
+让我们把这个和bbmod的修复进行比较（记得鼠标移到上面去比较）:
 
 <p align="center">
 <img src='Pictures/dirtfixes2.png' onmouseover="this.src='Pictures/dirtfixes1.png';" onmouseout="this.src='Pictures/dirtfixes2.png';"/>
 </p>
-The result is ever so slightly in favor of <code>ContinuityFixer</code> here.
-This will rarely be the case, as `ContinuityFixer` tends to be more destructive
-than `bbmod` already is.
+结果在这里 <code>ContinuityFixer</code> 稍微好一点。
+这种情况很少发生，因为`ContinuityFixer`往往比`bbmod`更具破坏性。
 
-Just like `bbmod`, `ContinuityFixer` shouldn't be used on more than two rows/columns.  Again, if you're resizing, you can change this maximum accordingly:
+就像`bbmod`一样，`ContinuityFixer`不应该被用于超过两行/列。 同样，如果你要调整大小，你可以相应改变这个最大值:
 \\[
 max_\mathrm{resize} = max \times \frac{resolution_\mathrm{source}}{resolution_\mathrm{resized}}
 \\]   
 <details>
-<summary>In-depth function explanation</summary>
+<summary>深入解释</summary>
 <code>ContinuityFixer</code> works by calculating the <a href=https://en.wikipedia.org/wiki/Least_squares>least squares
 regression</a> of the pixels within the radius. As such, it creates
 entirely fake data based on the image's likely edges.  No special explanation here.
 </details>
 
 ## `ReferenceFixer`\
-From [`edgefixer`](https://github.com/sekrit-twc/EdgeFixer).  This requires the original version of `edgefixer` (`cf` is just an
-old port of it, but it's nicer to use and processing hasn't
-changed). I've never found a good use for it, but in theory, it's
-quite neat. It compares with a reference clip to adjust its edge fix
-as in `ContinuityFixer`.:
+来自[`edgefixer`](https://github.com/sekrit-twc/EdgeFixer)。 这需要原始版本的`edgefixer`（`cf`只是它的一个旧的移植版本，但它更好用，而且处理过程没有改变）。我从来没有发现它有什么用处，但在理论上，它是相当整洁的。它与参考素材进行比较，以调整其边缘固定，就像在`ContinuityFixer`中一样。
 
 ```py
 fix = core.edgefixer.Reference(src, ref, left=0, right=0, top=0, bottom=0, radius = 1920)
 ```
 
-## Notes
+## 笔记
 
-### Too many rows/columns
+### 太多的行/列
 
-One thing that shouldn't be ignored is that applying these fixes (other
-than `rektlvls`) to too many rows/columns may lead to these looking
-blurry on the end result. Because of this, it's recommended to use
-`rektlvls` whenever possible or carefully apply light fixes to only the
-necessary rows. If this fails, it's better to try `bbmod` before using
-`ContinuityFixer`.
+有一点不应该被忽视的是，将这些修正（除了`rektlvls`）应用于太多的行/列，可能会导致这些行/列在最终结果上看起来模糊不清。正因为如此，建议尽可能使用`rektlvls`，或者只在必要的行上仔细应用轻量级的修正。如果失败了，最好在使用 "ContinuityFixer "之前尝试一下`bbmod`。
 
-### Resizing
+### 调整大小
 
-It's important to note that you should *always* fix dirty lines before
-resizing, as not doing so will introduce even more dirty lines. However,
-it is important to note that, if you have a single black line at an edge
-that you would use `FillBorders` on, you should remove that using your
-resizer.\
+值得注意的是，在调整大小之前，你应该*始终*修复脏线，因为不这样做会引入更多的脏线。然而，重要的是要注意，如果你在一个边缘有一条黑线，你可以使用`FillBorders`，你应该用你的调整器把它删除。
 
-For example, to resize a clip with a single filled line at the top to
-\\(1280\times536\\) from \\(1920\times1080\\):
+例如，要将一个顶部有一条填充线的剪辑从\\(1920\times1080\\)到\\(1280\times536\\):
 
 ```py
 top_crop = 138
@@ -450,33 +388,28 @@ fix = core.fb.FillBorders(crop, top=top_fill, bottom=bot_fill, mode="fillmargins
 resize = core.resize.Spline36(1280, 536, src_top=top_fill, src_height=src_height)
 ```
 
-### Diagonal borders
+### 对角线的边框
 
-If you're dealing with diagonal borders, the proper approach here is to
-mask the border area and merge the source with a `FillBorders` call. An
-example of this (from the Your Name (2016)):
+如果你要处理对角线的边框，这里正确的做法是屏蔽边框区域，用`FillBorders`调用来合并源。这方面的一个例子 (来自 你的名字 (2016)):
 
 <p align="center">
 <img src='Pictures/improper_borders0.png' onmouseover="this.src='Pictures/improper_borders1.png';" onmouseout="this.src='Pictures/improper_borders0.png';"/>
 </p>
 
-Fix compared with unmasked in fillmargins mode and contrast adjusted for clarity:
+修正在填充边缘模式下与未填充的比较，并调整对比度以获得清晰的效果:
 <p align="center">
 <img src='Pictures/improper_borders_adjusted1.png' onmouseover="this.src='Pictures/improper_borders_adjusted2.png';" onmouseout="this.src='Pictures/improper_borders_adjusted1.png';"/>
 </p>
 
-Code used (note that this was detinted after):
+使用的代码（注意，这是除着色后的结果）:
 ```py
 mask = core.std.ShufflePlanes(src, 0, vs.GRAY).std.Binarize(43500)
 cf = core.fb.FillBorders(src, top=6, mode="mirror").std.MaskedMerge(src, mask)
 ```
 
-### Finding dirty lines
+### 寻找脏线
 
-Dirty lines can be quite difficult to spot. If you don't immediately
-spot any upon examining borders on random frames, chances are you'll be
-fine. If you know there are frames with small black borders on each
-side, you can use something like the [following script](https://gitlab.com/snippets/1834089):
+脏线可能相当难以发现。如果你在检查随机框架的边框时没有立即发现任何问题，那么你很可能会没事。如果你知道有一些框架的每一面都有小的黑色边框，你可以使用类似[以下脚本](https://gitlab.com/snippets/1834089)的东西:
 
 ```py
 def black_detect(clip, thresh=None):
@@ -491,23 +424,13 @@ def black_detect(clip, thresh=None):
     return core.std.StackVertical([t, b])
 ```
 
-This script will make values under the threshold value (i.e. the black
-borders) show up as vertical or horizontal white lines in the middle on
-a mostly black background. If no threshold is given, it will simply
-center the edges of the clip. You can just skim through your video with
-this active. An automated alternative would be [`dirtdtct`](https://git.concertos.live/AHD/awsmfunc/src/branch/master/awsmfunc/detect.py), which scans
-the video for you.
+这个脚本将使阈值以下的数值（即黑色边界）显示为大部分黑色背景上中间的垂直或水平白线。如果没有给出阈值，它将简单地将剪辑的边缘居中。你可以在激活这个功能的情况下浏览一下你的视频。一个自动的替代方法是[`dirtdtct`](https://git.concertos.live/AHD/awsmfunc/src/branch/master/awsmfunc/detect.py)，它将为你扫描视频。
 
-Other kinds of variable dirty lines are a bitch to fix and require
-checking scenes manually.
+其他种类的可变脏线是一个婊子修复，需要手动检查场景。
 
-### Variable borders
+### 可变的边界
 
-An issue very similar to dirty lines is unwanted borders. During scenes with
-different crops (e.g. IMAX or 4:3), the black borders may sometimes not
-be entirely black, or be completely messed up. In order to fix this,
-simply crop them and add them back. You may also want to fix dirty lines
-that may have occurred along the way:
+一个与脏线非常相似的问题是不需要的边框。在不同裁剪的场景中（如IMAX或4:3），黑色边框有时可能不完全是黑色的，或者完全被打乱了。为了解决这个问题，只需将其裁剪并重新添加。你也可能想修复沿途可能出现的脏线:
 
 ```py
 crop = core.std.Crop(src, left=100, right=100)
@@ -515,7 +438,7 @@ clean = core.cf.ContinuityFixer(crop, left=2, right=2, top=0, bottom=0, radius=2
 out = core.std.AddBorders(clean, left=100, right=100)
 ```
 
-If you're resizing, you should crop these off before resizing, then add the borders back, as leaving the black bars in during the resize will create dirty lines:
+如果你要调整大小，你应该在调整大小之前把这些裁剪掉，然后再把边框加回来，因为在调整大小的过程中留下黑条会产生脏线:
 ```py
 crop = src.std.Crop(left=100, right=100)
 clean = crop.cf.ContinuityFixer(left=2, right=2, top=2, radius=25)
@@ -524,6 +447,6 @@ border_size = (1280 - resize.width) / 2
 bsize_mod2 = border_size % 2
 out = resize.std.AddBorders(left=border_size - bsize_mod2, right=border_size + bsize_mod2)
 ```
-In the above example, we have to add more to one side than the other to reach our desired width.  Ideally, your `border_size` will be mod2 and you won't have to do this.
+在上面的例子中，我们必须在一边比另一边多加一些，以达到我们想要的宽度。 理想情况下，你的`border_size`是mod2，你就不必这样做了。
 
-If you know you have borders like these, you can use `brdrdtct` from `awsmfunc` similarly to `dirtdtct` to scan the file for them.
+如果你知道你有这样的边界，你可以使用`awsmfunc`中的`brdrdtct`，类似于`dirtdtct`来扫描文件中的边界。
