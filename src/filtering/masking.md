@@ -1,10 +1,6 @@
-# this needs to be reformatted
+# 需要重新格式化
 
-Masking is a less straightforward topic. The idea is to limit the
-application of filters according to the source image's properties. A
-mask will typically be grayscale, whereby how much of the two clips in
-question are applied is determined by the mask's brightness. So, if you
-do
+蒙版是一个不那么直接的话题。其原理是根据源图像的属性来限制滤镜的应用。蒙版通常是灰度的，据此，应用多少有关的两个片段是由蒙版的亮度决定的。所以，如果你做
 
 ```py
 mask = mask_function(src)
