@@ -194,7 +194,7 @@
 但是，多次在位深度之间切换会浪费 CPU 周期，并且在极端情况下还会改变图像。</p>
 <h2 id="更改位深-changing-bit-depths"><a class="header" href="#更改位深-changing-bit-depths">更改位深 Changing bit depths</a></h2>
 <p>要在更高的位深度下工作，您可以在脚本filter部分的开头和结尾使用<code>vsutil</code>库中的 <code>depth</code> 方法。
-默认情况下，这将使用高质量的抖动算法，并且只需要几次击键：</p>
+这将在默认情况下使用高质量的抖动算法，而且只需按几下键盘。</p>
 <pre><code class="language-py">from vsutil import depth
 
 src = depth(src, 16)

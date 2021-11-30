@@ -169,7 +169,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="解放缩-descaling"><a class="header" href="#解放缩-descaling">解放缩 Descaling</a></h1>
-<p>如果你读过一些关于动漫编码的文章，你可能听说过 &quot;解放缩&quot;这个词；这是一个通过找到原始分辨率和使用的调整内核来 &quot;逆转 &quot;升频的过程。
+<p>如果你读过一些关于压制动漫的文章，你可能听说过 &quot;解放缩Descaling&quot;这个词；这是一个通过找到原始分辨率和使用的调整内核来 &quot;逆转&quot; 拉伸的过程。
 如果操作正确，这是一个近乎无损的过程，并产生比标准 Spline36 调整大小更清晰的输出，并减少光晕伪影。
 然而，如果做得不对，这只会增加已经存在的问题，如光晕、振铃等。</p>
 <p>最常用的反比例插件是<a href="https://github.com/Irrational-Encoding-Wizardry/vapoursynth-descale">Descale</a>，它最容易通过<a href="https://github.com/Irrational-Encoding-Wizardry/fvsfunc"><code>fvsfunc</code></a>调用，它对每个内核都有一个别名，例如<code>fvf.Debilinear</code>。
@@ -186,8 +186,8 @@ out = core.std.Interleave([descale, spline])
 <img src='Pictures/descale0.png' onmouseover="this.src='Pictures/descale1.png';" onmouseout="this.src='Pictures/descale0.png';" />
 </p>
 <h2 id="原生分辨率和内核"><a class="header" href="#原生分辨率和内核">原生分辨率和内核</a></h2>
-<p>现在，当你想降级时，你需要做的第一件事是弄清楚用什么来调整视频的大小，以及从哪个分辨率来调整大小。
-这方面最流行的工具是<a href="https://github.com/Infiziert90/getnative">getnative</a>，它允许你给它提供一张图片，然后它将对其进行降级、调整大小，并计算出与来源的差异，然后绘制出结果，这样你就可以找到原始分辨率。</p>
+<p>现在，当你想解放缩时，你需要做的第一件事是弄清楚用什么来调整视频的大小，以及从哪个分辨率来调整大小。
+这方面最流行的工具是<a href="https://github.com/Infiziert90/getnative">getnative</a>，它允许你给它提供一张图片，然后它将对其进行解放缩、调整大小，并计算出与来源的差异，然后绘制出结果，这样你就可以找到原始分辨率。</p>
 <p>为了使其发挥最大的作用，你要找到一个明亮的画面，并有非常少的模糊、视觉效果、纹理等。</p>
 <p>一旦你找到了一个，你就可以按以下方式运行脚本:</p>
 <pre><code class="language-sh">python getnative.py image.png -k bilinear
@@ -227,7 +227,7 @@ out = core.std.Interleave([src, merge_chroma])
 </p>
 <h1 id="混合分辨率"><a class="header" href="#混合分辨率">混合分辨率</a></h1>
 <p>上面关于不正确的内核和高度的例子应该很明显，不正确的解放缩是相当有破坏性的。
-不幸的是，大多数可以被降级的视频都有其他分辨率的元素。
+不幸的是，大多数可以被解放缩的视频都有其他分辨率的元素。
 有时，一帧中的不同元素会有不同的分辨率，例如，背景是900p的，人物A是810p的，人物B是720p的。
 在这样的情况下，通常做一个简单的 spline36 调整大小是比较安全的。
 从技术上讲，人们可以做大量的遮罩来解决这个问题，但这是一个很大的努力，而且遮罩很可能会失败。</p>

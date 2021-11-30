@@ -170,9 +170,9 @@
                     <main>
                         <h1 id="介绍"><a class="header" href="#介绍">介绍</a></h1>
 <p><a href="https://git.concertos.live/Encode_Guide/mdbook-guide">https://git.concertos.live/Encode_Guide/mdbook-guide</a></p>
-<p>本指南既可以作为对制作高质量编码作品感兴趣的新手的起点，也可以作为有压制经验人员的参考。
-因此，在大多数功能介绍完并解释了它们的用途之后，可以找到深入的解释资料。
-这些只是为想深入研究的人提供简单扩展，不是只依靠阅读就能运用的。</p>
+<p>本指南的目的是为对制作高质量编码感兴趣的新人提供一个起点，同时也为有经验的编码者提供参考。
+因此，在介绍了大多数功能和解释了它们的用途之后，可以找到一个深入的解释。
+这些都是为好奇者提供的简单补充，绝不是应用该功能的必要阅读。</p>
 <h1 id="术语"><a class="header" href="#术语">术语</a></h1>
 <p>为此，涉及有关视频的基本术语和知识。
 一些解释将被大大简化，因为在 Wikipedia、AviSynth wiki 等网站上应该有很多页面对这些主题进行解释。</p>
@@ -185,15 +185,15 @@
 <a href="https://en.wikipedia.org/wiki/Chroma_subsampling">关于色度子采样的Wikipedia</a> 应该足以解释这是如何工作的。
 由于我们通常希望保持 4:2:0 格式，因此我们的框架尺寸受到限制，因为亮度平面的大小必须被 2 整除。
 这意味着我们不能进行不均匀的裁剪或将大小调整为不均匀的分辨率。
-但是，在必要时，我们可以在每个平面中单独处理，这些将会在 <a href="">过滤章节</a> 进行解释。</p>
+但是，在必要时，我们可以在每个平面中单独处理，这些将会在 <a href="filtering/filtering.html">过滤章节</a> 进行解释。</p>
 <p>此外，我们的信息必须以特定的精度存储。
 通常，我们处理每平面 8-bit 的精度。
-但是，对于超高清蓝光，每平面标准是 10-bit 的精度。
+但是，对于UHD蓝光来说，每平面标准是 10-bit 的精度。
 这意味着每个平面的可能值范围从 0 到 \(2^8 - 1 = 255\)。
 在 <a href="filtering/bit_depths.html">位深章节</a>, 我们将介绍在更高的位深精度下工作，以提高过滤过程中的精度</p>
 <h2 id="vapoursynth"><a class="header" href="#vapoursynth">VapourSynth</a></h2>
 <p>我们将通过 Python 使用 VapourSynth 框架来进行裁剪、移除不需要的黑色边框、调整大小和消除源中不需要的产物。
-虽然使用 Python 可能听起来很吓人，但那些没有经验的人不必担心，因为我们只会做非常基本的事情。</p>
+虽然使用Python听起来令人生畏，但没有经验的人也不必担心，因为我们只做非常基本的事情。</p>
 <p>关于 VapourSynth 配置的资料不计其数，例如 <a href="https://guide.encode.moe/encoding/preparation.html#the-frameserver">the Irrational Encoding Wizardry's guide</a> 和 <a href="http://www.vapoursynth.com/doc/index.html">VapourSynth documentation</a>。
 因此，本指南不会涵盖安装和配置。</p>
 <p>在开始编写脚本前，知道每个clip/filter都必须有一个变量名是非常重要的:</p>

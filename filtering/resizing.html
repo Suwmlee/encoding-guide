@@ -172,7 +172,7 @@
 然而，对于简单的downscaled压制，人们不需要知道太多信息。
 因此，此页面将仅涵盖必要的downscaling说明。
 那些有兴趣了解有关重采样的更多信息的人应该参考 <a href="https://guide.encode.moe/encoding/resampling.html">Irrational Encoding Wizardry's guide's resampling page</a> 以获取更多信息。</p>
-<p>并且您可以查看后面的子章节以了解一些更高级的主题， 例如 <a href="descaling.html">解放缩(descaling)与重新缩放(rescaling)</a> 或 <a href="chroma_res.html">色度重新采样(chroma resampling)和移动(shifting)</a>，这两者都是编码动画时绝对需要了解的。</p>
+<p>并且您可以查看后面的子章节以了解一些更高级的主题， 例如 <a href="descaling.html">解放缩(descaling)与重新缩放(rescaling)</a> 或 <a href="chroma_res.html">色度重新采样(chroma resampling)和移动(shifting)</a>，这两者都是压制动画时绝对需要了解的。</p>
 <h1 id="downscaling"><a class="header" href="#downscaling">Downscaling</a></h1>
 <p>对于downscaling, 首选的调整器是 spline36 调整器:</p>
 <pre><code class="language-py">resize = src.resize.Spline36(1280, 720, dither_type=&quot;error_diffusion&quot;)
@@ -180,11 +180,11 @@
 <p>这里的参数应该很简单：只需根据需要调整宽度和高度。
 不要担心 <code>dither_type=&quot;error_diffusion&quot;</code>，只需保持原样即可；它所做的只是让输出看起来更漂亮。
 该参数的解释可以在 <a href="bit_depths.html">抖动(dithering)</a> 章节中找到。</p>
-<h2 id="finding-target-dimensions"><a class="header" href="#finding-target-dimensions">Finding target dimensions</a></h2>
+<h2 id="寻找目标尺寸"><a class="header" href="#寻找目标尺寸">寻找目标尺寸</a></h2>
 <p>对于 16:9 内容，标准分辨率所需的尺寸应该是众所周知的： \(3840\times2160\) 是 2160p, \(1920\times1080\) 是 1080p, \(1280\times720\) 是 720p.</p>
 <p>但是，大多数电影不是以这种纵横比制作的。
 更常见的纵横比是 2.39:1，其中视频是 \(2048\times858\).
-消费产品通常采用上述分辨率，因此在裁剪黑条后更有可能看到类似 \(1920\times804\) 。</p>
+消费类产品通常采用上述分辨率，因此在裁剪黑条后更有可能看到 \(1920\times804\) 这种尺寸。</p>
 <p>由此我们可以推算720p下的尺寸是 \(1280\times536\):</p>
 <p>\[\begin{align}
 w &amp;= \frac{720}{1080}\times1920=1280 \\
@@ -217,7 +217,7 @@ h = \mathrm{round}\left( \frac{720}{1080} \times 806 \times \frac{1}{2} \right) 
 </code></pre>
 <p>有了这个 <code>preset</code> 选项，您不必费心计算任何事情，只需说明目标分辨率（高度），它就会为您确定正确的尺寸。</p>
 <h2 id="笔记"><a class="header" href="#笔记">笔记</a></h2>
-<p>如果调整不均匀源的大小， 请参阅 <a href="dirty_lines.html">脏线(dirty lines)</a> 章节， 特别是 <a href="dirty_lines.html#fillborders">填充边框(FillBorders)</a> 部分和 <a href="dirty_lines.html#notes">注解</a>.</p>
+<p>如果调整不均匀源的大小， 请参阅 <a href="dirty_lines.html">脏线(dirty lines)</a> 章节， 特别是 <a href="dirty_lines.html#fillborders">填充边框(FillBorders)</a> 部分和 <a href="dirty_lines.html#%E7%AC%94%E8%AE%B0">笔记</a>.</p>
 <p>此外，值得注意的是，不应在脚本开始时调整大小，因为这样做会损坏执行的某些filtering，甚至重新引入问题。</p>
 <h1 id="理想的分辨率"><a class="header" href="#理想的分辨率">理想的分辨率</a></h1>
 <p>对于动漫作品，请参阅 <a href="descaling.html">descaling subchapter</a> 。
