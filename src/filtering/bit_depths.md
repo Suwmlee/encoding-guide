@@ -33,7 +33,7 @@
 ## 更改位深 Changing bit depths
 
 要在更高的位深度下工作，您可以在脚本filter部分的开头和结尾使用`vsutil`库中的 `depth` 方法。
-默认情况下，这将使用高质量的抖动算法，并且只需要几次击键：
+这将在默认情况下使用高质量的抖动算法，而且只需按几下键盘。
 
 ```py
 from vsutil import depth

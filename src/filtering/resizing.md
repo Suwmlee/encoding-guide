@@ -3,7 +3,7 @@
 因此，此页面将仅涵盖必要的downscaling说明。
 那些有兴趣了解有关重采样的更多信息的人应该参考 [Irrational Encoding Wizardry's guide's resampling page](https://guide.encode.moe/encoding/resampling.html) 以获取更多信息。
 
-并且您可以查看后面的子章节以了解一些更高级的主题， 例如 [解放缩(descaling)与重新缩放(rescaling)](descaling.md) 或 [色度重新采样(chroma resampling)和移动(shifting)](chroma_res.md)，这两者都是编码动画时绝对需要了解的。
+并且您可以查看后面的子章节以了解一些更高级的主题， 例如 [解放缩(descaling)与重新缩放(rescaling)](descaling.md) 或 [色度重新采样(chroma resampling)和移动(shifting)](chroma_res.md)，这两者都是压制动画时绝对需要了解的。
 
 # Downscaling
 
@@ -17,13 +17,13 @@ resize = src.resize.Spline36(1280, 720, dither_type="error_diffusion")
 不要担心 `dither_type="error_diffusion"`，只需保持原样即可；它所做的只是让输出看起来更漂亮。
 该参数的解释可以在 [抖动(dithering)](bit_depths.md) 章节中找到。
 
-## Finding target dimensions
+## 寻找目标尺寸
 
 对于 16:9 内容，标准分辨率所需的尺寸应该是众所周知的： \\(3840\times2160\\) 是 2160p, \\(1920\times1080\\) 是 1080p, \\(1280\times720\\) 是 720p.
 
 但是，大多数电影不是以这种纵横比制作的。
 更常见的纵横比是 2.39:1，其中视频是 \\(2048\times858\\).
-消费产品通常采用上述分辨率，因此在裁剪黑条后更有可能看到类似 \\(1920\times804\\) 。
+消费类产品通常采用上述分辨率，因此在裁剪黑条后更有可能看到 \\(1920\times804\\) 这种尺寸。
 
 由此我们可以推算720p下的尺寸是 \\(1280\times536\\):
 
@@ -77,7 +77,7 @@ resize = awf.zresize(src, preset=720)
 
 ## 笔记
 
-如果调整不均匀源的大小， 请参阅 [脏线(dirty lines)](dirty_lines.md) 章节， 特别是 [填充边框(FillBorders)](dirty_lines.md#fillborders) 部分和 [注解](dirty_lines.md#notes).
+如果调整不均匀源的大小， 请参阅 [脏线(dirty lines)](dirty_lines.md) 章节， 特别是 [填充边框(FillBorders)](dirty_lines.md#fillborders) 部分和 [笔记](dirty_lines.md#笔记).
 
 此外，值得注意的是，不应在脚本开始时调整大小，因为这样做会损坏执行的某些filtering，甚至重新引入问题。
 
