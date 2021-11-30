@@ -45,7 +45,7 @@ fix = rektlvls(src, rownum=[803, 802, 801, 800], rowval=[27, -10, 3, -3])
 <details>
 <summary>深入功能讲解</summary>
 In <code>FixBrightness</code> mode, this will perform an adjustment with
-<a href="www.vapoursynth.com/doc/functions/levels.html"><code>std.Levels</code></a> on the desired row. This means that, in 8-bit,
+<a href="www.vapoursynth.com/doc/functions/video/levels.html"><code>std.Levels</code></a> on the desired row. This means that, in 8-bit,
 every possible value \(v\) is mapped to a new value according to the
 following function: 
 $$\begin{aligned}
