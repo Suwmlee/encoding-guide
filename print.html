@@ -1126,33 +1126,33 @@ out = resize.std.AddBorders(left=border_size - bsize_mod2, right=border_size + b
 </code></pre>
 <p>在上面的例子中，我们必须在一边比另一边多加一些，以达到我们想要的宽度。 理想情况下，你的<code>border_size</code>是mod2，你就不必这样做了。</p>
 <p>如果你知道你有这样的边界，你可以使用<code>awsmfunc</code>中的<code>brdrdtct</code>，类似于<code>dirtdtct</code>来扫描文件中的边界。</p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h2 id="088伽马的错误"><a class="header" href="#088伽马的错误">0.88伽马的错误</a></h2>
-<p>如果你有两个信号源，其中一个明显比另一个亮，那么你的亮的信号源有可能是受到了所谓的伽马缺陷的影响。
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h2 id="088伽马bug"><a class="header" href="#088伽马bug">0.88伽马bug</a></h2>
+<p>如果你有两个源，其中一个明显比另一个亮，那么稍微亮的源很有可能受到所谓的伽马bug的影响。
 如果是这种情况，请执行以下操作（针对16位），看看是否能解决这个问题:</p>
 <pre><code class="language-py">out = core.std.Levels(src, gamma=0.88, min_in=4096, max_in=60160, min_out=4096, max_out=60160, planes=0)
 </code></pre>
 <p align="center">
 <img src='Pictures/gamma_before.png' onmouseover="this.src='Pictures/gamma_after.png';" onmouseout="this.src='Pictures/gamma_before.png';" />
 </p>
-<p>不要在低位深度下执行这一操作。较低的比特深度可能并将导致色带。</p>
+<p>不要在低位深下执行这一操作。较低的位深可能会导致色带。</p>
 <p align="center">
 <img src='Pictures/gamma_lbd.png' onmouseover="this.src='Pictures/gamma_hbd.png';" onmouseout="this.src='Pictures/gamma_lbd.png';" />
 </p>
+<p>For the lazy, the <code>fixlvls</code> wrapper in <code>awsmfunc</code> defaults to a gamma bug fix in 32-bit.</p>
 <details>
 <summary>深入解释</summary>
-这个错误似乎源于苹果软件。 <a href="https://vitrolite.wordpress.com/2010/12/31/quicktime_gamma_bug/">这篇博文</a>是人们在网上可以找到的关于这个错误的少数提及之一。
-<p>其原因可能是软件不必要地试图在NTSC伽马（2.2）和PC伽马（2.5）之间进行转换，因为 \(\frac{2.2}{2.5}=0.88\).</p>
+这个错误似乎源于苹果软件。 <a href="https://vitrolite.wordpress.com/2010/12/31/quicktime_gamma_bug/">这篇文章</a>是人们可以在网上找到的鲜有提及伽马BUG的文章之一。
+<p>其原因可能是软件不必要地试图在NTSC伽马（2.2）和PC伽马（2.5）之间进行转换，因为 \(\frac{2.2}{2.5}=0.88\)。</p>
 <p>为了解决这个问题，每个值都必须提高到0.88的幂，尽管必须进行电视范围标准化:</p>
 <p>\[
 v_\mathrm{new} = \left( \frac{v - min_\mathrm{in}}{max_\mathrm{in} - min_\mathrm{in}} \right) ^ {0.88} \times (max_\mathrm{out} - min_\mathrm{out}) + min_\mathrm{out}
 \]</p>
-<p>对于那些好奇伽马虫源和源会有什么不同的人来说：除了16、232、233、234和235以外的所有数值都是不同的，最大和最常见的差异是10，从63持续到125。
-由于可以打出同等数量的数值，而且该操作通常是在高比特深度下进行的，因此显著的细节损失是不太可能的。
+<p>对于那些好奇有伽马BUG的源和正常源会有什么不同的人来说：除了16、232、233、234和235以外的所有数值都是不同的，最大和最常见的差异是10，从63持续到125。
+由于可以输出同等数量的数值，而且该操作通常是在高比特深度下进行的，因此不太可能有明显的细节损失。
 然而，请注意，无论比特深度如何，这都是一个有损失的过程。</p>
 </details>
-<p>你也可以使用<code>awsmfunc</code>中的<code>fixlvls</code>封装库，在32位精度下轻松完成这个任务。</p>
-<h2 id="双重范围压缩"><a class="header" href="#双重范围压缩">双重范围压缩</a></h2>
-<p>一个类似的问题是双范围压缩。 当这种情况发生时，luma值会在30和218之间。 这可以通过以下方法轻松解决:</p>
+<h2 id="双倍范围压缩-double-range-compression"><a class="header" href="#双倍范围压缩-double-range-compression">双倍范围压缩 Double range compression</a></h2>
+<p>一个类似的问题是双倍范围压缩。 当这种情况发生时，luma值将在30和218之间。 这可以通过以下方法轻松解决。</p>
 <pre><code class="language-py">out = src.resize.Point(range_in=0, range=1, dither_type=&quot;error_diffusion&quot;)
 out = out.std.SetFrameProp(prop=&quot;_ColorRange&quot;, intval=1)
 </code></pre>
@@ -1161,58 +1161,62 @@ out = out.std.SetFrameProp(prop=&quot;_ColorRange&quot;, intval=1)
 </p>
 <details>
 <summary>深入解释</summary>
-这个问题意味着在编码过程中，某些东西或某些人假定输入是全范围的，尽管它已经是有限范围的。 由于最终的结果通常是有限的范围，这个感知的问题被 "修复 "了。
-<p>实际上，我们也可以在<code>std.Levels</code>中做完全相同的事情。 以下是应用于改变范围的数学方法:</p>
+This issue means something or someone during the encoding pipeline assumed the input to be full range despite it already being in limited range.  As the end result usually has to be limited range, this perceived issue is "fixed".
+<p>One can also do the exact same in <code>std.Levels</code> actually.  The following math is applied for changing range:</p>
 <p>\[
 v_\mathrm{new} = \left( \frac{v - min_\mathrm{in}}{max_\mathrm{in} - min_\mathrm{in}} \right) \times (max_\mathrm{out} - min_\mathrm{out}) + min_\mathrm{out}
 \]</p>
-<p>对于范围压缩，使用以下数值:
+<p>For range compression, the following values are used:
 \[
 min_\mathrm{in} = 0 \qquad max_\mathrm{in} = 255 \qquad min_\mathrm{out} = 16 \qquad max_\mathrm{out} = 235
 \]</p>
-<p>由于zlib调整器在内部使用32位精度来执行这个，所以最简单的就是使用这些。 然而，这些将改变文件的<code>_ColorRange</code>属性，因此需要使用<code>std.SetFrameProp</code>:</p>
+<p>As the zlib resizers use 32-bit precision to perform this internally, it's easiest to just use those.  However, these will change the file's <code>_ColorRange</code> property, hence the need for <code>std.SetFrameProp</code>. </p>
 </details>
-<h2 id="其他不正确的层级"><a class="header" href="#其他不正确的层级">其他不正确的层级</a></h2>
-<p>一个密切相关的问题是其他不正确的层级。要解决这个问题，最好是使用一个具有正确层级的参考源，找到与16和235相当的值，然后从那里进行调整（为了清楚起见，在更高的比特深度中这样做）:</p>
+<h2 id="其他不正确的层级-other-incorrect-levels"><a class="header" href="#其他不正确的层级-other-incorrect-levels">其他不正确的层级 Other incorrect levels</a></h2>
+<p>一个密切相关的问题是其他不正确的层级。要解决这个问题，最好是使用一个具有正确层级的参考源，找到与16和235相当的值，然后从那里进行调整（如果是8位，保险起见，在更高的比特深度中做）。</p>
 <pre><code class="language-py">out = src.std.Levels(min_in=x, min_out=16, max_in=y, max_out=235)
 </code></pre>
-<p>然而，这通常是不可能的。 相反，我们可以做以下数学运算来计算出正确的调整值:
-\[
+<p>然而，这通常是不可能修复的。相反，我们可以做以下数学运算来计算出正确的调整值:</p>
+<p>\[
 v = \frac{v_\mathrm{new} - min_\mathrm{out}}{max_\mathrm{out} - min_\mathrm{out}} \times (max_\mathrm{in} - min_\mathrm{in}) + min_\mathrm{in}
 \]</p>
 <p>因此，我们可以从要调整的源中选择任何低值，将其设置为 \(min_\mathrm{in}\)，在参考源中选择同一像素的值作为 \(min_\mathrm{out}\)。对于高值和最大值，我们也是这样做的。然后, 我们用16和235来计算 (再次，最好是高位深度--16位的4096和60160，32位浮动的0和1等等。) 这个 \(v_\mathrm{new}\) ，输出值将是上面VapourSynth代码中我们的 \(x\) 和 \(y\)。</p>
-<p>为了说明这一点，让我们使用《燃烧》（2018）的德国和美国蓝光片。 美国的蓝光有正确的水平，而德国的蓝光有不正确的水平。</p>
+<p>为了说明这一点，让我们使用《燃烧》（2018）的德版和美版蓝光片。 美版的蓝光有正确的色调层级，而德版的蓝光有不正确的色调层级。</p>
 <p align="center">
 <img src='Pictures/burning_usa0.png' onmouseover="this.src='Pictures/burning_ger0.png';" onmouseout="this.src='Pictures/burning_usa0.png';" />
 </p>
-<p>这里德国的高值是199，而美国的相同像素是207。 对于低值，我们可以找到29和27。 通过这些，我们得到18.6和225.4。 对更多的像素和不同的帧进行这些操作，然后取其平均值，我们得到19和224。 用这些值来调整luma，使我们更接近参考视频的<sup class="footnote-reference"><a href="#1">1</a></sup>。</p>
+<p>这里德版的高值是199，而美版的相同像素是207。 对于低值，我们可以找到29和27。 通过这些，我们得到18.6和225.4。 对更多的像素和不同的帧进行这些操作，然后取其平均值，我们得到19和224。 用这些值来调整luma，使我们更接近参考视频的<sup class="footnote-reference"><a href="#1">1</a></sup>。</p>
 <p align="center">
 <img src='Pictures/burning_ger_fixed0.png' onmouseover="this.src='Pictures/burning_usa_fixed0.png';" onmouseout="this.src='Pictures/burning_ger_fixed0.png';" />
 </p>
 <details>
 <summary>深入解释</summary>
-看过前面解释的人应该认识到这个函数，因为它是用于水平调整的函数的逆向函数。 我们只需把它反过来，把我们的期望值设为 \(v_\mathrm{new}\)并进行计算。
+看过前面解释的人应该认识到这个函数，因为它是用于色调水平调整的函数的逆向函数。 我们只需把它反过来，把我们的期望值设为 \(v_\mathrm{new}\)并进行计算。
 </details>
-<h2 id="不恰当的颜色矩阵"><a class="header" href="#不恰当的颜色矩阵">不恰当的颜色矩阵</a></h2>
-<p>如果你有一个不恰当的颜色矩阵的信号源，你可以用以下方法解决这个问题
-用以下方法解决。</p>
+<h2 id="不恰当的颜色矩阵-improper-color-matrix"><a class="header" href="#不恰当的颜色矩阵-improper-color-matrix">不恰当的颜色矩阵 Improper color matrix</a></h2>
+<p>如果你有一个不恰当的颜色矩阵的源，你可以用以下方法解决这个问题：</p>
 <pre><code class="language-py">out = core.resize.Point(src, matrix_in_s='470bg', matrix_s='709')
 </code></pre>
-<p><code>'470bg'</code>也就是被称为601的东西。要知道你是否应该这样做，你需要一些参考来源，最好不是网络来源。从技术上讲，你可以识别坏的颜色，并意识到有必要改变矩阵，但在这种情况下，人们应该非常确定。</p>
+<p>The <code>’470bg’</code> is what's also known as 601. To know if you should be
+doing this, you'll need some reference sources, preferably not web
+sources. Technically, you can identify bad colors and realize that it's
+necessary to change the matrix, but one should be extremely certain in such cases.
+<code>'470bg'</code>也就是被称为601的东西。要弄清你是否应该这样做，你需要一些参考源，最好不是网络源。从技术上讲，你可以识别坏的颜色，并意识到有必要改变矩阵，但在这种情况下，你必须非常确定。</p>
 <p align="center">
 <img src='Pictures/burning_matrix_before.png' onmouseover="this.src='Pictures/burning_matrix_after.png';" onmouseout="this.src='Pictures/burning_matrix_before.png';" />
 </p>
 <details>
 <summary>深入解释</summary>
-颜色矩阵定义了YCbCr和RGB之间的转换是如何进行的。 由于RGB自然没有任何子采样，剪辑首先从4:2:0转换为4:4:4，然后从YCbCr转换为RGB，然后再进行还原。 在YCbCr到RGB的转换过程中，我们假设是Rec.601矩阵系数，而在转换回来的过程中，我们指定是Rec.709。
-<p>之所以很难知道是否假设了不正确的标准，是因为两者涵盖了CIE 1931的类似范围。 色度图应使这一点很明显（包括Rec.2020作为参考）:</p>
+颜色矩阵定义了YCbCr和RGB之间的转换是如何进行的。由于RGB显然没有任何子采样，剪辑首先从4:2:0转换为4:4:4，然后从YCbCr转换为RGB，然后再进行还原。在YCbCr到RGB的转换过程中，我们假设是Rec.601矩阵系数，而在转换回来的过程中，我们指定是Rec.709。
+<p>之所以很难知道是否假设了不正确的标准，是因为两者涵盖了CIE 1931的类似范围。色度图会使这一点的差异更明显（包括Rec.2020作为参考）:</p>
 <p align="center">
 <img src='Pictures/colorspaces.svg'/>
 </p>
 </details>
-<h2 id="四舍五入错误"><a class="header" href="#四舍五入错误">四舍五入错误</a></h2>
-<p>一个轻微的绿色色调可能表明发生了舍入错误。
-为了解决这个问题，我们需要在比源文件更高的比特深度上增加半步。</p>
+<h2 id="取整错误-rounding-error"><a class="header" href="#取整错误-rounding-error">取整错误 Rounding error</a></h2>
+<p>一点轻微的绿色色调可能表明发生了取整错误。
+这个问题在亚马逊、CrunchyRoll等流媒体的源中特别常见。
+为了解决这个问题，我们需要在比源更高的位深上增加半步。</p>
 <pre><code class="language-py">high_depth = vsutil.depth(src, 16)
 half_step = high_depth.std.Expr(&quot;x 128 +&quot;)
 out = vsutil.depth(half_step, 8)
@@ -1220,16 +1224,37 @@ out = vsutil.depth(half_step, 8)
 <p align="center">
 <img src='Pictures/rounding_0.png' onmouseover="this.src='Pictures/rounding_1.png';" onmouseout="this.src='Pictures/rounding_0.png';" />
 </p>
-<p>另外，可以使用<a href="https://github.com/Irrational-Encoding-Wizardry/lvsfunc"><code>lvsfunc.misc.fix_cr_tint</code></a>代替。
-它的默认值与上述内容相当。</p>
+<p>另外，也可以使用<a href="https://github.com/Irrational-Encoding-Wizardry/lvsfunc"><code>lvsfunc.misc.fix_cr_tint</code></a>。
+与上面的效果相同</p>
+<p>Sometimes, sources will require slightly different values, although these will always be multiples of 16, with the most common after 128 being 64.
+It is also not uncommon for differing values to have to be applied to each plane.
+This is easily done with <code>std.Expr</code> by using a list of adjustments, where an empty one means no processing is done:</p>
+<pre><code class="language-py">adjust = high_depth.std.Expr([&quot;&quot;, &quot;x 64 +&quot;, &quot;x 128 +&quot;])
+</code></pre>
 <details>
 <summary>深入解释</summary>
-当工作室从他们的10位母版变成8位时，他们的软件可能总是向下四舍五入（例如1.9会被四舍五入为1）。
-我们解决这个问题的方法只是增加了一个8位的半步，如（0.5乘以2 ^ {16 - 8} = 128\）
+当剪辑工作室将他们的10位母盘变成8位时，他们的软件可能总是向下取整（例如1.9会被取整为1）。
+我们解决这个问题的方法是简单的增加了一个8位的半步，如（0.5乘以2 ^ {16 - 8} = 128\）
 </details>
-<h2 id="除着色"><a class="header" href="#除着色">除着色</a></h2>
+<h2 id="检测着色-gettint"><a class="header" href="#检测着色-gettint">检测着色 gettint</a></h2>
+<p><a href="https://github.com/OpusGang/gettint"><code>gettint</code></a>脚本可以用来自动检测一个色调是否由一个常见的错误引起。
+要使用它，首先裁剪掉任何黑边、文本和任何其他可能不着色的元素。
+然后，简单地运行它并等待结果：</p>
+<pre><code class="language-sh">$ gettint source.png reference.png
+</code></pre>
+<p>该脚本还可以接受视频文件，它将选择中间的帧，并使用自动裁剪来消除黑条。</p>
+<p>如果没有检测到导致色调的常见错误，脚本将尝试通过伽玛、增益和偏移、或层级调整调整来匹配。
+这里已经解释了所有这些的修复方法，除了增益和偏移，可以用<code>std.Expr</code>来修复:</p>
+<pre><code class="language-py">gain = 1.1
+offset = -1
+out = core.std.Expr(f&quot;x {gain} / offset -&quot;)
+</code></pre>
+<p>请注意，如果使用gamma bug修复（或<code>fixlvls</code>）中的gamma修复功能，来自<code>gettint</code>的gamma将需要被反转。</p>
+<h2 id="除着色-detinting"><a class="header" href="#除着色-detinting">除着色 Detinting</a></h2>
 <p>请注意，只有在其他方法都失败的情况下，你才应该采用这种方法。</p>
-<p>如果你有一个较好的带色调的源，和一个较差的不带色调的源，你想把它去掉，你可以通过<a href="https://github.com/sekrit-twc/timecube"><code>timecube</code></a>和<a href="https://valeyard.net/2017/03/drdres-color-matching-tool-v1-2.php">DrDre's Color Matching Tool</a><sup class="footnote-reference"><a href="#2">2</a></sup>来实现。首先，在该工具中添加两张参考截图，导出LUT，保存它，并通过类似的方式添加它:</p>
+<p>如果你有一个较好的有着色的源，和一个较差的没有着色的来源，而你想把它剔除，
+你可以用 <a href="https://github.com/sekrit-twc/timecube"><code>timecube</code></a> 和 <a href="https://valeyard.net/2017/03/drdres-color-matching-tool-v1-2.php">DrDre's Color Matching Tool</a><sup class="footnote-reference"><a href="#2">2</a></sup>。
+首先，在工具中添加两张参考截图，导出LUT，保存它，并通过类似的方式添加它:</p>
 <pre><code class="language-py">clip = core.resize.Point(src, matrix_in_s=&quot;709&quot;, format=vs.RGBS)
 detint = core.timecube.Cube(clip, &quot;LUT.cube&quot;)
 out = core.resize.Point(detint, matrix=1, format=vs.YUV420P16, dither_type=&quot;error_diffusion&quot;)
@@ -1238,10 +1263,8 @@ out = core.resize.Point(detint, matrix=1, format=vs.YUV420P16, dither_type=&quot
 <img src='Pictures/detint_before2.png' onmouseover="this.src='Pictures/detint_after2.png';" onmouseout="this.src='Pictures/detint_before2.png';" />
 </p>
 <div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
-<p>为了简单起见，这里没有触及色度平面。 这些需要做的工作远远多于luma平面，因为很难找到非常鲜艳的颜色，尤其是像这样的截图。</p>
-</div>
-<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
-<p>令人遗憾的是，这个程序是闭源的。 我不知道有什么替代品。</p>
+<p>为了简单起见，这里没有涉及色度平面。 这些需要做的工作远远多于luma平面，因为很难找到非常鲜艳的颜色，尤其是像这样的截图。
+<sup class="footnote-reference"><a href="#2">2</a></sup>: 令人遗憾的是，这个程序是闭源的。 我不知道有什么替代品。</p>
 </div>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="需要重新格式化"><a class="header" href="#需要重新格式化">需要重新格式化</a></h1>
 <p>蒙版是一个不那么直接的话题。其原理是根据源图像的属性来限制滤镜的应用。蒙版通常是灰度的，据此，应用多少有关的两个片段是由蒙版的亮度决定的。所以，如果你做</p>
@@ -2057,41 +2080,43 @@ this on for blurry content, as it's an additional blur that'll help
 prevent banding.</p>
 </li>
 </ul>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="进行截图-taking-screenshots"><a class="header" href="#进行截图-taking-screenshots">进行截图 Taking Screenshots</a></h1>
-<p>在VapourSynth中拍摄简单的屏幕截图是非常容易的。如果你使用的是预览器，你可以用它来代替，但知道如何直接通过VapourSynth进行截图可能还是很有用的。</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="截图-taking-screenshots"><a class="header" href="#截图-taking-screenshots">截图 Taking Screenshots</a></h1>
+<p>在VapourSynth中拍摄简单的屏幕截图是非常容易的。
+如果你使用的是previewer，你可以用它来代替，，但知道如何直接通过VapourSynth进行截图可能还是很有用的。</p>
 <p>我们推荐使用 <code>awsmfunc.ScreenGen</code>.
 它有两个优势:</p>
 <ol>
-<li>保存了帧数编号，可以很容易地再次参考，例如，如果你想重新做你的截图。</li>
-<li>为你处理适当的转换和压缩，而有些预览器（如VSEdit）可能不是这样的。</li>
+<li>保存了帧数编号，可以很容易再次引用，例如，如果你想重新做你的截图。</li>
+<li>为你处理适当的转换和压缩，而有些previewer（例如VSEdit）可能不是这样的。</li>
 </ol>
-<p>要使用<code>ScreenGen</code>，创建一个你想要截图的新文件夹，例如 &quot;Screenshots&quot;，和一个名为 &quot;screen.txt &quot;的文件，其中包含你想要截图的帧数,例如:</p>
+<p>要使用<code>ScreenGen</code>，首先创建一个你想要截图的新文件夹，例如 &quot;Screenshots&quot;，和一个名为 &quot;screen.txt &quot;的文件，其中包含你想要截图的帧数,例如:</p>
 <pre><code>26765
 76960
 82945
 92742
 127245
 </code></pre>
-<p>然后，在你的VapourSynth脚本的底部，写上</p>
+<p>然后，在你的VapourSynth脚本最后，写上</p>
 <pre><code>awf.ScreenGen(src, &quot;Screenshots&quot;, &quot;a&quot;)
 </code></pre>
-<p><code>a</code>是放在帧编号后面的东西。这对于保持组织性和对截图进行分类是很有用的，同时也可以防止不必要的截图被覆盖。</p>
-<p>现在，在命令行中运行你的脚本（或在预览器中重新加载）。</p>
+<p><code>a</code>是放在帧编号后面的东西。
+这对于保持文件结构和对截图进行分类是很有用的，同时也可以防止不必要的截图被覆盖。</p>
+<p>现在，在命令行中运行你的脚本（或在previewer中重新加载）。</p>
 <pre><code class="language-sh">python vapoursynth_script.vpy
 </code></pre>
 <p>完成!
 你的截图现在应该在给定的文件夹中。</p>
 <h1 id="对比源与压制-comparing-source-vs-encode"><a class="header" href="#对比源与压制-comparing-source-vs-encode">对比源与压制 Comparing Source vs. Encode</a></h1>
-<p>将source与你的压制进行比较，可以让潜在的下载者轻松判断你的压制质量。
-当采取这些时，重要的是包括你要比较的帧类型，例如比较两个<code>I</code>帧将导致极其有利的结果。
-你可以使用<code>awsmfunc.FrameInfo</code>来做这个。</p>
+<p>将source与你的压制作品进行比较，可以让潜在的下载者轻松判断你的压制质量。
+在进行比较时，包含的比较帧的类型非常重要，例如比较两个<code>I</code>帧将导致极其有利的结果。
+你可以使用<code>awsmfunc.FrameInfo</code>来做这个:</p>
 <pre><code class="language-py">src = awf.FrameInfo(src, &quot;Source&quot;)
 encode = awf.FrameInfo(encode, &quot;Encode&quot;)
 </code></pre>
-<p>如果你想在你的预览器中比较这些，建议将它们交错排列。</p>
+<p>如果你想在你的previewer中比较这些，建议将它们交错排列。</p>
 <pre><code class="language-py">out = core.std.Interleave([src, encode])
 </code></pre>
-<p>然而，如果你是用<code>ScreenGen</code>进行截图，不这样做更容易，只需运行两个<code>ScreenGen</code>调用。</p>
+<p>然而，如果你是用<code>ScreenGen</code>进行截图，将会非常简单，只需调用两次<code>ScreenGen</code>:</p>
 <pre><code class="language-py">src = awf.FrameInfo(src, &quot;Source&quot;)
 awf.ScreenGen(src, &quot;Screenshots&quot;, &quot;a&quot;)
 encode = awf.FrameInfo(encode, &quot;Encode&quot;)
@@ -2100,26 +2125,24 @@ awf.ScreenGen(encode, &quot;Screenshots&quot;, &quot;b&quot;)
 <p>注意，在压制的<code>ScreenGen</code>中，<code>&quot;a&quot;</code>被替换成了<code>&quot;b&quot;</code>。
 这将允许你按名字对文件夹进行排序，并且每张源截图后面都有一个压制截图，使上传更容易。</p>
 <h3 id="hdr对比-hdr-comparisons"><a class="header" href="#hdr对比-hdr-comparisons">HDR对比 HDR comparisons</a></h3>
-<p>对于比较HDR源和HDR压制，建议使用色调图。
-这个过程是破坏性的，但你仍然能够分辨出哪些地方被扭曲了，哪些地方被平滑了等等。</p>
-<p>为此推荐的函数是<code>awsmfunc.DynamicTonemap</code>:</p>
-<pre><code class="language-py">src = awf.DynamicTonemap(src, src_fmt=False, libplacebo=False)
-encode = awf.DynamicTonemap(encode, src_fmt=False, libplacebo=False)
+<p>对于比较HDR源与HDR压制，建议进行色调映射。
+这个过程具有破坏性，但你仍然能够分辨出哪些地方被扭曲了，哪些地方被平滑了等等。</p>
+<p>推荐使用<code>awsmfunc.DynamicTonemap</code>方法:</p>
+<pre><code class="language-py">src = awf.DynamicTonemap(src)
+encode = awf.DynamicTonemap(encode, reference=src)
 </code></pre>
-<p>注意，我们在这里禁用了<code>src_fmt</code>和<code>libplacebo</code>。
-将前者设置为<code>True</code>会输出10位4:2:0，这是次优的，因为屏幕截图通常是以8位RGB（没有色度子采样）呈现。
-后者被推荐用于比较，因为使用libplacebo会使你的色调图在亮度上更有可能不同，使比较更加困难。</p>
+<p>第二个色调映射方法中的 <code>reference=src</code> 确保了两个色调映射输出的一致性。</p>
 <h2 id="选择帧-choosing-frames"><a class="header" href="#选择帧-choosing-frames">选择帧 Choosing frames</a></h2>
-<p>在进行截图时，重要的是不要让你的压制看起来有欺骗性的透明。
-要做到这一点，你需要确保你截图的是适当的帧类型，以及内容上不同的帧。</p>
+<p>在进行截图时，不要让你的压制看起来有欺骗性的透明是非常重要的。
+要做到这一点，你需要确保你截图的是较多适当的帧类型，以及内容上不同的帧。</p>
 <p>幸运的是，这里没有太多需要记住的东西:</p>
 <ul>
-<li>你的压制的截图应该<em>永远</em>是<em>B</em>类型帧。</li>
-<li>你的源的截图<em>不应该</em>是<em>I</em>类型帧。</li>
-<li>你的比较应该包括黑暗场景、明亮场景、特写镜头、远景镜头、静态场景、高度动作场景，以及你在这两者之间的任何内容。</li>
+<li>你的压制截图图应该<em>永远</em>是<em>B</em>类型帧。</li>
+<li>你的源截图<em>不应该</em>是<em>I</em>类型帧。</li>
+<li>你的比较截图应该包括黑暗场景、明亮场景、特写镜头、远景镜头、静态场景、高度动作场景，以及介于两者之间的任何场景</li>
 </ul>
 <h1 id="比较不同的源-comparing-different-sources"><a class="header" href="#比较不同的源-comparing-different-sources">比较不同的源 Comparing Different Sources</a></h1>
-<p>当比较不同的源时，你应该进行类似于比较源与压制的工作。
+<p>当比较不同的源时，你应该进行类似于比较源与压制的步骤。
 然而，你可能会遇到不同的裁剪、分辨率或色调，所有这些都会妨碍比较的进行。</p>
 <p>对于不同的裁剪，只需将边框加回去:</p>
 <pre><code class="language-py">src_b = src_b.std.AddBorders(left=X, right=Y, top=Z, bottom=A)
@@ -2129,13 +2152,16 @@ encode = awf.DynamicTonemap(encode, src_fmt=False, libplacebo=False)
 <pre><code class="language-py">src_b = src_b.resize.Spline36(format=vs.YUV444P8, dither_type=&quot;error_diffusion&quot;)
 src_b = src_b.std.AddBorders(top=1, bottom=1)
 </code></pre>
-<p>对于不同的分辨率，建议使用一个简单的Spline36调整大小:</p>
+<p>对于不同的分辨率，推荐使用Spline36方法调整大小<sup class="footnote-reference"><a href="#1">1</a></sup>:</p>
 <pre><code class="language-py">src_b = src_b.resize.Spline36(src_a.width, src_a.height, dither_type=&quot;error_diffusion&quot;)
 </code></pre>
-<p>如果一个源是HDR，另一个是SDR，你可以使用<code>awsmfunc.DynamicTonemap</code>:</p>
-<pre><code class="language-py">src_b = awf.DynamicTonemap(src_b, src_fmt=False)
+<p>如果一个源是HDR，另一个是SDR，你可以使用<code>awsmfunc.DynamicTonemap</code>方法:</p>
+<pre><code class="language-py">src_b = awf.DynamicTonemap(src_b)
 </code></pre>
-<p>关于不同的色调，请参考<a href="encoding/../filtering/detinting.html">色调篇</a>.</p>
+<p>关于不同的色调，可以参考<a href="encoding/../filtering/detinting.html">色调篇</a>。</p>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>重要的是要确保你在这里调整到适当的分辨率；如果你为1080p编码进行比较，你显然会以1080p进行比较，而如果你是为了弄清楚哪个来源更好而进行比较，你会想把低分辨率的来源提升到与高分辨率相匹配。</p>
+</div>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><p>如果你的去带片段与没有带子的部分相比颗粒很小，你应该考虑使用一个单独的函数来添加匹配的颗粒，这样场景就更容易融合在一起。如果有很多颗粒，你可能要考虑<code>adptvgrnMod</code>、<code>adaptive_grain</code>或<code>GrainFactory3</code>；对于不那么明显的颗粒，或者只是对于通常会有很少颗粒的明亮场景，你也可以使用<code>grain.Add</code>。颗粒器的主题将在后面的<a href="appendix/../filtering/graining.html">粒化部分</a>中进一步阐述。</p>
 <p>下面是Mirai的一个例子:</p>
 <p align="center">
