@@ -212,7 +212,7 @@ h = \mathrm{round}\left( \frac{720}{1080} \times 806 \times \frac{1}{2} \right) 
 <p>或者，如果我们的源被裁剪在左侧和右侧而不是顶部和底部，我们会这样做：</p>
 <pre><code class="language-py">width = round(720 / src.height / 2 * src.width) * 2
 </code></pre>
-<p>如果您不想为此烦恼， 您可以使用 <a href="https://git.concertos.live/AHD/awsmfunc/"><code>awsmfunc</code></a> 里封装好的 <code>zresize</code> 方法:</p>
+<p>如果您不想为此烦恼， 您可以使用 <a href="https://github.com/OpusGang/awsmfunc/"><code>awsmfunc</code></a> 里封装好的 <code>zresize</code> 方法:</p>
 <pre><code class="language-py">resize = awf.zresize(src, preset=720)
 </code></pre>
 <p>有了这个 <code>preset</code> 选项，您不必费心计算任何事情，只需说明目标分辨率（高度），它就会为您确定正确的尺寸。</p>

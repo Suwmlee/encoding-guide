@@ -244,13 +244,13 @@ via_clip = clip.std.Crop(...)
 <code>RemapFramesSimple</code>也可以用<code>Rfs</code>调用。
 另外，可以使用Python解决方案，例如std.Trim和addition。
 然而，<code>RemapFrames</code>往往更快，特别是对于较大的替换映射集。</p>
-<p>让我们看一个对100到200帧和500到750帧应用<a href="filtering/filtering/debanding##neo_f3kdb"><code>f3kdb</code></a>解带过滤的例子:</p>
+<p>让我们看一个对100到200帧和500到750帧应用<a href="filtering/./debanding.html##neo_f3kdb"><code>f3kdb</code></a>解带过滤的例子:</p>
 <pre><code class="language-py">src = core.ffms2.Source(&quot;video.mkv&quot;)
 deband = source.neo_f3kdb.Deband(src)
 
 replaced = core.remap.Rfs(src, deband, mappings=&quot;[100 200] [500 750]&quot;)
 </code></pre>
-<p>在插件和Python方法里有各种封装好的库，特别是前者的<a href="https://git.concertos.live/AHD/awsmfunc"><code>awsmfunc.rfs</code></a>和后者的<a href="https://lvsfunc.encode.moe/en/latest/#lvsfunc.util.replace_ranges"><code>lvsfunc.util.replace_frames</code></a> 。</p>
+<p>在插件和Python方法里有各种封装好的库，特别是前者的<a href="https://github.com/OpusGang/awsmfunc"><code>awsmfunc.rfs</code></a>和后者的<a href="https://lvsfunc.encode.moe/en/latest/#lvsfunc.util.replace_ranges"><code>lvsfunc.util.replace_frames</code></a> 。</p>
 <h2 id="过滤顺序"><a class="header" href="#过滤顺序">过滤顺序</a></h2>
 <p>为了让滤镜正常工作，不至于产生反效果，按正确的顺序应用它们是很重要的。
 这一点对于像debanders和graners这样的滤镜尤其重要，因为把它们放在调整大小之前会完全否定它们的效果。</p>
@@ -328,7 +328,7 @@ h = \mathrm{round}\left( \frac{720}{1080} \times 806 \times \frac{1}{2} \right) 
 <p>或者，如果我们的源被裁剪在左侧和右侧而不是顶部和底部，我们会这样做：</p>
 <pre><code class="language-py">width = round(720 / src.height / 2 * src.width) * 2
 </code></pre>
-<p>如果您不想为此烦恼， 您可以使用 <a href="https://git.concertos.live/AHD/awsmfunc/"><code>awsmfunc</code></a> 里封装好的 <code>zresize</code> 方法:</p>
+<p>如果您不想为此烦恼， 您可以使用 <a href="https://github.com/OpusGang/awsmfunc/"><code>awsmfunc</code></a> 里封装好的 <code>zresize</code> 方法:</p>
 <pre><code class="language-py">resize = awf.zresize(src, preset=720)
 </code></pre>
 <p>有了这个 <code>preset</code> 选项，您不必费心计算任何事情，只需说明目标分辨率（高度），它就会为您确定正确的尺寸。</p>
