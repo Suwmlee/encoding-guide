@@ -168,8 +168,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>The documentation here is very good, so I'll just go over recommended
-values:</p>
+                        <p><a href="https://x265.readthedocs.io/en/master/cli.html">The official documentation for x265</a> is very good, so this page will only cover recommended values and switches.</p>
 <h2 id="source-independent-settings"><a class="header" href="#source-independent-settings">Source-independent settings</a></h2>
 <ul>
 <li>
@@ -304,7 +303,9 @@ chroma planes.</p>
 </li>
 <li>
 <p><code>--aq-mode 4</code>, <code>3</code>, <code>2</code>, <code>1</code>, or <code>--hevc-aq</code> with <code>4</code> and <code>3</code>
-usually being the two best options. These do the following</p>
+usually being the two best options. If using <a href="https://github.com/DJATOM/x265-aMod">aMod</a>,
+there is an extra mode <code>5</code>.
+These do the following:</p>
 <ol>
 <li>
 <p>Standard adaptive quantization, simply add more bits to complex
@@ -314,11 +315,15 @@ blocks.</p>
 <p>Adaptive quantization with auto-variance.</p>
 </li>
 <li>
-<p>Adaptive quantization with auto-variance and bias to dark scene.</p>
+<p>Adaptive quantization with auto-variance and bias to dark scenes.</p>
 </li>
 <li>
 <p>Adaptive quantization with auto-variance and better edge
 preservation.</p>
+</li>
+<li>
+<p>Adaptive quantization with auto-variance, better edge
+preservation, and bias to dark scenes. Only in aMod.</p>
 </li>
 <li>
 <p><code>hevc-aq</code> &quot;scales the quantization step size according to the
@@ -335,8 +340,12 @@ turned on.</p>
 <p><code>--aq-strength</code> between <code>0.80</code> and <code>1.40</code> for AQ modes 1-3 or <code>0.50</code> and <code>1.00</code> for AQ mode 4.</p>
 </li>
 <li>
-<p><code>--deblock -4:-4</code> to <code>0:0</code>, as with x264. You can default <code>-3:-3</code>
-with live action.</p>
+<p><code>--aq-bias-strength</code> between <code>0.50</code> and <code>1.20</code> if using aMod and an
+AQ mode with dark bias. This is a multiplier with lower numbers
+lowering the bias. Default is <code>1.00</code>.</p>
+</li>
+<li>
+<p><code>--deblock -4:-4</code> to <code>0:0</code>, similar to x264. Test at least -3:-3 to -1:-1 with live action, -2:-2 to 0:0 with animation.</p>
 </li>
 <li>
 <p><code>--ipratio</code> and <code>--pbratio</code> same as x264 again.</p>

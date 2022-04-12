@@ -796,7 +796,7 @@ $$max\ value = 3 \times \sigma$$
 <p>同样，当你试图修复脏线时，你应该彻底检查你的修复没有引起不必要的问题，如涂抹（常见于过度热心的ContinuityFixer值）或闪烁（特别是在片头，在大多数情况下，建议从你的修复中省略片头卷）。如果你不能找出适当的修复方法，完全可以裁剪掉脏线或不修复。糟糕的修复比没有修复更糟糕</p>
 <p>这里有五种常用的修复脏线的方法:</p>
 <h2 id="rektlvls"><a class="header" href="#rektlvls"><code>rektlvls</code></a></h2>
-<p>来自<a href="https://gitlab.com/Ututu/rekt"><code>rekt</code></a>。这基本上是AviSynth的 <code>FixBrightnessProtect3</code> 和 <code>FixBrightness</code> 的合二为一，尽管与  <code>FixBrightness</code> 不同，不是对整个画面进行处理。它的数值很直接。提高调整值是为了变亮，降低是为了变暗。将<code>prot_val</code>设置为<code>None</code>，它的功能就像<code>FixBrightness</code>，意味着调整值需要改变。</p>
+<p>来自<a href="https://github.com/Ututu/rekt"><code>rekt</code></a>。这基本上是AviSynth的 <code>FixBrightnessProtect3</code> 和 <code>FixBrightness</code> 的合二为一，尽管与  <code>FixBrightness</code> 不同，不是对整个画面进行处理。它的数值很直接。提高调整值是为了变亮，降低是为了变暗。将<code>prot_val</code>设置为<code>None</code>，它的功能就像<code>FixBrightness</code>，意味着调整值需要改变。</p>
 <pre><code class="language-py">from rekt import rektlvls
 fix = rektlvls(src, rownum=None, rowval=None, colnum=None, colval=None, prot_val=[16, 235])
 </code></pre>
@@ -1108,7 +1108,7 @@ cf = core.fb.FillBorders(src, top=6, mode=&quot;mirror&quot;).std.MaskedMerge(sr
     b = core.std.Crop(clip, bottom=clip.height / 2)
     return core.std.StackVertical([t, b])
 </code></pre>
-<p>这个脚本将使阈值以下的数值（即黑色边界）显示为大部分黑色背景上中间的垂直或水平白线。如果没有给出阈值，它将简单地将剪辑的边缘居中。你可以在激活这个功能的情况下浏览一下你的视频。一个自动的替代方法是<a href="https://git.concertos.live/AHD/awsmfunc/src/branch/master/awsmfunc/detect.py"><code>dirtdtct</code></a>，它将为你扫描视频。</p>
+<p>这个脚本将使阈值以下的数值（即黑色边界）显示为大部分黑色背景上中间的垂直或水平白线。如果没有给出阈值，它将简单地将剪辑的边缘居中。你可以在激活这个功能的情况下浏览一下你的视频。一个自动的替代方法是<a href="https://github.com/OpusGang/awsmfunc/blob/master/awsmfunc/detect.py"><code>dirtdtct</code></a>，它将为你扫描视频。</p>
 <p>其他种类的可变脏线是一个婊子修复，需要手动检查场景。</p>
 <h3 id="可变的边界"><a class="header" href="#可变的边界">可变的边界</a></h3>
 <p>一个与脏线非常相似的问题是不需要的边框。在不同裁剪的场景中（如IMAX或4:3），黑色边框有时可能不完全是黑色的，或者完全被打乱了。为了解决这个问题，只需将其裁剪并重新添加。你也可能想修复沿途可能出现的脏线:</p>
@@ -1676,200 +1676,191 @@ clip_B.set_output(1)
 <p>对于x265，顺序应该是qcomp、aq-mode、aq-strength、psy-rd、psy-rdoq、ipratio和pbratio，然后是deblock。</p>
 <p>如果你想要一点额外的效率，你可以在你最终决定的每个设置的数值周围用较小的间隔再次进行测试。建议在你已经对每个设置做了一次测试之后再做，因为它们确实对彼此都有轻微的影响。</p>
 <p>一旦你完成了用2-pass的测试设置，就切换回CRF，并重复寻找最高透明CRF值的过程。</p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h4 id="dxva"><a class="header" href="#dxva">DXVA</a></h4>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="general-settings"><a class="header" href="#general-settings">General settings</a></h1>
+<p>These are the settings that you shouldn't touch between encodes.</p>
+<h2 id="preset"><a class="header" href="#preset">Preset</a></h2>
+<p>Presets apply a number of parameters, which can be referenced <a href="https://dev.beandog.org/x264_preset_reference.html">here</a>
+Just use the placebo preset, we'll change the really slow stuff, anyway:</p>
+<pre><code>--preset placebo
+</code></pre>
+<h2 id="level"><a class="header" href="#level">Level</a></h2>
+<p>Where --preset applies a defined set of parameters, --level provides a set of limitations to ensure decoder compatibility. For further reading, see this <a href="https://en.wikipedia.org/wiki/Advanced_Video_Coding#Levels">wikipedia article</a></p>
+<p>For general hardware support level 4.1 is recommended, otherwise you may omit this.</p>
+<pre><code>--level 41
+</code></pre>
+<h2 id="motion-estimation"><a class="header" href="#motion-estimation">Motion estimation</a></h2>
+<p>For further reading <a href="https://web.archive.org/web/20210516085632/https://forum.doom9.org/showthread.php?p=1789660">see this excellent thread on Doom9</a></p>
+<p>x264 has two motion estimation algorithms worth using, umh and tesa.
+The latter is a placebo option that's really, really slow, and seldom yields better results, so only use it if you don't care about encode time.
+Otherwise, just default to umh:</p>
+<pre><code>--me umh
+</code></pre>
+<h2 id="ratecontrol-lookahead"><a class="header" href="#ratecontrol-lookahead">Ratecontrol lookahead</a></h2>
+<p>The ratecontrol lookahead (rc-lookahead) setting determines how far ahead the video buffer verifier (VBV) and macroblock tree (mbtree) can look.
+Raising this can slightly increase memory use, but it's generally best to leave this as high as possible:</p>
+<pre><code>--rc-lookahead 250
+</code></pre>
+<p>If you're low on memory, you can lower it to e.g. 60.</p>
+<h1 id="source-specific-settings"><a class="header" href="#source-specific-settings">Source-specific settings</a></h1>
+<p>These settings should be tested and/or adjusted for every encode.</p>
+<h2 id="profile"><a class="header" href="#profile">Profile</a></h2>
+<p>Just set this according to the format you're encoding:</p>
+<pre><code>--profile high
+</code></pre>
 <ul>
-<li>
-<p><code>--level 4.1</code></p>
-</li>
-<li>
-<p><code>--vbv-bufsize 78125 --vbv-maxrate 62500</code> for DXVA (The old guide
-used lower values to account for the possibility of writing the
-encode to BD for playback, this is no longer a consideration as
-other settings break this compatibility. The new values are the max
-level 4.1 can do, if your device breaks because of this the encode
-is not at fault, your device doesn't meet DXVA
-spec).</p>
-</li>
+<li><code>high</code> for 8-bit 4:2:0</li>
+<li><code>high444</code> for 10-bit 4:4:4, 4:2:2, 4:2:0, lossless</li>
 </ul>
-<h2 id="general-settings"><a class="header" href="#general-settings">General settings</a></h2>
+<h2 id="ratecontrol"><a class="header" href="#ratecontrol">Ratecontrol</a></h2>
+<p>Beyond all else, this is the single most important factor for determining the quality from any given input. Due to how poorly x264 handles lower bitrates (comparatively, particularly when encoding 8-bit) starving your encode will result in immediate artifacts observable even under the lightest scrutiny.</p>
+<p>While manipulating other settings may make small, but usually noticeable differences; an encode can't look great unless given enough bits.</p>
+<p>For some futher insight, reference <a href="https://github.com/jpsdr/x264/blob/master/doc/ratecontrol.txt">this article</a></p>
+<h3 id="constant-ratefactor"><a class="header" href="#constant-ratefactor">Constant ratefactor</a></h3>
+<p>For more information please see <a href="https://forum.doom9.org/showthread.php?p=1261917#post1261917">this post by an x264 developer</a>.</p>
+<p>The constant ratefactor (CRF) is the suggested mode for encoding.
+Rather than specifying a target bitrate, CRF attempts to ensure a consistent quality across a number of frames; as such, the resulting bitrate will only be consistent if passed identical values.
+In short, CRF is recommended for use with your finalized encode, not testing, where two pass is recommended.</p>
+<p>Lower CRF values are higher quality, higher values lower.
+Some settings will have a very large effect on the bitrate at a constant CRF, so it's hard to recommend a CRF range, but most encodes will use a value between 15.0 and 20.0.
+It's best to test your CRF first to find an ideal bitrate, then test it again after all other settings have been tested with 2pass.</p>
+<p>To specify CRF:</p>
+<pre><code>--crf 16.9
+</code></pre>
+<h3 id="two-pass"><a class="header" href="#two-pass">Two pass</a></h3>
+<p>An alternative to CRF which leverages an initial pass to collect information about the input before encoding. This comes with two distinct advantages:</p>
 <ul>
-<li>
-<p><code>--b-adapt 2</code> uses the best algorithm (that x264 has) to decide how
-B frames are placed.</p>
-</li>
-<li>
-<p><code>--min-keyint</code> should typically be the frame rate of your video,
-e.g. if you were encoding 23.976 fps content, then you use 24. This
-is setting the minimum distance between I-frames.</p>
-</li>
-<li>
-<p><code>--rc-lookahead 250</code> if using mbtree, 60 or higher else. This sets
-how many frames ahead x264 can look, which is critical for mbtree.
-You need lots of memory for this. (Personally I just leave this at
-250 now as the impact on memory usage is 2 GB or so.) Definitely
-lower this if you're encoding without mbtree and have a lot of
-ReplaceFramesSimple calls in your script.</p>
-</li>
-<li>
-<p><code>--me umh</code> is the lowest you should go. If your CPU is fast enough,
-you might endure the slowdown from tesa. esa takes as much time as
-tesa without any benefit, so if you want to slow down your encode to
-try and catch more movement vectors, just use tesa, although the
-increase is not necessarily always worth it. This isn't really a
-setting you need to test, but on tough sources, you might squeeze
-some more performance out of x264 if you use tesa.</p>
-</li>
-<li>
-<p><code>--direct auto</code> will automatically choose the prediction mode
-(spatial/temporal)</p>
-</li>
-<li>
-<p><code>--subme 10</code> or <code>11</code> (personally I just set this to 11 the
-difference in encode speed is within 3-4%)</p>
-</li>
-<li>
-<p><code>--trellis 2</code></p>
-</li>
-<li>
-<p><code>--no-dct-decimate</code> dct-decimate is a speed up that sacrifices
-quality. Just leave it off, since your computers can likely handle
-it.</p>
-</li>
-<li>
-<p><code>--no-fast-pskip</code> Similar to the above.</p>
-</li>
-<li>
-<p><code>--preset veryslow</code> or <code>placebo</code>, although the stuff we're changing
-will make veryslow be placebo, anyway.</p>
-</li>
+<li>The ability to target a specific bitrate</li>
+<li>Effectively infinite lookahead</li>
 </ul>
-<h2 id="source-specific-settings"><a class="header" href="#source-specific-settings">Source-specific settings</a></h2>
-<ul>
-<li>
-<p><code>--bitrate</code> / <code>--crf</code> Bitrate is in Kbps (Kilobits per second) and
-CRF takes a float, where lower is better quality. This is the most
-important setting you have; bitstarve an encode and it is guaranteed
-to look like crap. Use too many bits and you've got bloat (and if
-people wanted to download massive files, they would get a remux). Of
-course, the bitrate need can vary drastically depending on the
-source.</p>
-</li>
-<li>
-<p><code>--deblock -3:-3</code> to <code>0:0</code>. For live action, most people just stick
-with -3:-3. For anime, values between -3:-2 and 0:0 are common.
-An explanation of the two params can be found <a href="https://forum.doom9.org/showpost.php?p=1692393&amp;postcount=32">HERE</a>.</p>
-</li>
-<li>
-<p><code>--qcomp 0.6</code> (default) to <code>0.8</code> might prove useful. Don't set this
-too high or too low, or the overall quality of your encode will
-suffer. This setting has a heavy effect on mbtree. A higher qcomp
-value will make mbtree weaker, hence something around 0.80 is
-usually optimal for anime. <code>--qcomp 0</code> will cause a constant
-bitrate, while <code>--qcomp 1</code> will cause a constant quantizer.</p>
-</li>
-<li>
-<p><code>--aq-mode 1</code> to <code>3</code>: 1 distributes bits on a per frame basis, 2
-tends to allocate more bits to the foreground and can distribute
-bits in a small range of frames, 3 is a modified version of 2 that
-attempts to allocate more bits to dark parts of the frames. The only
-way to know what's best for sure it to test. Almost every source
-ends up looking best with aq-mode 3, however.</p>
-</li>
-<li>
-<p><code>--aq-strength 0.5</code> to <code>1.3</code> are worth trying. Higher values might
-help with blocking. Lower values will tend to allocate more bits to
-the foreground, similar to aq-mode 2. Lower values allocate more
-bits to flat areas, while higher values allocate more to
-&quot;detailed&quot; areas. Note that x264 considers grain and noise as
-detail, so you can think of this setting as the ratio of bits
-allocated to edges vs. bits allocated to grain. You're usually going
-to want to have a higher qcomp for a lower aq-strength and vice
-versa. With mode 3, you're usually going to end up somewhere around
-the 0.7-0.8 range for modern film, for which a qcomp of 0.6-0.7
-often works best.</p>
-</li>
-<li>
-<p><code>--merange 24</code> (the lowest that should ever be used) to <code>64</code>,
-setting this too high can hurt (more than 128), 32 or 48 will be
-fine for most encodes. In general, 32-48 for 1080p and 32 for 720p
-(when using umh) for movies with lots of motion this can help (e.g.
-action movies). Talking heads can get away with low values like 24.
-The impact on encode speed is noticeable but not horrible. I prefer
-to use 48 for 1080p and 32 for 720p when using umh or 32 for 1080p
-and 32 for 720p when using tesa.</p>
-</li>
-<li>
-<p><code>--no-mbtree</code> I highly recommend testing with both mbtree enabled
-and disabled, as generally it will result in two very different
-encodes. mbtree basically attempts to degrade the quality of blocks
-rather than frames, so that only the unimportant parts of a frame
-get less bits. To do this, it needs to know how often a block is
-referenced later, which is why <code>--rc-lookahead</code> should be set
-to 250. Useful for things with static backgrounds, like anime. Or
-for things where you've used a high qcomp (.75 or above) and mbtree
-will have a lowered impact. When testing whether this is a decent
-option, you'll likely have to retest every setting, especially
-qcomp, psy-rd, and ipratio.</p>
-</li>
-<li>
-<p><code>--ipratio 1.15</code> to <code>1.40</code>, with 1.30 usually being the go-to
-option. This is the bitrate allocation ratio between I and P frames.</p>
-</li>
-<li>
-<p><code>--pbratio 1.05</code> to <code>1.30</code>, with 1.20 being the usual go-to. This is
-the bitrate allocation ratio between P and B frames. This value
-should always be around 0.10 lower than --ipratio, so lower it
-while testing ipratio. If you're using mbtree, this setting will
-have no affect, as mbtree determines it itself.</p>
-</li>
-<li>
-<p><code>--psy-rd 0.40:0 to 1.15:0</code>: 0.95:0 to 1.15:0 for live action. The
-first number is psy-rd strength, second is psy-trellis strength.
-This tries to keep x264 from making things blurry and instead keep
-the complexity. For anime, between 0.40 and 1.00:0.00 is the usual
-range. Psy-trellis usually introduces a lot of ringing, but can help
-with maintaining dither. You can try values between 0.00 and 0.15
-for live action and try values up to 0.50 for anime, although you'll
-usually get better results if you raise your aq-strength instead.</p>
-</li>
-<li>
-<p><code>--bframes 6</code> to <code>16</code>, This is setting the maximum amount of
-consecutive P frames that can be replaced with B frames. Test with
-16 for your first test run, and set according to the x264 log:</p>
-<p><code>x264 [info]: consecutive B-frames: 1.0% 0.0% 0.0% 0.0% 14.9% 23.8% 13.9% 15.8% 8.9% 9.9% 0.0% 11.9% 0.0% 0.0% 0.0% 0.0% 0.0%</code></p>
-<p>Start counting with the first percentage as 0 and choose the highest
-number with more than 1%, which is 11 in this example.</p>
-<p>Or just leave this at 16, as allowing more bframes will not harm
-your encode and will aid in compression; the impact on speed isn't that
-enormous.</p>
-</li>
-<li>
-<p><code>--ref 16</code> if you don't care about hardware compatibility, else just
-leave this option out and x264 will determine the correct number
-according to your level. This sets the number of previous frames
-each P frame can use as references. The impact on performance is
-quite high, but it's worth it most of the time.</p>
-</li>
-<li>
-<p><code>--zones</code> is quite useful for debanding and blocking, as these areas
-require a larger bitrate to maintain transparency. The syntax is<br />
-<code>--zones 0,100,crf=10/101,200,crf=15</code> or<br />
-<code>--zones 0,100,b=5/101,200,b=10</code> with <code>b</code> being a bitrate multiplier
-in this case. You can also use this for areas that don't get enough
-bits allocated. Especially common areas are darker scenes or scenes
-with lots of reds. Fades can also suffer from bitstarving and
-require zoning. One can also lower the bitrate during credits to
-save that little something.</p>
-</li>
-<li>
-<p><code>--output-depth 8</code> or <code>10</code> depending on what you're encoding in.</p>
-</li>
-<li>
-<p><code>--output-csp i444</code> if you're encoding 4:4:4, else leave this out.</p>
-</li>
-</ul>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><p>The documentation here is very good, so I'll just go over recommended
-values:</p>
+<p>This is very suitable for testing settings, as you will always end up at almost the same bitrate no matter what.</p>
+<p>As mentioned previously, to encode this two runs are necessary. The first pass can be sent to /dev/null, since all we care about is the stats file.
+To specify which of the two passes you're encoding all we need to change is <code>--pass</code></p>
+<pre><code>vspipe -c y4m script.vpy - | x264 --demuxer y4m --preset placebo --pass 1 --bitrate 8500 -o /dev/null -
+</code></pre>
+<pre><code>vspipe -c y4m script.vpy - | x264 --demuxer y4m --preset placebo --pass 2 --bitrate 8500 -o out.h264 -
+</code></pre>
+<h2 id="deblock"><a class="header" href="#deblock">Deblock</a></h2>
+<p>For an explanation of what deblock does, read <a href="https://forum.doom9.org/showthread.php?p=1692393#post1692393">this Doom9 post</a> and <a href="https://web.archive.org/web/20220323033558/https://huyunf.github.io/blogs/2017/11/20/h264_deblocking_algorithm/">this blog post</a></p>
+<p>Set this too high and you'll have a blurry encode, set it too low and you'll have an overly blocky encode.
+We recommend testing deblock in a range of <code>-2:-2</code> to <code>0:0</code> (animated content should use stronger deblock settings).
+Usually, you can test this with the same alpha and beta parameters at first, then test offsets of \(\pm1\).</p>
+<p>Many people will mindlessly use -3:-3, but this tends to lead to unnecessary blocking that could've been avoided had this setting been tested.</p>
+<p>To specify e.g. an alpha of -2 and a beta of -1:</p>
+<pre><code>--deblock -2:-1
+</code></pre>
+<h2 id="quantizer-curve-compression"><a class="header" href="#quantizer-curve-compression">Quantizer curve compression</a></h2>
+<p>The quantizer curve compression (qcomp) is effectively the setting that determines how bits are distributed among the whole encode.
+It has a range of 0 to 1, where 0 is a constant bitrate and 1 is a constant quantizer, the opposite of a constant bitrate.
+This means qcomp affects how much bitrate you're giving to &quot;important&quot; scenes as opposed to &quot;unimportant&quot; scenes.
+In other words, it can be seen as the trade-off between bitrate allocation to simple or static scenes and complex or high motion scenes.
+Higher qcomp will allocate more to the latter, lower to the former.</p>
+<p>It's usually recommended to set this between <code>0.60</code> and <code>0.70</code> without mbtree and <code>0.70</code> and <code>0.85</code> with mbtree.
+You want to find that sweet spot where complex scenes will look good enough without ruining simple scenes.</p>
+<pre><code>--qcomp 0.60
+</code></pre>
+<h2 id="macroblock-tree"><a class="header" href="#macroblock-tree">Macroblock tree</a></h2>
+<p>From <a href="https://forum.doom9.org/showthread.php?t=148686">this thread by an x264 developer</a>: &quot;It tracks the propagation of information from future blocks to past blocks across motion vectors. It could be described as localizing qcomp to act on individual blocks instead of whole scenes. Thus instead of lowering quality in high-complexity scenes (like x264 currently does), it'll only lower quality on the complex part of the scene, while for example a static background will remain high-quality. It also has many other more subtle effects, some potentially negative, most probably not.&quot;</p>
+<p>Curious readers can reference the <a href="https://archive.org/download/x264_mbtree/x264_mbtree.pdf">paper directly</a></p>
+<p>Macroblock tree ratecontrol (mbtree) can lead to large savings for very flat content, but tends to be destructive on anything with a decent amount of grain.
+If you're encoding something flat, like a cartoon or modern anime, it's recommended to test this setting to see if it's worth it.</p>
+<p>When using mbtree, you should max out your lookahead (<code>--rc-lookahead 250</code>) and use a high qcomp (\(\geq 0.70\)).</p>
+<h2 id="adaptive-quantization"><a class="header" href="#adaptive-quantization">Adaptive quantization</a></h2>
+<p>While qcomp determines bit allocation for frames across the video, adaptive quantization (AQ) is in charge of doing this on a block-basis, distributing bits not only within the current frame, but also adjacent frames. [citation needed]
+It does so by distributing bits e.g. from complex to flat blocks.</p>
+<p>There are three modes available in vanilla x264:</p>
+<ol>
+<li>Allow AQ to redistribute bits across the whole video and within frames.</li>
+<li>Auto-variance; this attempts to adapt strength per-frame.</li>
+<li>Auto-variance with a bias to dark scenes.</li>
+</ol>
+<p>Generally speaking, you'll likely get the best results with AQ mode 3.
+With the other two modes, you have to carefully make sure that darks aren't being damaged too much.
+If you e.g. have a source without any dark scenes (or only very few), it can be worth manually allocating more bits to darks via <a href="encoding/x264.html#zones">zoning</a> and using AQ modes 1 or 2.</p>
+<p>This comes along with a strength parameter.
+For modes 1 and 2, you usually want a strength between 0.80 and 1.30.
+Mode 3 is a bit more aggressive and usually looks best with a strength between 0.60 and 0.85.</p>
+<p>Raising the AQ strength will help flatter areas, e.g. by maintaining smaller grain and dither to alleviate banding.
+However, higher AQ strengths will tend to distort edges more.</p>
+<p>Older, grainier live action content will usually benefit more from lower AQ strengths and may benefit less from the dark scene bias present in AQ mode 3, while newer live action tends to benefit more from higher values.
+For animation, this setting can be very tricky; as both banding and distorted edges are more noticeable.
+It's usually recommended to run a slightly lower AQ strength, e.g. around 0.60 to 0.70 with mode 3.</p>
+<p>To use e.g. AQ mode 3 with strength 0.80:</p>
+<pre><code>--aq-mode 3 --aq-strength 0.80
+</code></pre>
+<h2 id="motion-estimation-range"><a class="header" href="#motion-estimation-range">Motion estimation range</a></h2>
+<p>The motion estimation range (merange) determines how many pixels are used for motion estimation.
+Larger numbers will be slower, but can be more accurate for higher resolutions.
+However, go too high, and the encoder will start picking up unwanted info, which in turn will harm coding efficiency.
+You can usually get by with testing <code>32</code>, <code>48</code>, and <code>64</code>, then using the best looking one, preferring lower numbers if equivalent:</p>
+<pre><code>--merange 32
+</code></pre>
+<h2 id="frametype-quantizer-ratio"><a class="header" href="#frametype-quantizer-ratio">Frametype quantizer ratio</a></h2>
+<p>These settings determine how bits are distributed among the different frame types.
+Generally speaking, you want to have an I-frame to P-frame ratio (ipratio) around 0.10 higher than your P-frame to B-frame ratio (pbratio).
+Usually, you'll want to lower these from the defaults of <code>1.40</code> for ipratio and <code>1.30</code> for pbratio, although not by more than 20.</p>
+<p>Lower ratios will tend to help with grainier content, where less information from previous frames can be used, while higher ratios will usually lead to better results with flatter content.</p>
+<p>You can use the stats created by the x264 log at the end of the encoding process to check whether the encoder is overallocating bits to a certain frametype and investigate whether this is a problem.
+A good guideline is for P-frames to be double the size of B-frames and I-frames in turn be double the size of P-frames.
+However, don't just blindly set your ratios so that this is the case.
+Always use your eyes.</p>
+<p>To set an ipratio of <code>1.30</code> and a pbratio of <code>1.20</code>:</p>
+<pre><code>--ipratio 1.30 --pbratio 1.20
+</code></pre>
+<p>If using mbtree, pbratio doesn't do anything, so only test and set ipratio.</p>
+<h2 id="psychovisually-optimized-rate-distortion-optimization"><a class="header" href="#psychovisually-optimized-rate-distortion-optimization">Psychovisually optimized rate-distortion optimization</a></h2>
+<p>One big issue with immature encoders is that they don't offer psychovisual optimizations like psy-rdo.
+What it does is distort the frame slightly, sharpening it in the process.
+This will make it statistically less similar to the original frame, but will look better and more similar to the input.
+What this means is this is a weak sharpener of sorts, but a very much necessary sharpener!</p>
+<p>The setting in x264 comes with two options, psy-rdo and psy-trellis, which are both set via the same option:</p>
+<pre><code>--psy-rd rdo:trellis
+</code></pre>
+<p>Unfortunately, the latter will usually do more harm than good, so it's best left off.
+The psy-rdo strength should be higher for sharper content and lower for blurrier content. For animated content, psy-rdo can introduce ringing even with default values. We suggest using lower values, between  <code>0.60</code> and <code>0.90</code>. For live action content where this is of much lesser concern you should find success with values around <code>0.95</code> to <code>1.10</code>. </p>
+<p>When testing this, pay attention to whether content looks sharp enough or too sharp, as well as whether anything gets distorted during the sharpening process.</p>
+<p>For example, to set a psy-rd of 1.00 and psy-trellis of 0:</p>
+<pre><code>--psy-rd 1.00:0
+</code></pre>
+<h2 id="dct-block-decimation"><a class="header" href="#dct-block-decimation">DCT block decimation</a></h2>
+<p>Disabling DCT block decimation (no-dct-decimate) is very common practice, as it drops blocks deemed unimportant.
+For high quality encoding, this is often unwanted and disabling this is wise.
+However, for flatter content, leaving this on can aid with compression.
+Just quickly test on and off if you're encoding something flat.</p>
+<p>To disable DCT block decimation:</p>
+<pre><code>--no-dct-decimate
+</code></pre>
+<h2 id="video-buffer-verifier"><a class="header" href="#video-buffer-verifier">Video buffer verifier</a></h2>
+<p>To understand what this is, there's actually a <a href="https://en.wikipedia.org/wiki/Video_buffering_verifier">Wikipedia article you can read</a>. Alternatively, you may find <a href="https://www.youtube.com/watch?v=-Q7BuSXdO_8">this video presentation</a> from demuxed informative.</p>
+<p>For us, the main relevance is that we want to disable this when testing settings, as video encoded with VBV enabled will be non-deterministic.
+Otherwise, just leave it at your level's defaults.</p>
+<p>To disable VBV:</p>
+<pre><code>--vbv-bufsize 0 --vbv-maxrate 0
+</code></pre>
+<p>VBV settings for general hardware compliance (High@L4.1)</p>
+<pre><code>--vbv-bufsize 78125 --vbv-maxrate 62500
+</code></pre>
+<h2 id="reference-frames"><a class="header" href="#reference-frames">Reference frames</a></h2>
+<p>The reference frames (ref) setting determines how many frames P frames can use as reference. Many existing guides may provide an incorrect formula to find the 'correct' value. <strong>Do not use this</strong>. Rather, allow x264 to calculate this for automatically (as dictated by <code>--level</code>). </p>
+<p>Otherwise, if you don't care about compatibility with 15 year old TVs and 30 year old receivers, set this however high you can bare, with a maximum value of 16.
+Higher refs will improve encoder efficiency at the cost of increased compute time.</p>
+<p>To set the maximum value of 16:</p>
+<pre><code>--ref 16
+</code></pre>
+<h2 id="zones"><a class="header" href="#zones">Zones</a></h2>
+<p>Sometimes, the encoder might have trouble distributing enough bits to certain frames, e.g. ones with wildly different visuals or sensitive to banding.
+To help with this, one can zone out these scenes and change the settings used to encode them.</p>
+<p>When using this to adjust bitrate, one can specify a CRF for the zone or a bitrate multiplier.
+It's very important to not bloat these zones, e.g. by trying to maintain all the grain added while debanding.
+Sane values tend to be \(\pm 2\) from base CRF or bitrate multipliers between <code>0.75</code> and <code>1.5</code>.</p>
+<p>To specify a CRF of 15 for frames 100 through 200 and 16 for frames 300 through 400, as well as a bitrate multiplier of 1.5 for frames 500 through 600:</p>
+<pre><code>--zones 100,200,crf=15/300,400,crf=16/500,600,b=1.5
+</code></pre>
+<p>For a more complete picture of what --zones can and can not manipulate, see <a href="https://www.chaneru.com/Roku/HLS/X264_Settings.htm#zones">this section</a>.</p>
+<h2 id="output-depth-and-color-space"><a class="header" href="#output-depth-and-color-space">Output depth and color space</a></h2>
+<p>To encode 10-bit and/or 4:4:4 video, one must specify this via the following parameters:</p>
+<pre><code>--output-depth 10 --output-csp i444
+</code></pre>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><p><a href="https://x265.readthedocs.io/en/master/cli.html">The official documentation for x265</a> is very good, so this page will only cover recommended values and switches.</p>
 <h2 id="source-independent-settings"><a class="header" href="#source-independent-settings">Source-independent settings</a></h2>
 <ul>
 <li>
@@ -2004,7 +1995,9 @@ chroma planes.</p>
 </li>
 <li>
 <p><code>--aq-mode 4</code>, <code>3</code>, <code>2</code>, <code>1</code>, or <code>--hevc-aq</code> with <code>4</code> and <code>3</code>
-usually being the two best options. These do the following</p>
+usually being the two best options. If using <a href="https://github.com/DJATOM/x265-aMod">aMod</a>,
+there is an extra mode <code>5</code>.
+These do the following:</p>
 <ol>
 <li>
 <p>Standard adaptive quantization, simply add more bits to complex
@@ -2014,11 +2007,15 @@ blocks.</p>
 <p>Adaptive quantization with auto-variance.</p>
 </li>
 <li>
-<p>Adaptive quantization with auto-variance and bias to dark scene.</p>
+<p>Adaptive quantization with auto-variance and bias to dark scenes.</p>
 </li>
 <li>
 <p>Adaptive quantization with auto-variance and better edge
 preservation.</p>
+</li>
+<li>
+<p>Adaptive quantization with auto-variance, better edge
+preservation, and bias to dark scenes. Only in aMod.</p>
 </li>
 <li>
 <p><code>hevc-aq</code> &quot;scales the quantization step size according to the
@@ -2035,8 +2032,12 @@ turned on.</p>
 <p><code>--aq-strength</code> between <code>0.80</code> and <code>1.40</code> for AQ modes 1-3 or <code>0.50</code> and <code>1.00</code> for AQ mode 4.</p>
 </li>
 <li>
-<p><code>--deblock -4:-4</code> to <code>0:0</code>, as with x264. You can default <code>-3:-3</code>
-with live action.</p>
+<p><code>--aq-bias-strength</code> between <code>0.50</code> and <code>1.20</code> if using aMod and an
+AQ mode with dark bias. This is a multiplier with lower numbers
+lowering the bias. Default is <code>1.00</code>.</p>
+</li>
+<li>
+<p><code>--deblock -4:-4</code> to <code>0:0</code>, similar to x264. Test at least -3:-3 to -1:-1 with live action, -2:-2 to 0:0 with animation.</p>
 </li>
 <li>
 <p><code>--ipratio</code> and <code>--pbratio</code> same as x264 again.</p>
@@ -2213,8 +2214,8 @@ out = join([y, u, v])
 <ul>
 <li><a href="https://git.kageru.moe/kageru/adaptivegrain">adaptivegrain</a></li>
 <li><a href="https://github.com/HomeOfVapourSynthEvolution/VapourSynth-AddGrain">AddGrain</a></li>
-<li><a href="https://gitlab.com/Ututu/adptvgrnmod">adptvgrnMod</a></li>
-<li><a href="https://git.concertos.live/AHD/awsmfunc">awsmfunc</a></li>
+<li><a href="https://github.com/OpusGang/adptvgrnmod">adptvgrnMod</a></li>
+<li><a href="https://github.com/OpusGang/awsmfunc">awsmfunc</a></li>
 </ul>
 <h1 id="b"><a class="header" href="#b">B</a></h1>
 <ul>
@@ -2224,7 +2225,7 @@ out = join([y, u, v])
 <h1 id="c"><a class="header" href="#c">C</a></h1>
 <ul>
 <li><a href="https://valeyard.net/2017/03/drdres-color-matching-tool-v1-2.php">ColorMatch</a></li>
-<li><a href="https://gitlab.com/Ututu/VS-ContinuityFixer">ContinuityFixer</a></li>
+<li><a href="https://github.com/MonoS/VS-ContinuityFixer">ContinuityFixer</a></li>
 </ul>
 <h1 id="d"><a class="header" href="#d">D</a></h1>
 <ul>
@@ -2246,6 +2247,7 @@ out = join([y, u, v])
 <h1 id="g"><a class="header" href="#g">G</a></h1>
 <ul>
 <li><a href="https://github.com/Infiziert90/getnative">getnative</a></li>
+<li><a href="https://github.com/OpusGang/gettint">gettint</a></li>
 </ul>
 <h1 id="k"><a class="header" href="#k">K</a></h1>
 <ul>
@@ -2268,7 +2270,7 @@ out = join([y, u, v])
 </ul>
 <h1 id="r"><a class="header" href="#r">R</a></h1>
 <ul>
-<li><a href="https://gitlab.com/Ututu/rekt">rekt</a></li>
+<li><a href="https://github.com/OpusGang/rekt">rekt</a></li>
 <li><a href="https://github.com/Irrational-Encoding-Wizardry/RgToolsVS">RgToolsVS</a></li>
 </ul>
 <h1 id="t"><a class="header" href="#t">T</a></h1>
@@ -2278,7 +2280,7 @@ out = join([y, u, v])
 <h1 id="v"><a class="header" href="#v">V</a></h1>
 <ul>
 <li><a href="https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Bilateral">VapourSynth bilateral</a></li>
-<li><a href="https://www.vapoursynth.com/doc/functions.html">VapourSynth Functions</a></li>
+<li><a href="www.vapoursynth.com/doc/functions.html">VapourSynth Functions</a></li>
 <li><a href="https://github.com/Lypheo/vs-placebo">vs-placebo</a></li>
 <li><a href="https://github.com/HomeOfVapourSynthEvolution/vsTAAmbk">vsTAAmbk</a></li>
 <li><a href="https://github.com/Irrational-Encoding-Wizardry/vsutil">vsutil</a></li>

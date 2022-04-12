@@ -182,7 +182,7 @@
 <p>同样，当你试图修复脏线时，你应该彻底检查你的修复没有引起不必要的问题，如涂抹（常见于过度热心的ContinuityFixer值）或闪烁（特别是在片头，在大多数情况下，建议从你的修复中省略片头卷）。如果你不能找出适当的修复方法，完全可以裁剪掉脏线或不修复。糟糕的修复比没有修复更糟糕</p>
 <p>这里有五种常用的修复脏线的方法:</p>
 <h2 id="rektlvls"><a class="header" href="#rektlvls"><code>rektlvls</code></a></h2>
-<p>来自<a href="https://gitlab.com/Ututu/rekt"><code>rekt</code></a>。这基本上是AviSynth的 <code>FixBrightnessProtect3</code> 和 <code>FixBrightness</code> 的合二为一，尽管与  <code>FixBrightness</code> 不同，不是对整个画面进行处理。它的数值很直接。提高调整值是为了变亮，降低是为了变暗。将<code>prot_val</code>设置为<code>None</code>，它的功能就像<code>FixBrightness</code>，意味着调整值需要改变。</p>
+<p>来自<a href="https://github.com/Ututu/rekt"><code>rekt</code></a>。这基本上是AviSynth的 <code>FixBrightnessProtect3</code> 和 <code>FixBrightness</code> 的合二为一，尽管与  <code>FixBrightness</code> 不同，不是对整个画面进行处理。它的数值很直接。提高调整值是为了变亮，降低是为了变暗。将<code>prot_val</code>设置为<code>None</code>，它的功能就像<code>FixBrightness</code>，意味着调整值需要改变。</p>
 <pre><code class="language-py">from rekt import rektlvls
 fix = rektlvls(src, rownum=None, rowval=None, colnum=None, colval=None, prot_val=[16, 235])
 </code></pre>
@@ -494,7 +494,7 @@ cf = core.fb.FillBorders(src, top=6, mode=&quot;mirror&quot;).std.MaskedMerge(sr
     b = core.std.Crop(clip, bottom=clip.height / 2)
     return core.std.StackVertical([t, b])
 </code></pre>
-<p>这个脚本将使阈值以下的数值（即黑色边界）显示为大部分黑色背景上中间的垂直或水平白线。如果没有给出阈值，它将简单地将剪辑的边缘居中。你可以在激活这个功能的情况下浏览一下你的视频。一个自动的替代方法是<a href="https://git.concertos.live/AHD/awsmfunc/src/branch/master/awsmfunc/detect.py"><code>dirtdtct</code></a>，它将为你扫描视频。</p>
+<p>这个脚本将使阈值以下的数值（即黑色边界）显示为大部分黑色背景上中间的垂直或水平白线。如果没有给出阈值，它将简单地将剪辑的边缘居中。你可以在激活这个功能的情况下浏览一下你的视频。一个自动的替代方法是<a href="https://github.com/OpusGang/awsmfunc/blob/master/awsmfunc/detect.py"><code>dirtdtct</code></a>，它将为你扫描视频。</p>
 <p>其他种类的可变脏线是一个婊子修复，需要手动检查场景。</p>
 <h3 id="可变的边界"><a class="header" href="#可变的边界">可变的边界</a></h3>
 <p>一个与脏线非常相似的问题是不需要的边框。在不同裁剪的场景中（如IMAX或4:3），黑色边框有时可能不完全是黑色的，或者完全被打乱了。为了解决这个问题，只需将其裁剪并重新添加。你也可能想修复沿途可能出现的脏线:</p>
