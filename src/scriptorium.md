@@ -1,14 +1,14 @@
 # A
 - [adaptivegrain](https://git.kageru.moe/kageru/adaptivegrain)
 - [AddGrain](https://github.com/HomeOfVapourSynthEvolution/VapourSynth-AddGrain)
-- [adptvgrnMod](https://gitlab.com/Ututu/adptvgrnmod)
-- [awsmfunc](https://git.concertos.live/AHD/awsmfunc)
+- [adptvgrnMod](https://github.com/OpusGang/adptvgrnmod)
+- [awsmfunc](https://github.com/OpusGang/awsmfunc)
 # B
 - [black_detect](https://gitlab.com/snippets/1834089)
 - [blazefunc](https://gist.github.com/blaze077/ac896645913938591b45e7d65932b136)
 # C
 - [ColorMatch](https://valeyard.net/2017/03/drdres-color-matching-tool-v1-2.php)
-- [ContinuityFixer](https://gitlab.com/Ututu/VS-ContinuityFixer)
+- [ContinuityFixer](https://github.com/MonoS/VS-ContinuityFixer)
 # D
 - [debandmask](https://pastebin.com/SHQZjVJ5)
 # E
@@ -22,6 +22,7 @@
 - [fvsfunc](https://github.com/Irrational-Encoding-Wizardry/fvsfunc)
 # G
 - [getnative](https://github.com/Infiziert90/getnative)
+- [gettint](https://github.com/OpusGang/gettint)
 # K
 - [kagefunc](https://github.com/Irrational-Encoding-Wizardry/kagefunc)
 - [KrigBilateral](https://gist.github.com/igv/a015fc885d5c22e6891820ad89555637)
@@ -34,13 +35,13 @@
 # N
 - [neo_f3kdb](https://github.com/HomeOfAviSynthPlusEvolution/neo_f3kdb/)
 # R
-- [rekt](https://gitlab.com/Ututu/rekt)
+- [rekt](https://github.com/OpusGang/rekt)
 - [RgToolsVS](https://github.com/Irrational-Encoding-Wizardry/RgToolsVS)
 # T
 - [timecube](https://github.com/sekrit-twc/timecube)
 # V
 - [VapourSynth bilateral](https://github.com/HomeOfVapourSynthEvolution/VapourSynth-Bilateral)
-- [VapourSynth Functions](https://www.vapoursynth.com/doc/functions.html)
+- [VapourSynth Functions](www.vapoursynth.com/doc/functions.html)
 - [vs-placebo](https://github.com/Lypheo/vs-placebo)
 - [vsTAAmbk](https://github.com/HomeOfVapourSynthEvolution/vsTAAmbk)
 - [vsutil](https://github.com/Irrational-Encoding-Wizardry/vsutil)

@@ -18,7 +18,7 @@
 这里有五种常用的修复脏线的方法:
 
 ## `rektlvls`\
-来自[`rekt`](https://gitlab.com/Ututu/rekt)。这基本上是AviSynth的 `FixBrightnessProtect3` 和 `FixBrightness` 的合二为一，尽管与  `FixBrightness` 不同，不是对整个画面进行处理。它的数值很直接。提高调整值是为了变亮，降低是为了变暗。将`prot_val`设置为`None`，它的功能就像`FixBrightness`，意味着调整值需要改变。
+来自[`rekt`](https://github.com/Ututu/rekt)。这基本上是AviSynth的 `FixBrightnessProtect3` 和 `FixBrightness` 的合二为一，尽管与  `FixBrightness` 不同，不是对整个画面进行处理。它的数值很直接。提高调整值是为了变亮，降低是为了变暗。将`prot_val`设置为`None`，它的功能就像`FixBrightness`，意味着调整值需要改变。
 ```py
 from rekt import rektlvls
 fix = rektlvls(src, rownum=None, rowval=None, colnum=None, colval=None, prot_val=[16, 235])
@@ -424,7 +424,7 @@ def black_detect(clip, thresh=None):
     return core.std.StackVertical([t, b])
 ```
 
-这个脚本将使阈值以下的数值（即黑色边界）显示为大部分黑色背景上中间的垂直或水平白线。如果没有给出阈值，它将简单地将剪辑的边缘居中。你可以在激活这个功能的情况下浏览一下你的视频。一个自动的替代方法是[`dirtdtct`](https://git.concertos.live/AHD/awsmfunc/src/branch/master/awsmfunc/detect.py)，它将为你扫描视频。
+这个脚本将使阈值以下的数值（即黑色边界）显示为大部分黑色背景上中间的垂直或水平白线。如果没有给出阈值，它将简单地将剪辑的边缘居中。你可以在激活这个功能的情况下浏览一下你的视频。一个自动的替代方法是[`dirtdtct`](https://github.com/OpusGang/awsmfunc/blob/master/awsmfunc/detect.py)，它将为你扫描视频。
 
 其他种类的可变脏线是一个婊子修复，需要手动检查场景。
 
