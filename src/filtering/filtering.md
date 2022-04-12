@@ -8,7 +8,7 @@
 另外，可以使用Python解决方案，例如std.Trim和addition。
 然而，`RemapFrames`往往更快，特别是对于较大的替换映射集。
 
-让我们看一个对100到200帧和500到750帧应用[`f3kdb`](filtering/debanding##neo_f3kdb)解带过滤的例子:
+让我们看一个对100到200帧和500到750帧应用[`f3kdb`](./debanding.md##neo_f3kdb)解带过滤的例子:
 
 ```py
 src = core.ffms2.Source("video.mkv")
@@ -17,7 +17,7 @@ deband = source.neo_f3kdb.Deband(src)
 replaced = core.remap.Rfs(src, deband, mappings="[100 200] [500 750]")
 ```
 
-在插件和Python方法里有各种封装好的库，特别是前者的[`awsmfunc.rfs`](https://git.concertos.live/AHD/awsmfunc)和后者的[`lvsfunc.util.replace_frames`](https://lvsfunc.encode.moe/en/latest/#lvsfunc.util.replace_ranges) 。
+在插件和Python方法里有各种封装好的库，特别是前者的[`awsmfunc.rfs`](https://github.com/OpusGang/awsmfunc)和后者的[`lvsfunc.util.replace_frames`](https://lvsfunc.encode.moe/en/latest/#lvsfunc.util.replace_ranges) 。
 
 ## 过滤顺序
 

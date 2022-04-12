@@ -67,7 +67,7 @@ resize = src.resize.Spline36(1280, height, dither_type="error_diffusion")
 width = round(720 / src.height / 2 * src.width) * 2
 ```
 
-如果您不想为此烦恼， 您可以使用 [`awsmfunc`](https://git.concertos.live/AHD/awsmfunc/) 里封装好的 `zresize` 方法:
+如果您不想为此烦恼， 您可以使用 [`awsmfunc`](https://github.com/OpusGang/awsmfunc/) 里封装好的 `zresize` 方法:
 
 ```py
 resize = awf.zresize(src, preset=720)
